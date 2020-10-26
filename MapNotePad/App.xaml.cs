@@ -1,16 +1,21 @@
-﻿using System;
+﻿using Prism.Unity;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Prism.Ioc;
+using Prism;
 
 namespace MapNotePad
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
         public App()
         {
             InitializeComponent();
-
-            MainPage = new MainPage();
+                      
+        }
+        public App(IPlatformInitializer platformInitializer =null) : base(platformInitializer)
+        { 
         }
 
         protected override void OnStart()
@@ -23,6 +28,16 @@ namespace MapNotePad
 
         protected override void OnResume()
         {
+        }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OnInitialized()
+        {
+            throw new NotImplementedException();
         }
     }
 }
