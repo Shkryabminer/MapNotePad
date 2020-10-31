@@ -22,9 +22,11 @@
             HasUnevenRows="True"
             ItemsSource="{Binding Path=Pins}"
             SelectionMode="None"
+            InputTransparent="False"
             SeparatorVisibility="None">
             <ListView.Behaviors />
-            <ListView.ItemTemplate>
+            
+                <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.ContextActions>
@@ -36,7 +38,8 @@
                                 Command="{Binding BindingContext.DeleteProfileCommand, Source={x:Reference profilesListView}}"
                                 CommandParameter="{Binding .}"
                                 Text="{x:Static localization:Resource.PinsListMenuItemDelete}" />
-                        </ViewCell.ContextActions>
+                        </ViewCell.ContextActions>           
+                         
                         <ViewCell.View>
                             <Grid Padding="5,10" HeightRequest="60">
                                 <Grid.ColumnDefinitions>
@@ -45,6 +48,10 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackLayout Grid.Column="1" Orientation="Vertical">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.CellTappedCommand, Source={x:Reference profilesListView}}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </StackLayout.GestureRecognizers>
                                     <Label
                                         FontAttributes="Bold"
                                         Text="{Binding Path=Name}"

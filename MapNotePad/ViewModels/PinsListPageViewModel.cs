@@ -41,11 +41,11 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref pins, value);
             get => pins;
         }
-
+        public ICommand CellTappedCommand => new Command<object>(OnCellTappedCommand);
         #endregion
 
 
-      
+
         public PinsListPageViewModel(INavigationService navigationService,
                                     IAutorization autorization,
                                     IPinService pinService,
@@ -59,6 +59,16 @@ namespace MapNotePad.ViewModels
 
         #region --OnCommand handlers
 
+        private async void OnCellTappedCommand(object obj)
+        {
+            var pinModel = obj as PinModel;
+            if (pinModel != null)
+            {
+                var parametres = new NavigationParameters();
+                parametres.Add("selectedCell", pinModel);
+                await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}?selectedTab = {nameof(MapPage)}", parametres);
+            }
+        }
         private void OnSelectPin(object obj)
         {
             SwapToProfilePage(obj as PinModel);

@@ -8,18 +8,18 @@ using Xamarin.Forms.GoogleMaps.Clustering;
 
 namespace MapNotePad.Controls
 {
-    public class CustomMap : ClusteredMap
+    public class GeneralMap : CustomMap
     {
-        public static readonly BindableProperty CollectionOfPinsProperty =
-    BindableProperty.Create(nameof(CollectionOfPins), typeof(List<PinModel>), typeof(CustomMap));
+        
+        public static readonly BindableProperty CheckPointProperty = BindableProperty.Create(nameof(CheckPoint), typeof(Pin), typeof(GeneralMap));
 
-        public List<PinModel> CollectionOfPins
+        public Pin CheckPoint
         {
-            get { return (List<PinModel>)GetValue(CollectionOfPinsProperty); }
-            set { SetValue(CollectionOfPinsProperty, value); }
+            get => (Pin)GetValue(CheckPointProperty);
+            set => SetValue(CheckPointProperty, value);
         }
 
-        public CustomMap()
+        public GeneralMap()
         {
             UiSettings.MyLocationButtonEnabled = true;
         }
@@ -29,19 +29,22 @@ namespace MapNotePad.Controls
         {
             base.OnPropertyChanged(propertyName);
             if (propertyName == nameof(CollectionOfPins))
-            { 
-                SetPins(); 
-            }            
+            {
+                SetPins();
+            }
+            if (propertyName == nameof(CheckPoint))
+            {
+                MapSpan location = MapSpan.FromCenterAndRadius(CheckPoint.Position, Distance.FromKilometers(10));
+
+                  MoveToRegion(location, true); 
+            }
         }
 
-        
+
         #endregion
 
         #region --Private helpers--
 
-        private static void OnCollectionChanged(BindableObject bindable, object oldValue, object newValue)
-        {         
-        }
 
         private void SetPins()
         {
@@ -55,8 +58,8 @@ namespace MapNotePad.Controls
                 Pins.Add(p.ToPin());
             }
         }
-      
+
         #endregion
     }
-
 }
+

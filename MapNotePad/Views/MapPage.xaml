@@ -8,9 +8,10 @@
 
     <ContentPage.Content>
         <Grid>
-            <controls:CustomMap
+            <controls:GeneralMap
                
                 CollectionOfPins="{Binding Pins}"
+                CheckPoint="{Binding SelectedPin}"
                 MapClicked="OnMapClicked"
                 MyLocationEnabled="True"               
                 VerticalOptions="FillAndExpand" />

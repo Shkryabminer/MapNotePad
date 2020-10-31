@@ -3,22 +3,18 @@ using MapNotePad.Models;
 using MapNotePad.Services.UserService;
 using MapNotePad.Views;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
-   public class SignUpPageViewModel:BaseViewModel
+    public class SignUpPageViewModel : BaseViewModel
     {
-       
         private readonly IUserServcie _userService;
         private readonly IUserDialogs _userDialogs;
 
-
         #region --Public properties--
+        
         private string _name;
         public string Name
         {
@@ -48,28 +44,35 @@ namespace MapNotePad.ViewModels
 
         public ICommand SignUpCommand => new Command(OnSignUpCommand);
 
-       
+
         #endregion
         public SignUpPageViewModel(INavigationService navigationService,
                                    IUserServcie userServcie,
-                                   IUserDialogs userDialogs) : base(navigationService)
+                                   IUserDialogs userDialogs)
+                                   : base(navigationService)
         {
             _userService = userServcie;
             _userDialogs = userDialogs;
         }
 
         #region --ONcommand handlers
-      
+
         private async void OnSignUpCommand(object obj)
         {
-            User user = new User();
-             user.Name = Name; user.Password = Password; user.Email = Email;
+            User user = new User()
+            {
+                Name = this.Name,
+                Password = this.Password,
+                Email = this.Email
+            };
+            
             _userService.AddOrUpdate(user);
+
             var navParam = new NavigationParameters();
             navParam.Add("Email", Email);
             await NavigationService.NavigateAsync($"/{nameof(LoginPage)}", navParam);
-
         }
+
         #endregion
 
 
