@@ -4,8 +4,10 @@ using System.Text;
 
 namespace MapNotePad.Models
 {
-   public interface IUser
-    {
-
+    public interface IUser : IEntity
+    {        
+        string Name { get; set; }
+        string Password { get; set; }
+        string Email { get; set; }
     }
 }

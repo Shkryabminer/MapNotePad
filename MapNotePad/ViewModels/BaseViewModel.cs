@@ -3,10 +3,11 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MapNotePad.ViewModels
 {
-    public class BaseViewModel : BindableBase, INavigationAware
+    public class BaseViewModel : BindableBase, INavigationAware, IDestructible, IInitialize, IInitializeAsync
     {
 
        public readonly INavigationService NavigationService;
@@ -15,15 +16,35 @@ namespace MapNotePad.ViewModels
         {
             NavigationService = navigationService;
         }
-        
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-            throw new NotImplementedException();
+
+        #region --IDestrucible implement--
+        public virtual void Destroy()
+        {            
+        }
+        #endregion
+
+        #region --IInitialize implement--
+        public virtual void Initialize(INavigationParameters parameters)
+        {           
+        }
+        #endregion
+
+        #region IInitializeAsync implement--
+        public async Task InitializeAsync(INavigationParameters parameters)
+        {            
+        }
+        #endregion
+
+
+        #region INavigationAware implementation--
+        public virtual void OnNavigatedFrom(INavigationParameters parameters)
+        {            
         }
 
-        public void OnNavigatedTo(INavigationParameters parameters)
+        public virtual void OnNavigatedTo(INavigationParameters parameters)
         {
-            throw new NotImplementedException();
+            
         }
+        #endregion 
     }
 }

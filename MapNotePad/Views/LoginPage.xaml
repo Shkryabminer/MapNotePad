@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MapNotePad.Views.LoginPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:MapNotePad.Resources"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:views="clr-namespace:MapNotePad.Views">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout
+                Grid.Row="1"
+                Padding="10,0"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Vertical"
+                VerticalOptions="CenterAndExpand">
+                <Entry
+                    FontSize="25"
+                    HorizontalOptions="FillAndExpand"
+                    Placeholder="{x:Static localization:Resource.LoginPageLoginPlace}"
+                    Text="{Binding Email}"
+                    TextColor="Blue" />
+                <Entry
+                    FontSize="25"
+                    IsPassword="True"
+                    Placeholder="{x:Static localization:Resource.LoginPagePasswordPlace}"
+                    Text="{Binding Password}"
+                    TextColor="Blue" />
+            </StackLayout>
+            <StackLayout Grid.Row="2" Orientation="Vertical">
+                <Button
+                    Command="{Binding SignButtonCommand}"
+                    HorizontalOptions="Center"
+                    Text="{x:Static localization:Resource.LoginPageBtnLogin}" />
+                <Label
+                    FontSize="25"
+                    HorizontalOptions="Center"
+                    Text="{x:Static localization:Resource.LoginPageLblSignUp}"
+                    TextColor="Blue"
+                    VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SignUpCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

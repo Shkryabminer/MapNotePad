@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage
+    x:Class="MapNotePad.Views.MainTabbedPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:behaviors="clr-namespace:MapNotePad.Behaviors"
+    xmlns:local="clr-namespace:MapNotePad.Views"
+    android:TabbedPage.BarItemColor="#ffffff"
+    android:TabbedPage.BarSelectedItemColor="#66FFFFFF"
+    android:TabbedPage.IsSwipePagingEnabled="False"
+    android:TabbedPage.ToolbarPlacement="Bottom"
+    BarBackgroundColor="#2196F3"
+    BarTextColor="White">
+
+    <TabbedPage.Behaviors>
+        <behaviors:TabbedPageNavigationBehavior />
+    </TabbedPage.Behaviors>
+
+
+    <!--  Pages can be added as references or inline  -->
+    <TabbedPage.Children>
+        <local:MapPage Title="1" />
+
+        <local:PinsListPage Title="2" />
+
+
+    </TabbedPage.Children>
+</TabbedPage>

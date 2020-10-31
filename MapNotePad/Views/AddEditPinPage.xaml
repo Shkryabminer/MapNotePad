@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MapNotePad.Views.AddEditPinPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:MapNotePad.Controls"
+    xmlns:converters="clr-namespace:MapNotePad.Converters;assembly=MapNotePad"
+    xmlns:localization="clr-namespace:MapNotePad.Resources"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:views="clr-namespace:MapNotePad.Views">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:MapTappedEventArgsConverter x:Key="MapTappedConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            x:Name="SaveButton"
+            Command="{Binding SavePinCommand}"
+            IconImageSource="ic_save.png" />
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout
+            Grid.Row="0"
+            Margin="0,5,0,0"
+            HorizontalOptions="FillAndExpand"
+            Orientation="Vertical">
+            <Label
+                FontSize="12"
+                Text="{x:Static localization:Resource.EditListNameLable}"
+                TextColor="{DynamicResource SecondaryTextColor}" />
+            <Entry
+                Margin="0,3,0,0"
+                FontSize="Medium"
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="Start"
+                Placeholder="{x:Static localization:Resource.EditListNamePlace}"
+                PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                Text="{Binding CurrentPinModel.Name}"
+                TextColor="{DynamicResource PrimaryTextColor}" />
+            <Label
+                HorizontalOptions="Start"
+                Text="{x:Static localization:Resource.EditListDescriptLable}"
+                TextColor="{DynamicResource SecondaryTextColor}"
+                VerticalOptions="Start" />
+            <Editor
+                HorizontalOptions="FillAndExpand"
+                MaxLength="120"
+                Placeholder="{x:Static localization:Resource.EditListDescriptLable}"
+                Text="{Binding CurrentPinModel.KeyWords}"
+                TextColor="{DynamicResource SescriptionTextColor}"
+                VerticalOptions="StartAndExpand" />
+            <Label
+                Margin="5,0,0,0"
+                FontSize="12"
+                Text="{x:Static localization:Resource.EditLatitudeLable}"
+                TextColor="{DynamicResource SecondaryTextColor}" />
+            <Entry
+                FontSize="Medium"
+                Placeholder="{x:Static localization:Resource.EditLatitudePlace}"
+                PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                Text="{Binding CurrentPinModel.Latitude}"
+                TextColor="{DynamicResource PrimaryTextColor}" />
+            <Label
+                Margin="5,0,0,0"
+                FontSize="12"
+                Text="{x:Static localization:Resource.EditLongitudeLable}"
+                TextColor="{DynamicResource SecondaryTextColor}" />
+            <Entry
+                FontSize="Medium"
+                Placeholder="{x:Static localization:Resource.EditLongitudePlace}"
+                PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                Text="{Binding CurrentPinModel.Longtitude}"
+                TextColor="{DynamicResource PrimaryTextColor}" />
+        </StackLayout>
+        <controls:CustomMap
+            Grid.Row="1"
+            CollectionOfPins="{Binding Pins, Mode=TwoWay}"
+            MyLocationEnabled="True"
+            VerticalOptions="FillAndExpand">
+            <controls:CustomMap.Behaviors>
+                <prism:EventToCommandBehavior
+                    Command="{Binding MapClickedCommand}"
+                    EventArgsConverter="{StaticResource MapTappedConverter}"
+                    EventName="MapClicked" />
+            </controls:CustomMap.Behaviors>
+        </controls:CustomMap>
+
+
+
+
+
+
+
+    </Grid>
+</ContentPage>

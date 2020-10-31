@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MapNotePad.Views.PinsListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:MapNotePad.Resources"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:views="clr-namespace:MapNotePad.Views"
+    Title="1">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding LogOutCommand}" Text="LogOut" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="ButtonSize">100</x:Double>
+            <x:Int32 x:Key="CornerRadius">50</x:Int32>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <ListView
+            x:Name="profilesListView"
+            HasUnevenRows="True"
+            ItemsSource="{Binding Path=Pins}"
+            SelectionMode="None"
+            SeparatorVisibility="None">
+            <ListView.Behaviors />
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem
+                                Command="{Binding BindingContext.SelectProfileCommand, Source={x:Reference profilesListView}}"
+                                CommandParameter="{Binding .}"
+                                Text="{x:Static localization:Resource.PinsListMenuItemEdit}" />
+                            <MenuItem
+                                Command="{Binding BindingContext.DeleteProfileCommand, Source={x:Reference profilesListView}}"
+                                CommandParameter="{Binding .}"
+                                Text="{x:Static localization:Resource.PinsListMenuItemDelete}" />
+                        </ViewCell.ContextActions>
+                        <ViewCell.View>
+                            <Grid Padding="5,10" HeightRequest="60">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Grid.Column="1" Orientation="Vertical">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        Text="{Binding Path=Name}"
+                                        TextColor="Black" />
+
+                                    <Label Text="{Binding Path=Longtitude}" TextColor="Black" />
+
+                                    <Label Text="{Binding Latitude}" TextColor="Black" />
+                                </StackLayout>
+                                <Button Grid.Column="0" ImageSource="ic_settings " />
+                            </Grid>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button
+            Margin="40"
+            BackgroundColor="{DynamicResource BtnAddColor}"
+            BorderColor="{DynamicResource BtnAddBorder}"
+            BorderWidth="5"
+            Command="{Binding AddNewPinCommand}"
+            CornerRadius="{StaticResource Key=CornerRadius}"
+            Font="60"
+            FontAttributes="Bold"
+            HeightRequest="{StaticResource Key=ButtonSize}"
+            HorizontalOptions="End"
+            Text="{x:Static localization:Resource.PinsListAddProffButton}"
+            TextColor="{DynamicResource BtnAddText}"
+            VerticalOptions="End"
+            WidthRequest="{StaticResource Key=ButtonSize}" />
+
+    </Grid>
+</ContentPage>

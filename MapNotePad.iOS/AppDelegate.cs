@@ -25,6 +25,7 @@ namespace MapNotePad.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            Xamarin.FormsGoogleMaps.Init("AIzaSyA_jUiRp62G1vLTJIraIIgVei083TmcDIU");
             LoadApplication(new App(new IOSInitializer()));
 
             return base.FinishedLaunching(app, options);
@@ -34,7 +35,7 @@ namespace MapNotePad.iOS
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            throw new NotImplementedException();
+           
         }
     }
 }
