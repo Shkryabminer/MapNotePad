@@ -8,28 +8,33 @@ namespace MapNotePad.Services.Autorization
     public class AutorizationService : IAutorization
     {
         
-        private readonly ISettingsManager Manager;
+        private readonly ISettingsManager _manager;
        
         public AutorizationService(ISettingsManager manager)
         {
-            Manager = manager;
+            _manager = manager;
         }
+
+        #region --Autorizatio implementation --
+
         public bool Autorizeted()
         {
-            return (Manager.AutorizatedUserId > -1);
+            return (_manager.AutorizatedUserId > -1);
         }
         public void LogOut()
         {
-            Manager.AutorizatedUserId = -1;
+            _manager.AutorizatedUserId = -1;
         }
 
         public int GetActiveUser()
         {
-            return Manager.AutorizatedUserId;
+            return _manager.AutorizatedUserId;
         }
         public void SetActiveUser(int id)
         {
-            Manager.AutorizatedUserId = id;
+            _manager.AutorizatedUserId = id;
         }
+
+        #endregion
     }
 }

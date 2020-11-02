@@ -4,17 +4,41 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls;assembly=MapNotePad"
-    Title="1">
+    xmlns:converters="clr-namespace:MapNotePad.Converters"
+    xmlns:prism="http://prismlibrary.com"
+    Title="MAP">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:PinClickedEvenArgsConverter x:Key="PinClickedConverter" />
+            <converters:EntryTextChangedEventArgsConverter x:Key="TextChangedConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <Grid>
+
             <controls:GeneralMap
-               
-                CollectionOfPins="{Binding Pins}"
                 CheckPoint="{Binding SelectedPin}"
+                CollectionOfPins="{Binding Pins}"
                 MapClicked="OnMapClicked"
-                MyLocationEnabled="True"               
-                VerticalOptions="FillAndExpand" />
+                MyLocationEnabled="True"
+                VerticalOptions="FillAndExpand">
+                <controls:GeneralMap.Behaviors>
+                    <prism:EventToCommandBehavior
+                        Command="{Binding PinClickedCommand}"
+                        EventArgsConverter="{StaticResource PinClickedConverter}"
+                        EventName="PinClicked" />
+                </controls:GeneralMap.Behaviors>
+            </controls:GeneralMap>
+
+
+            <controls:CommonEntry
+                
+                Margin="5,5"
+                HorizontalOptions="Start"
+                Text="{Binding SearchBar}"
+                VerticalOptions="Start"
+                WidthRequest="200" />
 
         </Grid>
     </ContentPage.Content>

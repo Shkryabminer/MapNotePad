@@ -1,11 +1,6 @@
-﻿using MapNotePad.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MapNotePad.Models
+﻿namespace MapNotePad.Models
 {
-   public interface IPinModel:IEntity
+    public interface IPinModel:IEntity
     {       
         string Name { get; set; }
         double Latitude { get; set; }
@@ -13,8 +8,6 @@ namespace MapNotePad.Models
         string KeyWords { get; set; }
         int UserID { get; set; }
         bool IsActive { get; set; }
-
-        PinState State { get; set; }
-        
+                        
     }
 }

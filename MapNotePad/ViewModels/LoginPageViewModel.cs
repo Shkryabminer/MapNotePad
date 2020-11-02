@@ -19,12 +19,14 @@ namespace MapNotePad.ViewModels
         private readonly IUserDialogs _userDialogs;
 
         #region --Public Properties--
+
         private string _email;
         public string Email
         {
             get => _email;
             set => SetProperty(ref _email, value);
         }
+
         private string _password;
         public string Password
         {
@@ -34,23 +36,22 @@ namespace MapNotePad.ViewModels
 
         public ICommand SignButtonCommand => new Command(OnSignButtonCommand);
 
-        public ICommand SignUpCommand => new Command(OnSignUpCommand);
-
-        
+        public ICommand SignUpCommand => new Command(OnSignUpCommand);        
 
         #endregion
 
         public LoginPageViewModel(INavigationService navigationService,
                                    IAutorization autorization,
                                    IAuthentificationService authentificationService,
-                                   IUserDialogs userDialogs):base (navigationService)
+                                   IUserDialogs userDialogs) 
+                                   : base (navigationService)
         {
             _authentificationService = authentificationService;
             _autorizationService = autorization;
             _userDialogs = userDialogs;
         }
 
-        #region     --Oncommand handlers--
+        #region  --Oncommand handlers--
    
         private async void OnSignButtonCommand(object obj)
         {
@@ -79,7 +80,9 @@ namespace MapNotePad.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
+
             string eMail;
+
             parameters.TryGetValue<string>("Email", out eMail);
             if (eMail == null)
                 Email = string.Empty;

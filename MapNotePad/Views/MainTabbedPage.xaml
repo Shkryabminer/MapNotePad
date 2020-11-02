@@ -20,9 +20,9 @@
 
     <!--  Pages can be added as references or inline  -->
     <TabbedPage.Children>
-        <local:MapPage Title="1" />
+        <local:MapPage />
 
-        <local:PinsListPage Title="2" />
+        <local:PinsListPage />
 
 
     </TabbedPage.Children>

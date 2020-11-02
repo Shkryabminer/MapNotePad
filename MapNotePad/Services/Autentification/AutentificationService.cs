@@ -9,20 +9,20 @@ namespace MapNotePad.Services
 {
     public  class AutentificationService : IAuthentificationService
     {
-     
-      
-        public IRepository Data { get; set; }
+        private readonly IRepository _data;
        
         public AutentificationService(IRepository repository)
         {
-            Data = repository;
+            _data = repository;
         }
+        #region --IAutentification implementation--
+
         public IUser GetAuthUser(string email, string password)
         {
             IUser user=null;
             if(IsAutenficated(email,password))
             {                
-                var c = from u in Data.GetItems<User>()
+                var c = from u in _data.GetItems<User>()
                         where u.Email.ToLower() == email.ToLower() && u.Password == password
                         select u;
                 user = c.First();
@@ -32,10 +32,11 @@ namespace MapNotePad.Services
 
         public bool IsAutenficated(string login, string password)
         {
-            var c = from u in Data.GetItems<User>() 
+            var c = from u in _data.GetItems<User>() 
                     where u.Email == login && u.Password == password
                     select u;
             return (c != null && c.Count() > 0);
         }
+        #endregion
     }
 }

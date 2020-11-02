@@ -10,27 +10,27 @@ namespace MapNotePad.Services
     public class SettingsManager : ISettingsManager
     {
 
-        private ISettings SetPlugin { get; set; }
+        private readonly ISettings _setPlugin;
         public SettingsManager(ISettings plugin)
         {
-            SetPlugin = plugin;
+            _setPlugin = plugin;
         }
 
         #region --ISettings implementation--
         public int AutorizatedUserId
         {
-            get => SetPlugin.GetValueOrDefault(nameof(AutorizatedUserId), -1);
-            set => SetPlugin.AddOrUpdateValue(nameof(AutorizatedUserId), value);
+            get => _setPlugin.GetValueOrDefault(nameof(AutorizatedUserId), -1);
+            set => _setPlugin.AddOrUpdateValue(nameof(AutorizatedUserId), value);
         }
         public int SelectedSortMethode
         {
-            get => SetPlugin.GetValueOrDefault(nameof(SelectedSortMethode), 0);
-            set => SetPlugin.AddOrUpdateValue(nameof(SelectedSortMethode), value);
+            get => _setPlugin.GetValueOrDefault(nameof(SelectedSortMethode), 0);
+            set => _setPlugin.AddOrUpdateValue(nameof(SelectedSortMethode), value);
         }
         public string LanguageSource
         {
-            get => SetPlugin.GetValueOrDefault(nameof(LanguageSource), Constants._english); 
-            set => SetPlugin.AddOrUpdateValue(nameof(LanguageSource),value);
+            get => _setPlugin.GetValueOrDefault(nameof(LanguageSource), Constants._english); 
+            set => _setPlugin.AddOrUpdateValue(nameof(LanguageSource),value);
         }
         
         #endregion

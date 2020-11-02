@@ -14,7 +14,7 @@ namespace MapNotePad.ViewModels
         private readonly IUserDialogs _userDialogs;
 
         #region --Public properties--
-        
+
         private string _name;
         public string Name
         {
@@ -44,7 +44,6 @@ namespace MapNotePad.ViewModels
 
         public ICommand SignUpCommand => new Command(OnSignUpCommand);
 
-
         #endregion
         public SignUpPageViewModel(INavigationService navigationService,
                                    IUserServcie userServcie,
@@ -65,7 +64,7 @@ namespace MapNotePad.ViewModels
                 Password = this.Password,
                 Email = this.Email
             };
-            
+
             _userService.AddOrUpdate(user);
 
             var navParam = new NavigationParameters();

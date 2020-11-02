@@ -10,14 +10,21 @@ namespace MapNotePad.Controls
 {
     public class GeneralMap : CustomMap
     {
-        
-        public static readonly BindableProperty CheckPointProperty = BindableProperty.Create(nameof(CheckPoint), typeof(Pin), typeof(GeneralMap));
+        #region --Public properties--
+
+        public static readonly BindableProperty CheckPointProperty =
+                                                BindableProperty.Create(
+                                                nameof(CheckPoint),
+                                                typeof(Pin),
+                                                typeof(GeneralMap));
 
         public Pin CheckPoint
         {
             get => (Pin)GetValue(CheckPointProperty);
             set => SetValue(CheckPointProperty, value);
         }
+        #endregion
+
 
         public GeneralMap()
         {

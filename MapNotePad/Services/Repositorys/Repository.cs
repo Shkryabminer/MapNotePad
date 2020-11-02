@@ -9,9 +9,10 @@ namespace MapNotePad.Services
 {
     public class Repository : IRepository
     {
-        SQLiteConnection dataBase;
+        private SQLiteConnection dataBase;
+
         private string _dataPath;
-        private string DataPath
+        public string DataPath
         {
             get
             {
@@ -21,23 +22,29 @@ namespace MapNotePad.Services
             }
             set { _dataPath = value; }
         }
+       
         public Repository()
         {
             dataBase = new SQLiteConnection(DataPath);
             dataBase.CreateTable<User>();
-            dataBase.CreateTable<PinModel>(CreateFlags.AutoIncPK);       
+            dataBase.CreateTable<PinModel>(CreateFlags.AutoIncPK);
 
         }
-      public int AddOrrUpdate<T>(T item) where T: class,IEntity,new ()
+        #region --IRepository implement--
+
+        public int AddOrrUpdate<T>(T item) where T : class, IEntity, new()
         {
             int i = 0;
             if (item != null)
             {
                 if (item.ID == 0)
-                  i=  dataBase.Insert(item);
-
+                {
+                    i = dataBase.Insert(item);
+                }
                 else
-                    i=dataBase.Update(item);
+                {
+                    i = dataBase.Update(item);
+                }
             }
 
             return i;
@@ -47,14 +54,15 @@ namespace MapNotePad.Services
         {
             if (item != null)
             {
-
                 dataBase.Delete<T>(item.ID);
             }
         }
 
-      public  IEnumerable<T> GetItems<T>() where T : class, IEntity, new()
+        public IEnumerable<T> GetItems<T>() where T : class, IEntity, new()
         {
             return dataBase.Table<T>();
         }
+
+        #endregion
     }
 }

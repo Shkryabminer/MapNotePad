@@ -10,14 +10,20 @@ namespace MapNotePad.Controls
 {
     public class CustomMap : ClusteredMap
     {
-        public static readonly BindableProperty CollectionOfPinsProperty =
-    BindableProperty.Create(nameof(CollectionOfPins), typeof(List<PinModel>), typeof(CustomMap));
+        #region --public properties--
 
+        public static readonly BindableProperty CollectionOfPinsProperty =
+                               BindableProperty.Create(nameof(CollectionOfPins),
+                                                       typeof(List<PinModel>), 
+                                                       typeof(CustomMap));
+                             
         public List<PinModel> CollectionOfPins
         {
             get { return (List<PinModel>)GetValue(CollectionOfPinsProperty); }
             set { SetValue(CollectionOfPinsProperty, value); }
         }
+        #endregion
+
 
         public CustomMap()
         {
@@ -25,27 +31,24 @@ namespace MapNotePad.Controls
         }
 
         #region --Overrides--
+       
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
-            if (propertyName == nameof(CollectionOfPins))
-            { 
-                SetPins(); 
-            }            
-        }
 
-        
+            if (propertyName == nameof(CollectionOfPins))
+            {
+                SetPins();
+            }
+        }
         #endregion
 
         #region --Private helpers--
 
-        private static void OnCollectionChanged(BindableObject bindable, object oldValue, object newValue)
-        {         
-        }
-
         private void SetPins()
         {
             Pins.Clear();
+
             foreach (PinModel p in CollectionOfPins)
             {
                 if (p.Name == null)
@@ -55,7 +58,14 @@ namespace MapNotePad.Controls
                 Pins.Add(p.ToPin());
             }
         }
-      
+
+        private MapSpan GetLocation()
+        {
+            Position center = new Position(CollectionOfPins[0].Latitude, CollectionOfPins[0].Longtitude);
+
+            return MapSpan.FromCenterAndRadius(center, Distance.FromKilometers(10));
+        }
+
         #endregion
     }
 

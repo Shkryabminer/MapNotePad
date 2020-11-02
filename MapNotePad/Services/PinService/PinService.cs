@@ -9,8 +9,7 @@ namespace MapNotePad.Services.PinService
     public class PinService : IPinService
     {
         private readonly ISettingsManager _settingsManager;
-        private readonly IRepository _repository;
-       
+        private readonly IRepository _repository;       
 
         public PinService(ISettingsManager settingsManager, IRepository repository)
         {
@@ -32,7 +31,7 @@ namespace MapNotePad.Services.PinService
 
         public List<PinModel> GetActivePins(int id)
         {            
-            return GetPinModels(id).Where(x=>x.State==Enums.PinState.enabled).ToList();
+            return GetPinModels(id).Where(x=>x.IsActive==true).ToList();
         }
         
         public List<Pin> GetPins(int id)
