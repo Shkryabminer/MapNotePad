@@ -17,13 +17,14 @@ namespace MapNotePad.iOS
 
             if (Control != null)
             {
-                Control.Layer.CornerRadius = 20;
-                Control.Layer.BorderWidth = 1.5f;
-                Control.Layer.BorderColor = Color.Blue.ToCGColor();
-                Control.Layer.BackgroundColor = Color.White.ToCGColor();
+                //Control.Layer.CornerRadius = 20;
+                //Control.Layer.BorderWidth = 1.5f;
+               // Control.Layer.BorderColor = Color.Transparent.ToCGColor();
+                Control.Layer.BackgroundColor = Color.Transparent.ToCGColor();
 
-                Control.LeftView = new UIView(new CGRect(0, 0, 10, 0));
-                Control.LeftViewMode = UITextFieldViewMode.Always;
+                //Control.LeftView = new UIView(new CGRect(0, 0, 10, 0));
+
+                //Control.LeftViewMode = UITextFieldViewMode.Always;
             }
         }
 

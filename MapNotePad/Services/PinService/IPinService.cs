@@ -1,4 +1,5 @@
 ﻿using MapNotePad.Models;
+using MapNotePad.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,10 @@ namespace MapNotePad.Services.PinService
 {
   public interface IPinService
     {
-        List<Pin> GetPins(int id);
-        void DeletePin(PinModel prof);
-        void SaveOrUpdatePin(PinModel profile);
-        List<PinModel> GetPinModels(int id);
-        List<PinModel> GetActivePins(int id);
+        void DeletePin(PinModelViewModel prof);
+        void SaveOrUpdatePin(PinModelViewModel profile);
+        IEnumerable<PinModelViewModel> GetPinModels(int id);
+        IEnumerable<PinModelViewModel> GetActivePins(int id);
       
 
     }

@@ -2,7 +2,7 @@
 
 namespace MapNotePad.Controls
 {
-    public  class CommonEntry : Entry
+    public class CommonEntry : Entry
     {
     }
 }

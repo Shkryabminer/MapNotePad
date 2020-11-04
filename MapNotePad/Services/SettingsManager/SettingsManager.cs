@@ -29,10 +29,27 @@ namespace MapNotePad.Services
         }
         public string LanguageSource
         {
-            get => _setPlugin.GetValueOrDefault(nameof(LanguageSource), Constants._english); 
-            set => _setPlugin.AddOrUpdateValue(nameof(LanguageSource),value);
+            get => _setPlugin.GetValueOrDefault(nameof(LanguageSource), Constants._english);
+            set => _setPlugin.AddOrUpdateValue(nameof(LanguageSource), value);
         }
-        
+
+        public double CameraLatitude
+        {
+            get => _setPlugin.GetValueOrDefault(nameof(CameraLatitude), 41.0);
+            set => _setPlugin.AddOrUpdateValue(nameof(CameraLatitude), 41.0);
+        }
+
+        public double CameraLongitude
+        {
+            get => _setPlugin.GetValueOrDefault(nameof(CameraLongitude), 41.0);
+            set => _setPlugin.AddOrUpdateValue(nameof(CameraLongitude), 41.0);
+        }
+
+        public double Zoom
+        {
+            get => _setPlugin.GetValueOrDefault(nameof(Zoom), 41.0);
+            set => _setPlugin.AddOrUpdateValue(nameof(Zoom), 41.0);
+        }
         #endregion
 
 

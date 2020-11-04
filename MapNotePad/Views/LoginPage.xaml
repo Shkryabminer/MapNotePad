@@ -1,53 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<views:BaseContentPage
     x:Class="MapNotePad.Views.LoginPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:MapNotePad.Resources"
-    xmlns:prism="http://prismlibrary.com"
+    xmlns:controls="clr-namespace:MapNotePad.Controls"
     xmlns:views="clr-namespace:MapNotePad.Views">
-    <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <StackLayout
+    <views:BaseContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="controls:CustomFrame" x:Key="FrameStyle">
+                <Setter Property="Margin" Value="5,0"/>
+                <Setter Property="BorderColor" Value="Blue"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="HeightRequest" Value="60"/>
+            </Style>
+
+            <Style TargetType="controls:CommonEntry" x:Key="EntryStyle">
+                <Setter Property="Margin" Value="10,5"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="Blue"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
+
+        </ResourceDictionary>
+    </views:BaseContentPage.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.25*" />
+        </Grid.RowDefinitions>
+
+        <StackLayout
                 Grid.Row="1"
                 Padding="10,0"
                 HorizontalOptions="FillAndExpand"
                 Orientation="Vertical"
                 VerticalOptions="CenterAndExpand">
-                <Entry
-                    FontSize="25"
-                    HorizontalOptions="FillAndExpand"
-                    Placeholder="{x:Static localization:Resource.LoginPageLoginPlace}"
-                    Text="{Binding Email}"
-                    TextColor="Blue" />
-                <Entry
-                    FontSize="25"
+            
+            <controls:CustomFrame 
+                    Style="{StaticResource Key=FrameStyle}">
+
+                <controls:CommonEntry  
+                        Style="{StaticResource EntryStyle}"
+                        Placeholder="{x:Static localization:Resource.LoginPageLoginPlace}"
+                        Text="{Binding Email}"/>
+                
+             </controls:CustomFrame>
+
+            <controls:CustomFrame 
+                    Style="{StaticResource Key=FrameStyle}">
+
+                <controls:CommonEntry  
+                    Style="{StaticResource EntryStyle}"
                     IsPassword="True"
                     Placeholder="{x:Static localization:Resource.LoginPagePasswordPlace}"
-                    Text="{Binding Password}"
-                    TextColor="Blue" />
-            </StackLayout>
-            <StackLayout Grid.Row="2" Orientation="Vertical">
-                <Button
+                    Text="{Binding Password}"/>
+            </controls:CustomFrame>
+
+        </StackLayout>
+
+        <StackLayout Grid.Row="2" Orientation="Vertical">
+
+            <Button
                     Command="{Binding SignButtonCommand}"
                     HorizontalOptions="Center"
-                    Text="{x:Static localization:Resource.LoginPageBtnLogin}" />
-                <Label
-                    FontSize="25"
+                    Text="{x:Static localization:Resource.LoginPageBtnLogin}"
+                    FontSize="25"/>
+
+            <Label
+                    FontSize="15"
                     HorizontalOptions="Center"
                     Text="{x:Static localization:Resource.LoginPageLblSignUp}"
                     TextColor="Blue"
                     VerticalOptions="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SignUpCommand}" />
-                    </Label.GestureRecognizers>
-                </Label>
-            </StackLayout>
-        </Grid>
-    </ContentPage.Content>
-</ContentPage>
+
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SignUpCommand}"/>
+                </Label.GestureRecognizers>
+
+            </Label>
+        </StackLayout>
+    </Grid>
+</views:BaseContentPage>

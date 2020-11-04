@@ -1,22 +1,29 @@
 ﻿using Acr.UserDialogs;
-using MapNotePad.Models;
 using MapNotePad.Views;
 using Prism.Navigation;
 using MapNotePad.Services;
 using MapNotePad.Services.Autorization;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace MapNotePad.ViewModels
 {
-  public  class LoginPageViewModel:BaseViewModel
+    public  class LoginPageViewModel:BaseViewModel
     {
         private readonly IAuthentificationService _authentificationService;
         private readonly IAutorization _autorizationService;
         private readonly IUserDialogs _userDialogs;
+
+        public LoginPageViewModel(INavigationService navigationService,
+                                  IAutorization autorization,
+                                  IAuthentificationService authentificationService,
+                                  IUserDialogs userDialogs)
+                                  : base(navigationService)
+        {
+            _authentificationService = authentificationService;
+            _autorizationService = autorization;
+            _userDialogs = userDialogs;
+        }
 
         #region --Public Properties--
 
@@ -34,28 +41,21 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _password, value);
         }
 
-        public ICommand SignButtonCommand => new Command(OnSignButtonCommand);
+        private ICommand _signButtonCommand;
+        public ICommand SignButtonCommand => _signButtonCommand??= new Command(OnSignInButtonCommand);
 
-        public ICommand SignUpCommand => new Command(OnSignUpCommand);        
+        private ICommand _signUpCommand;
+        public ICommand SignUpCommand => _signUpCommand ??= _signUpCommand= new Command(OnSignUpCommand);        
 
-        #endregion
-
-        public LoginPageViewModel(INavigationService navigationService,
-                                   IAutorization autorization,
-                                   IAuthentificationService authentificationService,
-                                   IUserDialogs userDialogs) 
-                                   : base (navigationService)
-        {
-            _authentificationService = authentificationService;
-            _autorizationService = autorization;
-            _userDialogs = userDialogs;
-        }
+        #endregion  
+        
 
         #region  --Oncommand handlers--
    
-        private async void OnSignButtonCommand(object obj)
+        private async void OnSignInButtonCommand()
         {
-            IUser authUser = _authentificationService.GetAuthUser(Email, Password);
+            var authUser = _authentificationService.GetAuthUser(Email, Password);
+
             if (authUser != null)
             {
                 _autorizationService.SetActiveUser(authUser.ID);
@@ -64,12 +64,12 @@ namespace MapNotePad.ViewModels
             else
             {
                 //string mes = _translator.GetTranslate("IncorrectLoginOrPassw");
-                _userDialogs.Alert("");
+                _userDialogs.Alert("Invalid login or password");
                 Password = "";
             }
         }
 
-        private async void OnSignUpCommand(object obj)
+        private async void OnSignUpCommand()
         {
             await NavigationService.NavigateAsync($"{nameof(SignUpPage)}");
         }
@@ -81,12 +81,14 @@ namespace MapNotePad.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            string eMail;
-
-            parameters.TryGetValue<string>("Email", out eMail);
-            if (eMail == null)
+            if (parameters.TryGetValue("Email", out string eMail))
+            {
+                Email = eMail;
+            }
+            else
+            {
                 Email = string.Empty;
-            Email = eMail;
+            }
         }
 
         #endregion

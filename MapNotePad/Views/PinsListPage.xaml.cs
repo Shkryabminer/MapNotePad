@@ -9,12 +9,10 @@ using Xamarin.Forms.Xaml;
 
 namespace MapNotePad.Views
 {
-    public partial class PinsListPage : ContentPage
+    public partial class PinsListPage : BaseContentPage
     {
         public PinsListPage()
         {
-
-            Prism.Mvvm.ViewModelLocator.SetAutowireViewModel(this, true);
             InitializeComponent();
         }
     }

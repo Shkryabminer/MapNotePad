@@ -17,13 +17,10 @@
         <behaviors:TabbedPageNavigationBehavior />
     </TabbedPage.Behaviors>
 
-
     <!--  Pages can be added as references or inline  -->
     <TabbedPage.Children>
-        <local:MapPage />
-
-        <local:PinsListPage />
-
-
+        <local:MapPage Title="MAP" />
+        <local:PinsListPage Title="PINS" />
     </TabbedPage.Children>
+
 </TabbedPage>

@@ -65,8 +65,8 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<IPinService>(Container.Resolve<PinService>());
             containerRegistry.RegisterInstance<IUserServcie>(Container.Resolve<UserService>());
             containerRegistry.RegisterInstance<IAuthentificationService>(Container.Resolve<AutentificationService>());
-            containerRegistry.RegisterInstance<IAutorization>(Container.Resolve<AutorizationService>());
-            containerRegistry.RegisterInstance<IPasswordValidator>(Container.Resolve<PasswordValidator>());
+            containerRegistry.RegisterInstance<IAutorization>(Container.Resolve<AutorizationService>()); //Service
+            containerRegistry.RegisterInstance<IPasswordValidator>(Container.Resolve<PasswordValidator>()); //Service
         }
 
         protected override void OnStart()

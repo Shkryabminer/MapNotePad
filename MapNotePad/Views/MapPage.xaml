@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<views:BaseContentPage
     x:Class="MapNotePad.Views.MapPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls;assembly=MapNotePad"
     xmlns:converters="clr-namespace:MapNotePad.Converters"
     xmlns:prism="http://prismlibrary.com"
-    Title="MAP">
+    xmlns:views="clr-namespace:MapNotePad.Views">
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:PinClickedEvenArgsConverter x:Key="PinClickedConverter" />
@@ -14,33 +15,66 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.Content>
-        <Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <controls:GeneralMap
-                CheckPoint="{Binding SelectedPin}"
-                CollectionOfPins="{Binding Pins}"
-                MapClicked="OnMapClicked"
-                MyLocationEnabled="True"
-                VerticalOptions="FillAndExpand">
-                <controls:GeneralMap.Behaviors>
-                    <prism:EventToCommandBehavior
-                        Command="{Binding PinClickedCommand}"
-                        EventArgsConverter="{StaticResource PinClickedConverter}"
-                        EventName="PinClicked" />
-                </controls:GeneralMap.Behaviors>
-            </controls:GeneralMap>
+        <Frame
+            Grid.Row="0"
+            Margin="0"
+            Padding="0"
+            BackgroundColor="#2196F3"
+            CornerRadius="0"
+            HasShadow="False"
+            HorizontalOptions="Fill"
+            VerticalOptions="FillAndExpand">
+
+            <controls:CustomFrame
+                       Margin="10,0"
+                       BackgroundColor="White"
+                       BorderColor="#2196F3"
+                       CornerRadius="20"
+                       HorizontalOptions="Start"
+                       Opacity="1"
+                       VerticalOptions="Center"
+                       WidthRequest="270">
+
+                <controls:CommonEntry
+                    Margin="5,0"
+                    BackgroundColor="Transparent"
+                    FontSize="Large"
+                    HorizontalOptions="FillAndExpand"
+                    Text="{Binding SearchBar}"
+                    TextColor="Black"
+                    VerticalOptions="EndAndExpand" />
+
+            </controls:CustomFrame>
+        </Frame>
 
 
-            <controls:CommonEntry
-                
-                Margin="5,5"
-                HorizontalOptions="Start"
-                Text="{Binding SearchBar}"
-                VerticalOptions="Start"
-                WidthRequest="200" />
+        <controls:GeneralMap
+            Grid.Row="1"
+            CheckPoint="{Binding SelectedPin}"
+            CollectionOfPins="{Binding Pins}"
+            MyLocationEnabled="True"
+            VerticalOptions="FillAndExpand">
 
-        </Grid>
-    </ContentPage.Content>
+            <controls:GeneralMap.Behaviors>
 
-</ContentPage>
+                <prism:EventToCommandBehavior
+                    Command="{Binding PinClickedCommand}"
+                    EventArgsConverter="{StaticResource PinClickedConverter}"
+                    EventArgsParameterPath="Pin"
+                    EventName="PinClicked" />
+
+            </controls:GeneralMap.Behaviors>
+
+        </controls:GeneralMap>
+
+
+
+    </Grid>
+
+</views:BaseContentPage>

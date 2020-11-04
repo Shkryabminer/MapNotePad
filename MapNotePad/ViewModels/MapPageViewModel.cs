@@ -8,6 +8,8 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
@@ -21,6 +23,17 @@ namespace MapNotePad.ViewModels
         private readonly IPinService _pinService;
         private readonly IAutorization _autorizationService;
 
+        public MapPageViewModel(INavigationService navigationService,
+                                IPinService pinService,
+                                IAutorization autorizationService,
+                                IUserDialogs userDialogs)
+                                : base(navigationService)
+        {
+            _userDialogs = userDialogs;
+            _pinService = pinService;
+            _autorizationService = autorizationService;
+        }
+
         #region --Public properties--       
 
         private string _searchBar;
@@ -30,8 +43,8 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _searchBar, value);
         }
 
-        private List<PinModel> _pins;
-        public List<PinModel> Pins
+        private List<PinModelViewModel> _pins;
+        public List<PinModelViewModel> Pins
         {
             get => _pins;
             set => SetProperty(ref _pins, value);
@@ -44,48 +57,25 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _selectedPin, value);
         }
 
-        public ICommand PinClickedCommand => new Command<object>(OnPinClickedCommand);
+        private ICommand _pinClickedCommand;
+        public ICommand PinClickedCommand => _pinClickedCommand ??= new Command<Pin>(OnPinClickedCommand);
 
-        public ICommand TextChangedCommand => new Command<object>(OnTextChangedCommand);
-
+       
         #endregion
 
-        public MapPageViewModel(INavigationService navigationService,
-                                IPinService pinService,
-                                IAutorization autorizationService,
-                                IUserDialogs userDialogs)
-                                : base(navigationService)
-        {
-            _userDialogs = userDialogs;
-            _pinService = pinService;
-            _autorizationService = autorizationService;
-        }
 
         #region --OnCommand handlers--
 
-        private void OnPinClickedCommand(object obj)
+        private void OnPinClickedCommand(Pin pin) 
         {
-            PinClickedEventArgs args = obj as PinClickedEventArgs;
-
-            if (args != null)
+            if (pin != null)
             {
-                Pin pin = args.Pin;
-
                 var config = SetActionSheetConfig(pin);
 
                 _userDialogs.ActionSheet(config);
             }
         }
-
-        private void OnTextChangedCommand(object obj)
-        {
-            TextChangedEventArgs args = obj as TextChangedEventArgs;
-            if (args != null)
-            {
-                string newText = args.NewTextValue;
-            }
-        }
-
+       
 
         #endregion
 
@@ -95,24 +85,22 @@ namespace MapNotePad.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            object selectedCell;
+            Pins = _pinService.GetActivePins(_autorizationService.GetActiveUser()).ToList();
 
-            Pins = _pinService.GetActivePins(_autorizationService.GetActiveUser());
-
-            if (parameters.TryGetValue<object>("selectedCell", out selectedCell))
+            if (parameters.TryGetValue("selectedCell", out PinModel selectedCell))
             {
                 SetLocation(selectedCell);
             }
-        }
-
-        public override void OnNavigatedFrom(INavigationParameters parameters)
-        {
-            base.OnNavigatedFrom(parameters);
+            else
+            {
+                Debug.WriteLine("Selected cell is not exist");
+            }
         }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
+
             if (args.PropertyName == nameof(SearchBar))
             {
                 SortPinCollection();
@@ -122,19 +110,20 @@ namespace MapNotePad.ViewModels
 
         #region --Private helpers
 
-        private void SetLocation(object selectedCell)
+        private void SetLocation(PinModel pinModel)
         {
-            var pinModel = selectedCell as PinModel;
             SelectedPin = pinModel.ToPin();
         }
 
         private ActionSheetConfig SetActionSheetConfig(Pin pin)
         {
-            ActionSheetConfig config = new ActionSheetConfig();
+            ActionSheetConfig config = new ActionSheetConfig
+            {
+                Title = pin.Label,
+
+            }; // set all here
 
             config.SetUseBottomSheet(true);
-
-            config.Title = pin.Label;
 
             config.Add($"Latitude:  {pin.Position.Latitude}");
             config.Add($"Longitude: {pin.Position.Longitude}");
@@ -148,13 +137,15 @@ namespace MapNotePad.ViewModels
         {
             if (!string.IsNullOrEmpty(SearchBar))
             {
-                PinModelPicker picker = new PinModelPicker();
-
                 var activePins = _pinService.GetActivePins(_autorizationService.GetActiveUser());
 
-                Pins = picker.Pick(activePins, SearchBar);
+                Pins = activePins.Pick(SearchBar);
             }
-            else Pins = _pinService.GetActivePins(_autorizationService.GetActiveUser());
+
+            else
+            {
+                Pins = _pinService.GetActivePins(_autorizationService.GetActiveUser()).ToList();
+            }
         }
         #endregion
     }

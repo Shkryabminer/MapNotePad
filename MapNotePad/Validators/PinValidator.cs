@@ -1,16 +1,17 @@
 ﻿using MapNotePad.Models;
+using MapNotePad.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MapNotePad.Validators
 {
-    public class PinValidator : IPinValidator
+    public class PinValidator
     {
         #region --IpinValidator implementation--
 
        
-        public bool PinModelIsValid(PinModel model)
+        public bool PinModelIsValid(PinModelViewModel model)
         {
             bool isValid;
 

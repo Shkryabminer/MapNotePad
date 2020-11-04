@@ -3,26 +3,35 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MapNotePad.ViewModels;
+using System.Diagnostics;
 
 namespace MapNotePad.Pickers
 {
-    public class PinModelPicker : IPinModelsPicker
+    public static class PinModelPicker // to static
     {
         #region --IPinModelsPicker implementation--
-        public List<PinModel> Pick(List<PinModel> list, string input)
+        public static List<PinModelViewModel> Pick(this IEnumerable<PinModelViewModel> collection, string input)
         {
-            List<PinModel> newList = new List<PinModel>();
+            List<PinModelViewModel> newList = new List<PinModelViewModel>();
 
-            foreach (PinModel e in list)
+            foreach (PinModelViewModel pinModelVM in collection)
             {
-                e.KeyWords = "";
-
-                if (e.Name.Contains(input) ||
-                    e.KeyWords.Contains(input) ||
-                    e.Latitude.ToString().Contains(input) ||
-                    e.Longtitude.ToString().Contains(input))
+                if (string.IsNullOrEmpty(pinModelVM.KeyWords))
                 {
-                    newList.Add(e);
+                    pinModelVM.KeyWords = "";
+                }
+                else 
+                {
+                    Debug.WriteLine("PinVM has keywords");
+                }
+
+                if (pinModelVM.Name.ToLower().Contains(input.ToLower()) ||
+                    pinModelVM.KeyWords.ToLower().Contains(input.ToLower()) ||
+                    pinModelVM.Latitude.ToString().Contains(input) ||
+                    pinModelVM.Longtitude.ToString().Contains(input))
+                {
+                    newList.Add(pinModelVM);
                 }
             }
             return newList;

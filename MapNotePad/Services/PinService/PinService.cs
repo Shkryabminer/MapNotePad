@@ -1,5 +1,6 @@
 ﻿using MapNotePad.Extensions;
 using MapNotePad.Models;
+using MapNotePad.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms.GoogleMaps;
@@ -8,56 +9,49 @@ namespace MapNotePad.Services.PinService
 {
     public class PinService : IPinService
     {
-        private readonly ISettingsManager _settingsManager;
-        private readonly IRepository _repository;       
+        private readonly IRepository _repository;
 
-        public PinService(ISettingsManager settingsManager, IRepository repository)
-        {
-            _settingsManager = settingsManager;
+        public PinService(IRepository repository)
+        {            
             _repository = repository;
         }
 
         #region --IProfileService impement--
-      
-        public void DeletePin(PinModel prof)
+
+        public void DeletePin(PinModelViewModel prof)
         {
-            _repository.DeleteItem(prof);
+            _repository.DeleteItem(prof.ToPinModel());
         }
 
-        public List<PinModel> GetPinModels(int id)
+        public IEnumerable<PinModelViewModel> GetPinModels(int id)
         {
-            return _repository.GetItems<PinModel>().Where(x=>x.UserID==id).ToList();
+            return _repository.GetItems<PinModel>().Where(x => x.UserID == id)
+                              .Select(pin => pin.ToViewModel());
+
+
         }
 
-        public List<PinModel> GetActivePins(int id)
-        {            
-            return GetPinModels(id).Where(x=>x.IsActive==true).ToList();
-        }
-        
-        public List<Pin> GetPins(int id)
+        public IEnumerable<PinModelViewModel> GetActivePins(int id)
         {
-            List<Pin> pins = new List<Pin>();
-            var pinModels= GetPinModels(id);
-           
-            foreach (PinModel p in pinModels)
-            {
-                pins.Add(p.ToPin());
-            }
-            return pins;
+            return GetPinModels(id).Where(x => x.IsActive);
         }
 
-        public void SaveOrUpdatePin(PinModel pin)
+
+
+        public void SaveOrUpdatePin(PinModelViewModel pin)
         {
-            _repository.AddOrrUpdate(pin);
+            _repository.AddOrrUpdate(pin.ToPinModel());
         }
+
+
 
         #endregion
 
         #region --Private helpers--
-       
+
         #endregion
     }
 }
 
-        
-    
+
+

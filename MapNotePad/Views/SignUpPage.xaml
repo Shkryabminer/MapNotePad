@@ -1,41 +1,118 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<views:BaseContentPage
     x:Class="MapNotePad.Views.SignUpPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:MapNotePad.Resources"
-    xmlns:prism="http://prismlibrary.com"
+    xmlns:controls="clr-namespace:MapNotePad.Controls"
     xmlns:views="clr-namespace:MapNotePad.Views">
-    <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="3*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <StackLayout Grid.Row="1" Orientation="Vertical">
-                <Entry
-                    FontSize="25"
-                    Placeholder="{x:Static localization:Resource.SignUpPageEmailEntry}"
-                    Text="{Binding Email}"
-                    TextColor="Blue" />
 
-                <Entry Placeholder="{x:Static localization:Resource.SignUpPageLoginName}" Text="{Binding Name}" />
+    <views:BaseContentPage.Resources>
+        <ResourceDictionary>
+            
+            <Style TargetType="controls:CustomFrame" x:Key="FrameStyle">
+                <Setter Property="Margin" Value="5,0"/>
+                <Setter Property="BorderColor" Value="Blue"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="HeightRequest" Value="60"/>
+            </Style>
+            
+            <Style TargetType="controls:CommonEntry" x:Key="EntryStyle">
+                <Setter Property="Margin" Value="10,5"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="TextColor" Value="Blue"/>
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+            </Style>
 
-                <Entry
-                    IsPassword="True"
-                    Placeholder="{x:Static localization:Resource.SignUpPagePasswordEntry}"
-                    Text="{Binding Password}" />
+        </ResourceDictionary>        
+    </views:BaseContentPage.Resources>
 
-                <Entry
-                    IsPassword="True"
-                    Placeholder="{x:Static localization:Resource.SignUpConfirmPass}"
-                    Text="{Binding PasswordConfirm}" />
-            </StackLayout>
-            <Button
-                Grid.Row="2"
-                Command="{Binding SignUpCommand}"
-                Text="{x:Static localization:Resource.SignUpPageBtnregistration}" />
-        </Grid>
-    </ContentPage.Content>
-</ContentPage>
+    <Grid 
+        VerticalOptions="Fill"
+        HorizontalOptions="Fill">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Frame Grid.Row="0"
+            Margin="0"
+            Padding="0"
+            BackgroundColor="LightBlue"
+            CornerRadius="0"
+            HasShadow="False"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill">
+
+            <Button 
+                Margin="10,0"
+                Command="{Binding GoBackCommand}"
+                HorizontalOptions="Start"
+                Text="Back"
+                VerticalOptions="Fill"/>
+        </Frame>
+
+        <StackLayout Grid.Row="2" Orientation="Vertical">
+            
+            <controls:CustomFrame 
+                       Style="{StaticResource Key=FrameStyle}">  
+                
+                <controls:CommonEntry 
+                            Style="{StaticResource EntryStyle}"                            
+                            Placeholder="{x:Static localization:Resource.SignUpPageEmailEntry}"
+                            Text="{Binding Email}"/>                
+            </controls:CustomFrame>
+            
+
+            <controls:CustomFrame
+                        Style="{StaticResource Key=FrameStyle}"> 
+                
+                <controls:CommonEntry
+                            Style="{StaticResource EntryStyle}"
+                            Placeholder="{x:Static localization:Resource.SignUpPageLoginName}" 
+                            Text="{Binding Name}" />                
+            </controls:CustomFrame>
+            
+
+            <controls:CustomFrame 
+                       Style="{StaticResource Key=FrameStyle}">   
+                
+                    <controls:CommonEntry 
+                           Style="{StaticResource EntryStyle}"
+                           IsPassword="True"
+                           Placeholder="{x:Static localization:Resource.SignUpPagePasswordEntry}"
+                           Text="{Binding Password}" />                
+            </controls:CustomFrame>
+            
+
+            <controls:CustomFrame
+                       Style="{StaticResource Key=FrameStyle}"> 
+                
+                           <controls:CommonEntry
+                                 Style="{StaticResource EntryStyle}"
+                                 IsPassword="True"
+                                 Placeholder="{x:Static localization:Resource.SignUpConfirmPass}"
+                                 Text="{Binding PasswordConfirm}" />                
+            </controls:CustomFrame>
+            
+            
+        </StackLayout>
+        
+        <Button
+            Grid.Row="3"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            HeightRequest="40"
+            BackgroundColor="Orange"
+            CornerRadius="20"
+            Command="{Binding SignUpCommand}"
+            Text="{x:Static localization:Resource.SignUpPageBtnregistration}" />
+    </Grid>
+
+</views:BaseContentPage>

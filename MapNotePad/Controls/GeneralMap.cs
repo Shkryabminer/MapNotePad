@@ -1,6 +1,8 @@
 ﻿using MapNotePad.Extensions;
 using MapNotePad.Models;
+using MapNotePad.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
@@ -10,6 +12,11 @@ namespace MapNotePad.Controls
 {
     public class GeneralMap : CustomMap
     {
+        public GeneralMap()
+        {
+            UiSettings.MyLocationButtonEnabled = true;
+        }
+
         #region --Public properties--
 
         public static readonly BindableProperty CheckPointProperty =
@@ -23,13 +30,7 @@ namespace MapNotePad.Controls
             get => (Pin)GetValue(CheckPointProperty);
             set => SetValue(CheckPointProperty, value);
         }
-        #endregion
-
-
-        public GeneralMap()
-        {
-            UiSettings.MyLocationButtonEnabled = true;
-        }
+        #endregion       
 
         #region --Overrides--
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -41,9 +42,9 @@ namespace MapNotePad.Controls
             }
             if (propertyName == nameof(CheckPoint))
             {
-                MapSpan location = MapSpan.FromCenterAndRadius(CheckPoint.Position, Distance.FromKilometers(10));
+                MapSpan location = MapSpan.FromCenterAndRadius(CheckPoint.Position, Distance.FromKilometers(50));
 
-                  MoveToRegion(location, true); 
+                MoveToRegion(location, true);
             }
         }
 
@@ -53,18 +54,19 @@ namespace MapNotePad.Controls
         #region --Private helpers--
 
 
-        private void SetPins()
-        {
-            Pins.Clear();
-            foreach (PinModel p in CollectionOfPins)
-            {
-                if (p.Name == null)
-                {
-                    p.Name = "";
-                }
-                Pins.Add(p.ToPin());
-            }
-        }
+        //private void SetPins()
+        //{
+        //    Pins.Clear();
+            
+        //    foreach (PinModelViewModel pinVM in CollectionOfPins)
+        //    {
+        //        if (pinVM.Name == null)
+        //        {
+        //            pinVM.Name = "";
+        //        }
+        //        Pins.Add(pinVM.ToPin());
+        //    }
+        //}
 
         #endregion
     }

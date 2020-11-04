@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,12 @@ using Xamarin.Forms.Xaml;
 
 namespace MapNotePad.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddEditPinPage : ContentPage
+    public partial class AddEditPinPage : BaseContentPage
     {
         public AddEditPinPage()
         {            
             InitializeComponent();
+            
         }
     }
 }

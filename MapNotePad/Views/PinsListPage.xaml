@@ -1,42 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<views:BaseContentPage
     x:Class="MapNotePad.Views.PinsListPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls"
     xmlns:localization="clr-namespace:MapNotePad.Resources"
-    xmlns:prism="http://prismlibrary.com"
-    xmlns:views="clr-namespace:MapNotePad.Views"
-    Title="PINS">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding LogOutCommand}" Text="LogOut" />
-    </ContentPage.ToolbarItems>
+    xmlns:views="clr-namespace:MapNotePad.Views">
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <x:Double x:Key="ButtonSize">100</x:Double>
             <x:Int32 x:Key="CornerRadius">50</x:Int32>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid Margin="10,10">
+
+    <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="10*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <controls:CommonEntry
-            Grid.Row="0"
-            Margin="5,0"
-            FontSize="Medium"
-            HeightRequest="25"
-            Text="{Binding SearchBar}" />
+
+        <Grid Grid.Row="0" BackgroundColor="#2196F3">
+
+            <controls:CustomFrame
+                Margin="5,0"
+                BorderColor="Blue"
+                CornerRadius="20"
+                HorizontalOptions="StartAndExpand"
+                VerticalOptions="CenterAndExpand"
+                WidthRequest="270">
+
+                <controls:CommonEntry
+                    BackgroundColor="Transparent"
+                    FontSize="Large"
+                    HorizontalOptions="FillAndExpand"
+                    MinimumWidthRequest="60"
+                    Text="{Binding SearchBar}"
+                    TextColor="Black"
+                    VerticalOptions="EndAndExpand" />
+
+            </controls:CustomFrame>
+
+            <Button
+                WidthRequest="70"
+                Margin="0,0,5,0"
+                Command="{Binding LogOutCommand}"
+                HorizontalOptions="End"
+                FontSize="12"
+                Text="LogOut"
+                TextColor="White" />
+        </Grid>
+        
         <ListView
             x:Name="profilesListView"
             Grid.Row="1"
             HasUnevenRows="True"
             InputTransparent="False"
-            ItemsSource="{Binding Path=Pins}"
+            ItemsSource="{Binding Pins}"
             SelectionMode="None"
             SeparatorVisibility="None">
-            <ListView.Behaviors />
 
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -53,7 +76,7 @@
                         </ViewCell.ContextActions>
 
                         <ViewCell.View>
-                            <Grid Padding="5,10" HeightRequest="60">
+                            <Grid Padding="5,5" HeightRequest="65">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="3*" />
@@ -61,15 +84,14 @@
 
                                 <StackLayout Grid.Column="1" Orientation="Vertical">
                                     <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding BindingContext.CellTappedCommand, Source={x:Reference profilesListView}}"
-                                                              CommandParameter="{Binding .}" />
+                                        <TapGestureRecognizer Command="{Binding BindingContext.CellTappedCommand, Source={x:Reference profilesListView}}" CommandParameter="{Binding .}" />
                                     </StackLayout.GestureRecognizers>
                                     <Label
                                         FontAttributes="Bold"
-                                        Text="{Binding Path=Name}"
+                                        Text="{Binding Name}"
                                         TextColor="Black" />
 
-                                    <Label Text="{Binding Path=Longtitude}" TextColor="Black" />
+                                    <Label Text="{Binding Longtitude}" TextColor="Black" />
 
                                     <Label Text="{Binding Latitude}" TextColor="Black" />
                                 </StackLayout>
@@ -96,8 +118,6 @@
 
                                     </Button.Triggers>
                                 </Button>
-
-
                             </Grid>
                         </ViewCell.View>
                     </ViewCell>
@@ -123,4 +143,4 @@
             WidthRequest="{StaticResource Key=ButtonSize}" />
 
     </Grid>
-</ContentPage>
+</views:BaseContentPage>

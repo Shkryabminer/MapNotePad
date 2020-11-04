@@ -4,6 +4,7 @@ using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PinService;
 using MapNotePad.Validators;
 using Prism.Navigation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -18,29 +19,6 @@ namespace MapNotePad.ViewModels
         private readonly IAutorization _autorizationService;
         private readonly IUserDialogs _userDialogs;
 
-        #region --Public properties--
-
-        private PinModel currentPinModel;
-        public PinModel CurrentPinModel
-        {
-            get => currentPinModel;
-            set => SetProperty(ref currentPinModel, value);
-        }
-
-        private List<PinModel> _pins;
-        public List<PinModel> Pins
-        {
-            get => _pins;
-            set => SetProperty(ref _pins, value);
-        }
-        
-        public ICommand SavePinCommand =>new Command(OnSavePinCommand);
-       
-        public ICommand MapClickedCommand => new Command<object>(OnMapClickedCommand);
-
-        #endregion
-
-
         public AddEditPinPageViewModel(INavigationService navigationService,
                                         IPinService pinService,
                                         IAutorization autorization,
@@ -51,9 +29,37 @@ namespace MapNotePad.ViewModels
             _pinService = pinService;
         }
 
+        #region --Public properties--
+
+        private PinModelViewModel currentPinModel;
+        public PinModelViewModel CurrentPinModel
+        {
+            get => currentPinModel;
+            set => SetProperty(ref currentPinModel, value);
+        }
+
+        private List<PinModelViewModel> _pins;
+        public List<PinModelViewModel> Pins
+        {
+            get => _pins;
+            set => SetProperty(ref _pins, value);
+        }
+
+        private ICommand _savePinCommand;
+        public ICommand SavePinCommand => _savePinCommand??= new Command(OnSavePinCommand);
+
+        private ICommand _mapClickedCommand;
+        public ICommand MapClickedCommand => _mapClickedCommand??= new Command<Position>(OnMapClickedCommand);
+
+        private ICommand _GoBackCommand;
+        public ICommand GoBackCommand => _GoBackCommand ??= new Command(OnGoBackCommand);
+
+        #endregion
+
+        
         #region --OnCommandHandlers--
 
-        private async void OnSavePinCommand(object obj)
+        private async void OnSavePinCommand()
         {
             if (CheckFields())
             {
@@ -63,39 +69,35 @@ namespace MapNotePad.ViewModels
             }
         }
 
-        private void OnMapClickedCommand(object obj)
+        private void OnMapClickedCommand(Position point)
         {
-            MapClickedEventArgs args = obj as MapClickedEventArgs;
-            if (args != null)
+            if (point != null)
             {
-                CurrentPinModel.Latitude = args.Point.Latitude;
-                CurrentPinModel.Longtitude = args.Point.Longitude;
-                RaisePropertyChanged(nameof(CurrentPinModel));                
+                CurrentPinModel = new PinModelViewModel(new PinModel());
+                CurrentPinModel.Latitude = point.Latitude;
+                CurrentPinModel.Longtitude = point.Longitude;
+                CreatePin();              
             }
         }
 
         #endregion
 
         #region --Overrides--
+     
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            base.OnPropertyChanged(args);
-
-            if (args.PropertyName == nameof(CurrentPinModel))
-            {
-                CreatePin();
-            }
+            base.OnPropertyChanged(args);           
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
-            var pinModel = parameters.GetValue<IPinModel>("Pin") as PinModel;
+            var pinModelVM = parameters.GetValue<IPinModel>(nameof(PinModelViewModel)) as PinModelViewModel; //trygetvalue, nameof
 
-            if (pinModel != null)
+            if (pinModelVM != null)
             {
-                CurrentPinModel = pinModel;
+                CurrentPinModel = pinModelVM;
             }
         }
         #endregion
@@ -104,7 +106,7 @@ namespace MapNotePad.ViewModels
        
         private void CreatePin()
         {
-            var pins = new List<PinModel>();
+            var pins = new List<PinModelViewModel>();
             pins.Add(CurrentPinModel);
 
             Pins = pins;
@@ -112,10 +114,16 @@ namespace MapNotePad.ViewModels
 
         private bool CheckFields()
         {
-            IPinValidator pinValidator = new PinValidator();
+            var pinValidator = new PinValidator();
 
             return pinValidator.PinModelIsValid(CurrentPinModel);
         }
+
+        private async void OnGoBackCommand()
+        {
+            await NavigationService.GoBackAsync();
+        }
+
         #endregion
     }
 }

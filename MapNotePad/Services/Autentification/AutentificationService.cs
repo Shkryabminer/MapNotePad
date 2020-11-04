@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using MapNotePad.Models;
 using MapNotePad.Services;
+using System.Diagnostics;
 
 namespace MapNotePad.Services
 {
@@ -19,23 +20,32 @@ namespace MapNotePad.Services
 
         public IUser GetAuthUser(string email, string password)
         {
-            IUser user=null;
+            IUser user;
+
             if(IsAutenficated(email,password))
             {                
                 var c = from u in _data.GetItems<User>()
                         where u.Email.ToLower() == email.ToLower() && u.Password == password
                         select u;
+                //duplicate
                 user = c.First();
             }
+            else
+            {
+                user = null;
+                Debug.WriteLine("User is not authenticated");
+            }
+
             return user;
         }
 
         public bool IsAutenficated(string login, string password)
-        {
-            var c = from u in _data.GetItems<User>() 
-                    where u.Email == login && u.Password == password
+        {           
+            var c = from u in _data.GetItems<User>() // wtf is c, wtf is u
+                    where u.Email.ToUpper() == login.ToUpper() && u.Password == password
                     select u;
-            return (c != null && c.Count() > 0);
+            //duplicate
+            return (c != null && c.Any());
         }
         #endregion
     }

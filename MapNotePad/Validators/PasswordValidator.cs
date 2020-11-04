@@ -7,7 +7,7 @@ namespace MapNotePad.Services.Validators
 {
     public class PasswordValidator : IPasswordValidator
     {            
-        public string IsValid(string login, string password, string confirm, IEnumerable<User> users)
+        public string IsValid(string login, string password, string confirm, IEnumerable<User> users) // в метод или behavior
         {
             string mess = "Valid";
             foreach (IUser user in users)

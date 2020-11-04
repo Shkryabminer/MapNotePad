@@ -12,10 +12,11 @@ namespace MapNotePad.ViewModels
     public class MapTabbedPageViewModel : BaseViewModel
     {
         private readonly IAutorization autorizationService;
-       
+
         #region    --Public properties--
 
-        public ICommand LogOutCommand => new Command(OnLogOutCommand);       
+        private ICommand _logOutCommand;
+        public ICommand LogOutCommand => _logOutCommand??= new Command(OnLogOutCommand);       
 
         #endregion
 
@@ -28,7 +29,7 @@ namespace MapNotePad.ViewModels
 
         #region    --OnCommand handlers--
      
-        private async void OnLogOutCommand(object obj)
+        private async void OnLogOutCommand()
         {
             autorizationService.LogOut();
             await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(LoginPage)}");

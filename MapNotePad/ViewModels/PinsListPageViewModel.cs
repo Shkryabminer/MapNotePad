@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using MapNotePad.Extensions;
 using MapNotePad.Models;
 using MapNotePad.Pickers;
 using MapNotePad.Services.Autorization;
@@ -9,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
@@ -23,10 +24,23 @@ namespace MapNotePad.ViewModels
         private readonly IAutorization _autorizationService;
         private readonly IPinService _pinService;
 
+        public PinsListPageViewModel(INavigationService navigationService,
+                                    IAutorization autorization,
+                                    IPinService pinService,
+                                    IUserDialogs userDialogs)
+                                    : base(navigationService)
+        {
+            _userDialogs = userDialogs;
+            _autorizationService = autorization;
+            _pinService = pinService;
+
+            Pins = new ObservableCollection<PinModelViewModel>();
+        }
+
         #region --Public properties
 
-        private List<PinModel> pins;
-        public List<PinModel> Pins
+        private ObservableCollection<PinModelViewModel> pins;
+        public ObservableCollection<PinModelViewModel> Pins
         {
             set => SetProperty(ref pins, value);
             get => pins;
@@ -51,57 +65,45 @@ namespace MapNotePad.ViewModels
 
         public ICommand ChangeStatusPinCommand => new Command<object>(OnChangeStatusPinCommand);
 
-        #endregion
-
-        public PinsListPageViewModel(INavigationService navigationService,
-                                    IAutorization autorization,
-                                    IPinService pinService,
-                                    IUserDialogs userDialogs)
-                                    : base(navigationService)
-        {
-            _userDialogs = userDialogs;
-            _autorizationService = autorization;
-            _pinService = pinService;
-        }
+        #endregion             
 
         #region --OnCommand handlers
 
         private void OnEditPinModelCommand(object obj)
         {
-            var pinModel = obj as PinModel;
+            var pinModel = obj as PinModelViewModel;
 
             if (pinModel != null)
             {
                 SwapToEditPinPage(pinModel);
             }
         }
+
         private async void OnCellTappedCommand(object obj)
         {
-            var pinModel = obj as PinModel;
+            var pinModel = obj as PinModelViewModel;
 
             if (pinModel != null)
             {
-                if (pinModel.IsActive == true)
+                if (pinModel.IsActive)
                 {
                     var parametres = new NavigationParameters();
-                    parametres.Add("selectedCell", pinModel);
-                    await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}?selectedTab = {nameof(MapPage)}", parametres);
+                    parametres.Add("selectedCell", pinModel.ToPinModel());
+                    await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}?selectedTab={nameof(MapPage)}", parametres);
                 }
             }
         }
 
         private void OnChangeStatusPinCommand(object obj)
         {
-            var pinModel = obj as PinModel;  
+            var pinModelVM = obj as PinModelViewModel;  
             
-            if (pinModel != null)
+            if (pinModelVM != null)
             {
-                pinModel.IsActive = !pinModel.IsActive;
-                _pinService.SaveOrUpdatePin(pinModel);
+                pinModelVM.IsActive = !pinModelVM.IsActive;
+                _pinService.SaveOrUpdatePin(pinModelVM);
                 Console.WriteLine();
-            }
-
-            RaisePropertyChanged(nameof(Pins));
+            }           
         }
 
         private async void OnLogOutCommand(object obj)
@@ -113,32 +115,40 @@ namespace MapNotePad.ViewModels
 
         public void OnAddNewModelPinCommand(object obj)
         {
-            IPinModel prof = new PinModel(_autorizationService.GetActiveUser());
+            var prof = new PinModel(_autorizationService.GetActiveUser());
 
-            SwapToEditPinPage(prof);
+            SwapToEditPinPage(prof.ToViewModel());
         }
 
-        private void OnDeletePinCommand(object obj)
+        private async void OnDeletePinCommand(object obj)
         {
-            var item = (obj as PinModel);
+            var item = (obj as PinModelViewModel);
 
             if (item != null)
             {
-                var config = new ConfirmConfig();
+                var config = new ConfirmConfig
+                {
+
+                }; // set here
+
                 config.Message = "Do you realy want to delete the profile";
                 config.OkText = "Yes";
                 config.CancelText = "No";
-                config.SetAction((b) =>
+
+                var delete = await _userDialogs.ConfirmAsync(config);
+
+                if (delete)
                 {
-                    if (b)
-                    {
-                        _pinService.DeletePin(item);
-                        SetPins();
-                    }
-                });
-                _userDialogs.Confirm(config);
+                    _pinService.DeletePin(item);
+                    SetPins();
+                }
+                else
+                {
+                    Debug.WriteLine("Delete confirm canceled");
+                }
             }
         }
+
         #endregion
 
         #region --Overrides--
@@ -147,7 +157,7 @@ namespace MapNotePad.ViewModels
         {
             base.OnNavigatedTo(parameters);
           
-            SetPins();          
+            SetPins();
         }
 
         public override void OnNavigatedFrom(INavigationParameters parameters)
@@ -169,31 +179,52 @@ namespace MapNotePad.ViewModels
 
         #region --Private helpers
 
-        private async void SwapToEditPinPage(IPinModel pinModel)
+        private async void SwapToEditPinPage(PinModelViewModel pinModel)
         {
-            var navParam = new NavigationParameters();
-            navParam.Add("Pin", pinModel);
+            var navParam = new NavigationParameters
+            {
+                { nameof(PinModelViewModel), pinModel }
+            };
+
             await NavigationService.NavigateAsync($"{nameof(AddEditPinPage)}", navParam);
         }
 
         private void SetPins()
         {
-            var pins = _pinService.GetPinModels(_autorizationService.GetActiveUser()).ToList();
-            Pins = pins;           
+            var pins = _pinService.GetPinModels(_autorizationService.GetActiveUser());
+           // var pinViewModels = pins.Select(pin => pin.ToViewModel());
+
+            Pins = new ObservableCollection<PinModelViewModel>(pins);
         }
 
         private void SortPinCollection()
         {
             if (!string.IsNullOrEmpty(SearchBar))
             {
-                PinModelPicker picker = new PinModelPicker();
-
                 var activePins = _pinService.GetPinModels(_autorizationService.GetActiveUser());
 
-                Pins = picker.Pick(activePins, SearchBar);
+                var sortedPins = activePins.Pick(SearchBar);
+
+                Pins =new ObservableCollection<PinModelViewModel>(sortedPins); 
             }
-            else Pins = _pinService.GetPinModels(_autorizationService.GetActiveUser());
+            else
+            {
+                var sortedPins = _pinService.GetPinModels(_autorizationService.GetActiveUser());
+
+                Pins = new ObservableCollection<PinModelViewModel>(sortedPins); 
+            }
         }
+
+        //private List<PinModelViewModel> ConvertModels(IEnumerable<PinModel> pins)
+        //{
+        //    List<PinModelViewModel> list = new List<PinModelViewModel>();
+            
+        //    foreach (PinModel p in pins)
+        //    {
+        //        list.Add(p.ToViewModel());
+        //    }
+        //    return list;
+        //}
         #endregion
     }
 }
