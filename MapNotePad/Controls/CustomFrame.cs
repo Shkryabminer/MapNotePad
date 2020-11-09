@@ -15,7 +15,7 @@ namespace MapNotePad.Controls
             }
             else if(Device.RuntimePlatform==Device.Android)
             {
-                Padding = new Thickness(5, -5);
+                Padding = new Thickness(5, 0);
             }
         }
     }

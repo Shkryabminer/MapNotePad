@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <views:BaseContentPage
-    x:Class="MapNotePad.Views.LoginPage"
+    x:Class="MapNotePad.Views.FBLoginPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls"
     xmlns:localization="clr-namespace:MapNotePad.Resources"
     xmlns:views="clr-namespace:MapNotePad.Views">
+
     <views:BaseContentPage.Resources>
         <ResourceDictionary>
 
@@ -42,13 +43,23 @@
     <Grid>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
             <RowDefinition Height="0.2*" />
             <RowDefinition Height="0.5*" />
             <RowDefinition Height="0.3*" />
         </Grid.RowDefinitions>
 
+        <Frame Grid.Row="0" BackgroundColor="#005DC1">
+            <Label
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="Login to Facebook"
+                TextColor="LightGray"
+                VerticalOptions="Center" />
+
+        </Frame>
         <StackLayout
-            Grid.Row="1"
+            Grid.Row="2"
             Padding="10,0"
             HorizontalOptions="FillAndExpand"
             Orientation="Vertical"
@@ -75,50 +86,27 @@
 
         </StackLayout>
 
-        <StackLayout Grid.Row="2" Orientation="Vertical">
+        <StackLayout
+            Grid.Row="3"
+            Orientation="Horizontal"
+            Spacing="5"
+            VerticalOptions="Center">
 
             <Button
-                BackgroundColor="Orange"
-                BorderWidth="1"
-                Command="{Binding SignButtonCommand}"
-                CornerRadius="20"
-                FontSize="18"
-                HeightRequest="40"
-                HorizontalOptions="Center"
-                Text="{x:Static localization:Resource.LoginPageBtnLogin}"
-                TextTransform="None"
-                WidthRequest="100" />
-
-            <Label
-                Margin="0,10,0,0"
-                FontSize="15"
-                HorizontalOptions="Center"
-                Text="{x:Static localization:Resource.LoginPageLblSignUp}"
-                TextColor="Blue"
-                VerticalOptions="Center">
-
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SignUpCommand}" />
-                </Label.GestureRecognizers>
-
-            </Label>
-
-            <Label 
-                FontSize="14"               
-                HorizontalOptions="Center"
-                Text="or"/>
+                BackgroundColor="LightGray"
+                Text="Cancel"
+                TextColor="#005DC1" />
 
             <Button
-                HorizontalOptions="Center"
-                WidthRequest="200"
-                HeightRequest="40"
                 BackgroundColor="#005DC1"
-                TextColor="White"
-                FontSize="15"
-                TextTransform="None"
-                Text="Login with Facebook"
-                Command="{Binding FBLoginCommand}"/>
+                Text="Login"
+                TextColor="LightGray" />
+
+
 
         </StackLayout>
     </Grid>
+
+
+
 </views:BaseContentPage>

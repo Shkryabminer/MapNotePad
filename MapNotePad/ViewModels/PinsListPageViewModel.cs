@@ -6,6 +6,7 @@ using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PinService;
 using MapNotePad.Views;
 using Prism.Navigation;
+using Prism.Navigation.TabbedPages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,9 +42,9 @@ namespace MapNotePad.ViewModels
 
         private ObservableCollection<PinModelViewModel> pins;
         public ObservableCollection<PinModelViewModel> Pins
-        {
-            set => SetProperty(ref pins, value);
+        {            
             get => pins;
+            set => SetProperty(ref pins, value);
         }
 
         private string _searchBar;
@@ -88,8 +89,10 @@ namespace MapNotePad.ViewModels
                 if (pinModel.IsActive)
                 {
                     var parametres = new NavigationParameters();
-                    parametres.Add("selectedCell", pinModel.ToPinModel());
-                    await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}?selectedTab={nameof(MapPage)}", parametres);
+                    parametres.Add("selectedCell", pinModel);
+                    var result =  await NavigationService.SelectTabAsync(nameof(MapPage), parametres);
+                  //  Console.WriteLine();
+                  //  await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}?selectedTab={nameof(MapPage)}", parametres);
                 }
             }
         }

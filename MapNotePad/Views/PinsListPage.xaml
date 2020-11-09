@@ -23,35 +23,43 @@
 
         <Grid Grid.Row="0" BackgroundColor="#2196F3">
 
-            <controls:CustomFrame
+            <Frame
                 Margin="5,0"
+                Padding="0"
                 BorderColor="Blue"
                 CornerRadius="20"
+                HasShadow="False"
+                HeightRequest="30"
                 HorizontalOptions="StartAndExpand"
                 VerticalOptions="CenterAndExpand"
                 WidthRequest="270">
 
                 <controls:CommonEntry
+                    Margin="10,-10"
                     BackgroundColor="Transparent"
                     FontSize="Large"
                     HorizontalOptions="FillAndExpand"
                     MinimumWidthRequest="60"
                     Text="{Binding SearchBar}"
                     TextColor="Black"
-                    VerticalOptions="EndAndExpand" />
+                    VerticalOptions="Center" />
 
-            </controls:CustomFrame>
+            </Frame>
 
-            <Button
-                WidthRequest="70"
+            <Image
                 Margin="0,0,5,0"
-                Command="{Binding LogOutCommand}"
                 HorizontalOptions="End"
-                FontSize="12"
-                Text="LogOut"
-                TextColor="White" />
+                Source="ic_exit_to_app"
+                WidthRequest="70">
+
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LogOutCommand}" />
+                </Image.GestureRecognizers>
+
+            </Image>
+
         </Grid>
-        
+
         <ListView
             x:Name="profilesListView"
             Grid.Row="1"
@@ -83,6 +91,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackLayout Grid.Column="1" Orientation="Vertical">
+
                                     <StackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.CellTappedCommand, Source={x:Reference profilesListView}}" CommandParameter="{Binding .}" />
                                     </StackLayout.GestureRecognizers>

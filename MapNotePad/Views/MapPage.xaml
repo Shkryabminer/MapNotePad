@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<views:BaseContentPage
+<ContentPage
     x:Class="MapNotePad.Views.MapPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -31,18 +31,20 @@
             HorizontalOptions="Fill"
             VerticalOptions="FillAndExpand">
 
-            <controls:CustomFrame
-                       Margin="10,0"
-                       BackgroundColor="White"
-                       BorderColor="#2196F3"
-                       CornerRadius="20"
-                       HorizontalOptions="Start"
-                       Opacity="1"
-                       VerticalOptions="Center"
-                       WidthRequest="270">
+            <Frame
+                Padding="0"
+                Margin="10,10"
+                BackgroundColor="White"
+                BorderColor="#2196F3"
+                CornerRadius="20"
+                HeightRequest="30"
+                HorizontalOptions="Start"
+                Opacity="1"
+                VerticalOptions="Center"
+                WidthRequest="270">
 
                 <controls:CommonEntry
-                    Margin="5,0"
+                    Margin="5,-10"
                     BackgroundColor="Transparent"
                     FontSize="Large"
                     HorizontalOptions="FillAndExpand"
@@ -50,15 +52,17 @@
                     TextColor="Black"
                     VerticalOptions="EndAndExpand" />
 
-            </controls:CustomFrame>
+            </Frame>
         </Frame>
 
 
         <controls:GeneralMap
             Grid.Row="1"
+            CameraPosition="{Binding LastCameraPosition, Mode=TwoWay}"
             CheckPoint="{Binding SelectedPin}"
             CollectionOfPins="{Binding Pins}"
-            MyLocationEnabled="True"
+            MapStartCameraPosition="{Binding StartCameraPosition, Mode=TwoWay}"
+            MyLocationEnabled="{Binding IsLocationButton}"
             VerticalOptions="FillAndExpand">
 
             <controls:GeneralMap.Behaviors>
@@ -77,4 +81,4 @@
 
     </Grid>
 
-</views:BaseContentPage>
+</ContentPage>

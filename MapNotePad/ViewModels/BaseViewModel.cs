@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using MapNotePad.ViewModels.Interfaces;
+using Prism.Mvvm;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MapNotePad.ViewModels
 {
-    public class BaseViewModel : BindableBase, INavigationAware, IDestructible, IInitialize, IInitializeAsync
+    public class BaseViewModel : BindableBase, INavigationAware, IDestructible, IInitialize, IInitializeAsync, ICameraSave
     {
 
        public readonly INavigationService NavigationService;
@@ -30,8 +31,9 @@ namespace MapNotePad.ViewModels
         #endregion
 
         #region IInitializeAsync implement--
-        public async Task InitializeAsync(INavigationParameters parameters)
-        {            
+        public virtual async Task InitializeAsync(INavigationParameters parameters)
+        {        
+            
         }
         #endregion
 
@@ -45,6 +47,11 @@ namespace MapNotePad.ViewModels
         {
             
         }
-        #endregion 
+
+        public virtual void SaveCameraPosition()
+        {
+            
+        }
+        #endregion
     }
 }

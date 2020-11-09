@@ -3,45 +3,53 @@
     x:Class="MapNotePad.Views.SignUpPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:localization="clr-namespace:MapNotePad.Resources"
     xmlns:controls="clr-namespace:MapNotePad.Controls"
+    xmlns:localization="clr-namespace:MapNotePad.Resources"
     xmlns:views="clr-namespace:MapNotePad.Views">
 
     <views:BaseContentPage.Resources>
         <ResourceDictionary>
-            
-            <Style TargetType="controls:CustomFrame" x:Key="FrameStyle">
-                <Setter Property="Margin" Value="5,0"/>
-                <Setter Property="BorderColor" Value="Blue"/>
-                <Setter Property="CornerRadius" Value="20"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-                <Setter Property="HeightRequest" Value="60"/>
-            </Style>
-            
-            <Style TargetType="controls:CommonEntry" x:Key="EntryStyle">
-                <Setter Property="Margin" Value="10,5"/>
-                <Setter Property="BackgroundColor" Value="Transparent"/>
-                <Setter Property="FontSize" Value="20"/>
-                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-                <Setter Property="TextColor" Value="Blue"/>
-                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+
+            <Style x:Key="FrameStyle" TargetType="Frame">
+                <Setter Property="Margin" Value="5,0" />
+                <Setter Property="BorderColor" Value="Blue" />
+                <Setter Property="CornerRadius" Value="20" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="HeightRequest" Value="30" />
             </Style>
 
-        </ResourceDictionary>        
+            <Style x:Key="EntryStyle" TargetType="controls:CommonEntry">
+
+                <Setter Property="Margin">
+                    <Setter.Value>
+                        <OnPlatform
+                            x:TypeArguments="Thickness"
+                            Android="10,-10"
+                            iOS="20,8" />
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="TextColor" Value="Blue" />
+                <Setter Property="VerticalOptions" Value="EndAndExpand" />
+            </Style>
+
+        </ResourceDictionary>
     </views:BaseContentPage.Resources>
 
-    <Grid 
-        VerticalOptions="Fill"
-        HorizontalOptions="Fill">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Frame Grid.Row="0"
+        <Frame
+            Grid.Row="0"
             Margin="0"
             Padding="0"
             BackgroundColor="LightBlue"
@@ -50,69 +58,73 @@
             HorizontalOptions="Fill"
             VerticalOptions="Fill">
 
-            <Button 
+            <Label
                 Margin="10,0"
-                Command="{Binding GoBackCommand}"
                 HorizontalOptions="Start"
                 Text="Back"
-                VerticalOptions="Fill"/>
+                VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
         </Frame>
 
-        <StackLayout Grid.Row="2" Orientation="Vertical">
-            
-            <controls:CustomFrame 
-                       Style="{StaticResource Key=FrameStyle}">  
-                
-                <controls:CommonEntry 
-                            Style="{StaticResource EntryStyle}"                            
-                            Placeholder="{x:Static localization:Resource.SignUpPageEmailEntry}"
-                            Text="{Binding Email}"/>                
-            </controls:CustomFrame>
-            
+        <StackLayout
+            Grid.Row="2"
+            Orientation="Vertical"
+            Spacing="10">
 
-            <controls:CustomFrame
-                        Style="{StaticResource Key=FrameStyle}"> 
-                
+            <Frame Style="{StaticResource Key=FrameStyle}">
+
                 <controls:CommonEntry
-                            Style="{StaticResource EntryStyle}"
-                            Placeholder="{x:Static localization:Resource.SignUpPageLoginName}" 
-                            Text="{Binding Name}" />                
-            </controls:CustomFrame>
-            
+                    Placeholder="{x:Static localization:Resource.SignUpPageEmailEntry}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding Email}" />
+            </Frame>
 
-            <controls:CustomFrame 
-                       Style="{StaticResource Key=FrameStyle}">   
-                
-                    <controls:CommonEntry 
-                           Style="{StaticResource EntryStyle}"
-                           IsPassword="True"
-                           Placeholder="{x:Static localization:Resource.SignUpPagePasswordEntry}"
-                           Text="{Binding Password}" />                
-            </controls:CustomFrame>
-            
 
-            <controls:CustomFrame
-                       Style="{StaticResource Key=FrameStyle}"> 
-                
-                           <controls:CommonEntry
-                                 Style="{StaticResource EntryStyle}"
-                                 IsPassword="True"
-                                 Placeholder="{x:Static localization:Resource.SignUpConfirmPass}"
-                                 Text="{Binding PasswordConfirm}" />                
-            </controls:CustomFrame>
-            
-            
+            <Frame Style="{StaticResource Key=FrameStyle}">
+
+                <controls:CommonEntry
+                    Placeholder="{x:Static localization:Resource.SignUpPageLoginName}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding Name}" />
+            </Frame>
+
+
+            <Frame Style="{StaticResource Key=FrameStyle}">
+
+                <controls:CommonEntry
+                    IsPassword="True"
+                    Placeholder="{x:Static localization:Resource.SignUpPagePasswordEntry}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding Password}" />
+            </Frame>
+
+
+            <Frame Style="{StaticResource Key=FrameStyle}">
+
+                <controls:CommonEntry
+                    IsPassword="True"
+                    Placeholder="{x:Static localization:Resource.SignUpConfirmPass}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding PasswordConfirm}" />
+            </Frame>
+
+
         </StackLayout>
-        
+
         <Button
             Grid.Row="3"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"
-            HeightRequest="40"
             BackgroundColor="Orange"
-            CornerRadius="20"
             Command="{Binding SignUpCommand}"
-            Text="{x:Static localization:Resource.SignUpPageBtnregistration}" />
+            CornerRadius="25"
+            FontSize="20"
+            HeightRequest="50"
+            HorizontalOptions="Center"
+            Text="{x:Static localization:Resource.SignUpPageBtnregistration}"
+            VerticalOptions="Center"
+            WidthRequest="180" />
     </Grid>
 
 </views:BaseContentPage>

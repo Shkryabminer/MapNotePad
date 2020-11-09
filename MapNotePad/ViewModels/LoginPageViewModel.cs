@@ -5,24 +5,37 @@ using MapNotePad.Services;
 using MapNotePad.Services.Autorization;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System;
+using Xamarin.Auth;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Json;
+using Newtonsoft.Json;
+using MapNotePad.Models;
+using Device = Xamarin.Forms.Device;
+using MapNotePad.Services.FBAuthService;
 
 namespace MapNotePad.ViewModels
 {
-    public  class LoginPageViewModel:BaseViewModel
+    public class LoginPageViewModel : BaseViewModel
     {
         private readonly IAuthentificationService _authentificationService;
         private readonly IAutorization _autorizationService;
         private readonly IUserDialogs _userDialogs;
+        private readonly IFBAuthService _fbAuthService;
 
         public LoginPageViewModel(INavigationService navigationService,
                                   IAutorization autorization,
                                   IAuthentificationService authentificationService,
-                                  IUserDialogs userDialogs)
+                                  IUserDialogs userDialogs,
+                                  IFBAuthService fBAuthService)
                                   : base(navigationService)
         {
             _authentificationService = authentificationService;
             _autorizationService = autorization;
             _userDialogs = userDialogs;
+            _fbAuthService = fBAuthService;
         }
 
         #region --Public Properties--
@@ -42,16 +55,29 @@ namespace MapNotePad.ViewModels
         }
 
         private ICommand _signButtonCommand;
-        public ICommand SignButtonCommand => _signButtonCommand??= new Command(OnSignInButtonCommand);
+        public ICommand SignButtonCommand => _signButtonCommand ??= new Command(OnSignInButtonCommand);
 
         private ICommand _signUpCommand;
-        public ICommand SignUpCommand => _signUpCommand ??= _signUpCommand= new Command(OnSignUpCommand);        
+        public ICommand SignUpCommand => _signUpCommand ??= _signUpCommand = new Command(OnSignUpCommand);
 
-        #endregion  
-        
+        private ICommand _fbLoginCommand;
+        public ICommand FBLoginCommand => _fbLoginCommand ??= new Command(OnFBLoginCommand);
+
+
+        #endregion
+
 
         #region  --Oncommand handlers--
-   
+
+        private async void OnFBLoginCommand(object obj)
+        {
+            var email = await _fbAuthService.GetFBAccauntEmail();
+
+            Debug.WriteLine(email);
+        }
+
+       
+
         private async void OnSignInButtonCommand()
         {
             var authUser = _authentificationService.GetAuthUser(Email, Password);
@@ -93,6 +119,10 @@ namespace MapNotePad.ViewModels
 
         #endregion
 
+        #region --Private handlers--
+
+        
+        #endregion
     }
 
 }

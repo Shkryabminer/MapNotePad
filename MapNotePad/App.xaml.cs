@@ -16,6 +16,10 @@ using Plugin.Settings.Abstractions;
 using Plugin.Settings;
 using Acr.UserDialogs;
 using MapNotePad.Services.PinService;
+using MapNotePad.Services.PermissionService;
+using Plugin.Permissions.Abstractions;
+using Plugin.Permissions;
+using MapNotePad.Services.FBAuthService;
 
 namespace MapNotePad
 {
@@ -57,6 +61,7 @@ namespace MapNotePad
             //      Pluggins
             containerRegistry.RegisterInstance<ISettings>(CrossSettings.Current);
             containerRegistry.RegisterInstance<IUserDialogs>(UserDialogs.Instance);
+            containerRegistry.RegisterInstance<IPermissions>(CrossPermissions.Current);
 
 
             //      Servvices
@@ -67,6 +72,8 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<IAuthentificationService>(Container.Resolve<AutentificationService>());
             containerRegistry.RegisterInstance<IAutorization>(Container.Resolve<AutorizationService>()); //Service
             containerRegistry.RegisterInstance<IPasswordValidator>(Container.Resolve<PasswordValidator>()); //Service
+            containerRegistry.RegisterInstance<IPermissionService>(Container.Resolve<PermissionService>());
+            containerRegistry.RegisterInstance<IFBAuthService>(Container.Resolve<FBAuthService>());
         }
 
         protected override void OnStart()
@@ -83,11 +90,8 @@ namespace MapNotePad
         #region --Private Helpers--
         private async Task InitNavigationAsync()
         {
-            if (_userService.GetUsers().Count() < 1)
-            {
-                await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(SignUpPage)}");
-            }
-            else if (AutorizationService.Autorizeted())
+            
+            if (AutorizationService.Autorizeted())
             { 
                 await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainTabbedPage)}"); 
             }

@@ -36,19 +36,19 @@ namespace MapNotePad.Services
         public double CameraLatitude
         {
             get => _setPlugin.GetValueOrDefault(nameof(CameraLatitude), 41.0);
-            set => _setPlugin.AddOrUpdateValue(nameof(CameraLatitude), 41.0);
+            set => _setPlugin.AddOrUpdateValue(nameof(CameraLatitude), value);
         }
 
         public double CameraLongitude
         {
             get => _setPlugin.GetValueOrDefault(nameof(CameraLongitude), 41.0);
-            set => _setPlugin.AddOrUpdateValue(nameof(CameraLongitude), 41.0);
+            set => _setPlugin.AddOrUpdateValue(nameof(CameraLongitude), value);
         }
 
         public double Zoom
         {
             get => _setPlugin.GetValueOrDefault(nameof(Zoom), 41.0);
-            set => _setPlugin.AddOrUpdateValue(nameof(Zoom), 41.0);
+            set => _setPlugin.AddOrUpdateValue(nameof(Zoom), value);
         }
         #endregion
 

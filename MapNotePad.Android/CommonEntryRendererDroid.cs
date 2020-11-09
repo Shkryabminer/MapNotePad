@@ -20,7 +20,8 @@ namespace MapNotePad.Droid
             if (Control != null)
             {
                 var gradientDrawable = new GradientDrawable();
-                Control.SetBackground(null);                              
+                Control.SetBackground(null);  
+               
             }
         }
     }

@@ -7,7 +7,7 @@ namespace MapNotePad.Views
         public MainTabbedPage()
         {
             InitializeComponent();
-           //NavigationPage.SetHasNavigationBar(this, false);
+           NavigationPage.SetHasNavigationBar(this, false);
         }
     }
 }
