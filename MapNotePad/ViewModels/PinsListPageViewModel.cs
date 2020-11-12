@@ -4,6 +4,7 @@ using MapNotePad.Models;
 using MapNotePad.Pickers;
 using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PinService;
+using MapNotePad.Services.UserService;
 using MapNotePad.Views;
 using Prism.Navigation;
 using Prism.Navigation.TabbedPages;
@@ -24,27 +25,47 @@ namespace MapNotePad.ViewModels
         private readonly IUserDialogs _userDialogs;
         private readonly IAutorization _autorizationService;
         private readonly IPinService _pinService;
+        private readonly IUserServcie _userServcie;
 
         public PinsListPageViewModel(INavigationService navigationService,
                                     IAutorization autorization,
                                     IPinService pinService,
-                                    IUserDialogs userDialogs)
+                                    IUserDialogs userDialogs,
+                                    IUserServcie userServcie)
                                     : base(navigationService)
         {
             _userDialogs = userDialogs;
             _autorizationService = autorization;
             _pinService = pinService;
+            _userServcie = userServcie;
 
             Pins = new ObservableCollection<PinModelViewModel>();
+
+            FirstName = _userServcie.GetFirstName();
+            LastName = _userServcie.GetLastName();
         }
 
         #region --Public properties
 
         private ObservableCollection<PinModelViewModel> pins;
         public ObservableCollection<PinModelViewModel> Pins
-        {            
+        {
             get => pins;
             set => SetProperty(ref pins, value);
+        }
+
+        private string firstNmae;
+        public string FirstName
+        {
+            get => firstNmae;
+            set => SetProperty(ref firstNmae, value);
+        }
+
+        private string lastName;
+        public string LastName
+        {
+            get => lastName;
+            set => SetProperty(ref lastName, value);
         }
 
         private string _searchBar;
@@ -53,16 +74,31 @@ namespace MapNotePad.ViewModels
             get => _searchBar;
             set => SetProperty(ref _searchBar, value);
         }
+        private bool _isActiveFrame;
+        public bool IsActiveFrame
+        {
+            get => _isActiveFrame;
+            set => SetProperty(ref _isActiveFrame, value);
+        }
 
         public ICommand EditPinModel => new Command<object>(OnEditPinModelCommand);
-       
-        public ICommand AddNewPinCommand => new Command(OnAddNewModelPinCommand);
-        
-        public ICommand DeleteProfileCommand => new Command<object>(OnDeletePinCommand);
-       
-        public ICommand LogOutCommand => new Command(OnLogOutCommand);
 
-        public ICommand CellTappedCommand => new Command<object>(OnCellTappedCommand);        
+        public ICommand AddNewPinCommand => new Command(OnAddNewModelPinCommand);
+
+        public ICommand DeleteProfileCommand => new Command<object>(OnDeletePinCommand);
+
+        public ICommand LogOutCommand => new Command(OnLogOutCommand);
+        public ICommand _listFocusedCommand;
+        public ICommand ListFocusedCommand
+        {
+            get => _listFocusedCommand ??= new Command(OnListFocusedCommand);
+        }
+
+
+        private ICommand _showMenuCommand;
+        public ICommand ShowMenuCommand => _showMenuCommand ??= new Command(OnShowMenuCommand);
+
+        public ICommand CellTappedCommand => new Command<object>(OnCellTappedCommand);
 
         public ICommand ChangeStatusPinCommand => new Command<object>(OnChangeStatusPinCommand);
 
@@ -76,51 +112,81 @@ namespace MapNotePad.ViewModels
 
             if (pinModel != null)
             {
-                SwapToEditPinPage(pinModel);
+                GoToEditPinPage(pinModel);
+            }
+        }
+
+        private void OnListFocusedCommand(object obj)
+        {
+            if (IsActiveFrame)
+            {
+                IsActiveFrame = false;
+            }
+            else 
+            {
+                Debug.WriteLine("IsActive id false");
             }
         }
 
         private async void OnCellTappedCommand(object obj)
         {
-            var pinModel = obj as PinModelViewModel;
-
-            if (pinModel != null)
+            if (!IsActiveFrame)
             {
-                if (pinModel.IsActive)
+                var pinModel = obj as PinModelViewModel;
+
+                if (pinModel != null)
                 {
-                    var parametres = new NavigationParameters();
-                    parametres.Add("selectedCell", pinModel);
-                    var result =  await NavigationService.SelectTabAsync(nameof(MapPage), parametres);
-                  //  Console.WriteLine();
-                  //  await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}?selectedTab={nameof(MapPage)}", parametres);
+                    if (pinModel.IsActive)
+                    {
+                        var parametres = new NavigationParameters();
+                        parametres.Add("selectedCell", pinModel);
+                        var result = await NavigationService.SelectTabAsync(nameof(MapPage), parametres);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("No active pins");
+                    }
                 }
+                else
+                {
+                    Debug.WriteLine("no pinmodel instance");
+                }
+            }
+            else
+            {
+                IsActiveFrame = false;
             }
         }
 
         private void OnChangeStatusPinCommand(object obj)
         {
-            var pinModelVM = obj as PinModelViewModel;  
-            
+            var pinModelVM = obj as PinModelViewModel;
+
             if (pinModelVM != null)
             {
                 pinModelVM.IsActive = !pinModelVM.IsActive;
                 _pinService.SaveOrUpdatePin(pinModelVM);
                 Console.WriteLine();
-            }           
+            }
+        }
+
+        private void OnShowMenuCommand(object obj)
+        {
+            IsActiveFrame = true;
         }
 
         private async void OnLogOutCommand(object obj)
         {
             _autorizationService.LogOut();
-
+            
             await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(LoginPage)}");
         }
 
         public void OnAddNewModelPinCommand(object obj)
         {
-            var prof = new PinModel(_autorizationService.GetActiveUser());
+            var prof = new PinModel(_autorizationService.GetActiveUserEmail());
 
-            SwapToEditPinPage(prof.ToViewModel());
+            GoToEditPinPage(prof.ToViewModel());
         }
 
         private async void OnDeletePinCommand(object obj)
@@ -155,11 +221,11 @@ namespace MapNotePad.ViewModels
         #endregion
 
         #region --Overrides--
-      
+
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
-          
+
             SetPins();
         }
 
@@ -178,11 +244,16 @@ namespace MapNotePad.ViewModels
             }
         }
 
+        public override void Initialize(INavigationParameters parameters)
+        {
+            base.Initialize(parameters);
+        }
+
         #endregion
 
         #region --Private helpers
 
-        private async void SwapToEditPinPage(PinModelViewModel pinModel)
+        private async void GoToEditPinPage(PinModelViewModel pinModel)
         {
             var navParam = new NavigationParameters
             {
@@ -194,8 +265,8 @@ namespace MapNotePad.ViewModels
 
         private void SetPins()
         {
-            var pins = _pinService.GetPinModels(_autorizationService.GetActiveUser());
-           // var pinViewModels = pins.Select(pin => pin.ToViewModel());
+            var pins = _pinService.GetPinModels(_autorizationService.GetActiveUserEmail());
+            // var pinViewModels = pins.Select(pin => pin.ToViewModel());
 
             Pins = new ObservableCollection<PinModelViewModel>(pins);
         }
@@ -204,24 +275,24 @@ namespace MapNotePad.ViewModels
         {
             if (!string.IsNullOrEmpty(SearchBar))
             {
-                var activePins = _pinService.GetPinModels(_autorizationService.GetActiveUser());
+                var activePins = _pinService.GetPinModels(_autorizationService.GetActiveUserEmail());
 
                 var sortedPins = activePins.Pick(SearchBar);
 
-                Pins =new ObservableCollection<PinModelViewModel>(sortedPins); 
+                Pins = new ObservableCollection<PinModelViewModel>(sortedPins);
             }
             else
             {
-                var sortedPins = _pinService.GetPinModels(_autorizationService.GetActiveUser());
+                var sortedPins = _pinService.GetPinModels(_autorizationService.GetActiveUserEmail());
 
-                Pins = new ObservableCollection<PinModelViewModel>(sortedPins); 
+                Pins = new ObservableCollection<PinModelViewModel>(sortedPins);
             }
         }
 
         //private List<PinModelViewModel> ConvertModels(IEnumerable<PinModel> pins)
         //{
         //    List<PinModelViewModel> list = new List<PinModelViewModel>();
-            
+
         //    foreach (PinModel p in pins)
         //    {
         //        list.Add(p.ToViewModel());

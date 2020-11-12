@@ -3,7 +3,7 @@ using MapNotePad.ViewModels;
 
 namespace MapNotePad.Extensions
 {
-    static  class PinVMToPinModelExtension
+    static class PinVMToPinModelExtension
     {
         public static PinModel ToPinModel(this PinModelViewModel vm)
         {
@@ -13,9 +13,11 @@ namespace MapNotePad.Extensions
                 Latitude = vm.Latitude,
                 Longtitude = vm.Longtitude,
                 KeyWords = vm.KeyWords,
-                UserID = vm.UserID,
+                UserEmail = vm.UserEmail,
                 IsActive = vm.IsActive,
-                Name = vm.Name
+                Name = vm.Name,
+                Picture = vm.Picture
+
             };
 
             return pm;

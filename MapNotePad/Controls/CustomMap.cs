@@ -76,7 +76,7 @@ namespace MapNotePad.Controls
         {
             var center = new Position(CollectionOfPins.First().Latitude, CollectionOfPins.First().Longtitude);
 
-            return MapSpan.FromCenterAndRadius(center, Distance.FromKilometers(10));
+            return MapSpan.FromCenterAndRadius(center, Xamarin.Forms.GoogleMaps.Distance.FromKilometers(10));
         }      
 
         #endregion

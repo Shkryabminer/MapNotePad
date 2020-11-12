@@ -14,19 +14,21 @@ namespace MapNotePad.Services.FBAuthService
 {
     public class FBAuthService : IFBAuthService
     {
-        public string Email { get; set; }
+        public FaceBookProfile _fbProfile { get; set; }
 
         #region --IFBAuthService implementation--
 
-        public async Task<string> GetFBAccauntEmail()
+        public async Task<FaceBookProfile> GetFBAccauntEmail()
         {
             string clientID = string.Empty;
             string redirectUri = string.Empty;
+            bool isUsingNativeUI = false; 
 
             switch (Device.RuntimePlatform)
             {
                 case Device.Android:
                     {
+                        isUsingNativeUI = false;
                         clientID = Constants.FacebookClient.AppID;
                         redirectUri = Constants.FacebookClient.FacebookAndroidRedirectUrl;
                         break;
@@ -34,6 +36,7 @@ namespace MapNotePad.Services.FBAuthService
 
                 case Device.iOS:
                     {
+                        isUsingNativeUI = false;
                         clientID = Constants.FacebookClient.AppID;
                         redirectUri = Constants.FacebookClient.FacebookIOSRedirectUrl;
                         break;
@@ -45,11 +48,18 @@ namespace MapNotePad.Services.FBAuthService
                                           Constants.FacebookClient.FacebookScope,
                                          new Uri(Constants.FacebookClient.FacebookAuthorizeUrl),
                                          new Uri(redirectUri),
-                                         null,
-                                         false);
+                                         isUsingNativeUI: isUsingNativeUI);
 
             var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
-            presenter.Login(authentificator);
+
+            try
+            {
+                presenter.Login(authentificator);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
 
             authentificator.Completed += Authentificator_Completed;
 
@@ -73,36 +83,35 @@ namespace MapNotePad.Services.FBAuthService
 
                 var prof = await GetFbUSerProfileAsync(accessToken);
 
-                Email = prof.Email;
+                _fbProfile = prof;
             }
 
             else
             {
-                Email = string.Empty;
+                _fbProfile = null;
             }
         }
 
-        private async Task<FBProfile> GetFbUSerProfileAsync(string tocken)
+        private async Task<FaceBookProfile> GetFbUSerProfileAsync(string tocken)
         {
             HttpClient client = new HttpClient();
 
             var response = await client.GetStringAsync(Constants.FacebookClient.FacebookUserInfoUrl + tocken);
 
-            var data = JsonConvert.DeserializeObject<FBProfile>(response);
+            var data = JsonConvert.DeserializeObject<FaceBookProfile>(response);
 
             return data;
         }
 
-        private async Task<string> WaitForEmail()
+        private async Task<FaceBookProfile> WaitForEmail()
         {
            await Task.Run(()=>
            { 
-               while (Email==null)
-               {
-                   
+               while (_fbProfile==null)
+               {                   
                }
-            });
-            return Email;
+           });
+            return _fbProfile;
         }
         #endregion
     }

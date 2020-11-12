@@ -14,7 +14,7 @@ namespace MapNotePad.Extensions
             {
                 Label = viewModel.Name,
                 Position = new Position(viewModel.Latitude, viewModel.Longtitude),
-                Tag = viewModel.KeyWords
+                Tag = new string[] { viewModel.KeyWords, viewModel.Picture }
             };
         }
     }

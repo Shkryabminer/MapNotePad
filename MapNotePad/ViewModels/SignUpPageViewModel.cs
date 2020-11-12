@@ -72,7 +72,7 @@ namespace MapNotePad.ViewModels
         {
             User user = new User
             {
-                Name = this.Name,
+                FirstName = this.Name,
                 Password = this.Password,
                 Email = this.Email
             };

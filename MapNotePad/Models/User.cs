@@ -9,10 +9,16 @@ namespace MapNotePad.Models
     public class User : IUser
     {
         [PrimaryKey, AutoIncrement,Column("ID")]
-        public int ID { get; set ; }
-        public string Name { get; set; }
+        public  int ID { get; set ; }
+        public virtual string FirstName { get; set; }
         public string Password { get; set; }
-        public string Email { get; set; }
-        
+        public virtual string Email { get; set; }
+        public virtual string LastName { get; set; }
+
+        //public User()
+        //{
+        //    FirstName = string.Empty;
+        //    LastName = string.Empty;
+        //}
     }
 }

@@ -9,6 +9,20 @@ namespace MapNotePad.ViewModels
 {
     public class PinModelViewModel : BindableBase
     {
+        public PinModelViewModel(PinModel pinModel)
+        {
+            ID = pinModel.ID;
+            Name = pinModel.Name;
+            Latitude = pinModel.Latitude;
+            Longtitude = pinModel.Longtitude;
+            UserEmail = pinModel.UserEmail;
+            KeyWords = pinModel.KeyWords;
+            IsActive = pinModel.IsActive;
+            Picture = pinModel.Picture;
+        }
+        public PinModelViewModel()
+        { 
+        }
 
         #region --Public properties--
 
@@ -39,11 +53,11 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _longtitude, value);
         }
 
-        private int _userID;
-        public int UserID
+        private string _userEmail;
+        public string UserEmail
         {
-            get => _userID;
-            set => SetProperty(ref _userID, value);
+            get => _userEmail;
+            set => SetProperty(ref _userEmail, value);
         }
 
         private string _keyWords;
@@ -60,18 +74,13 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _isActive, value);
         }
 
-        #endregion
-
-        public PinModelViewModel(PinModel pinModel)
+        private string _picture;
+        public string Picture
         {
-            ID = pinModel.ID;
-            Name = pinModel.Name;
-            Latitude = pinModel.Latitude;
-            Longtitude = pinModel.Longtitude;
-            UserID = pinModel.UserID;
-            KeyWords = pinModel.KeyWords;
-            IsActive = pinModel.IsActive;
+            get => _picture;
+            set => SetProperty(ref _picture, value);
         }
+        #endregion
 
     }
 }

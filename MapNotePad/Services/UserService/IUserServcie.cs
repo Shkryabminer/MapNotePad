@@ -12,7 +12,9 @@ namespace MapNotePad.Services.UserService
         int AddOrUpdate(User user);
 
         void DeleteUser(User user);
-            
 
+        string GetFirstName();
+
+        string GetLastName();
     }
 }

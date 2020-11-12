@@ -11,12 +11,14 @@ namespace MapNotePad.Services.PinService
 {
   public interface IPinService
     {
-        void DeletePin(PinModelViewModel prof);
-        void SaveOrUpdatePin(PinModelViewModel profile);
-        IEnumerable<PinModelViewModel> GetPinModels(int id);
-        IEnumerable<PinModelViewModel> GetActivePins(int id);
+        void DeletePin(PinModelViewModel pinVM);
+        void SaveOrUpdatePin(PinModelViewModel pinVM);
+        IEnumerable<PinModelViewModel> GetPinModels(string email);
+        IEnumerable<PinModelViewModel> GetActivePinsByEmail(string email);
 
-         CameraPosition LoadCameraPosition();
+        IEnumerable<PinModelViewModel> GetAllPins();        
+
+        CameraPosition LoadCameraPosition();
 
         void SaveCameraPosotion(CameraPosition cameraPosition);
        

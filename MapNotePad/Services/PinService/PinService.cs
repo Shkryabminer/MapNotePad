@@ -27,18 +27,22 @@ namespace MapNotePad.Services.PinService
             _repository.DeleteItem(prof.ToPinModel());
         }
 
-        public IEnumerable<PinModelViewModel> GetPinModels(int id)
+        public IEnumerable<PinModelViewModel> GetPinModels(string email)
         {
-            return _repository.GetItems<PinModel>().Where(x => x.UserID == id)
+            return _repository.GetItems<PinModel>().Where(x => x.UserEmail == email)
                               .Select(pin => pin.ToViewModel());
         }
 
-        public IEnumerable<PinModelViewModel> GetActivePins(int id)
+        public IEnumerable<PinModelViewModel> GetActivePinsByEmail(string email)
         {
-            return GetPinModels(id).Where(x => x.IsActive);
+            return GetPinModels(email).Where(x => x.IsActive);
         }
+               
 
-
+        public IEnumerable<PinModelViewModel> GetAllPins()
+        {
+            return _repository.GetItems<PinModel>().Select(pin => pin.ToViewModel()); 
+        }
 
         public void SaveOrUpdatePin(PinModelViewModel pin)
         {
@@ -50,9 +54,9 @@ namespace MapNotePad.Services.PinService
             return new CameraPosition(new Position(_settingsManager.CameraLatitude,
                                                    _settingsManager.CameraLongitude),
                                                    _settingsManager.Zoom);
-            
-            
-           
+
+
+
         }
 
         public void SaveCameraPosotion(CameraPosition cameraPosition)
@@ -60,8 +64,7 @@ namespace MapNotePad.Services.PinService
             _settingsManager.CameraLatitude = cameraPosition.Target.Latitude;
             _settingsManager.CameraLongitude = cameraPosition.Target.Longitude;
             _settingsManager.Zoom = cameraPosition.Zoom;
-        }
-
+        }    
 
 
         #endregion

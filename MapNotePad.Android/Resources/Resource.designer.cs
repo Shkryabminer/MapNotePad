@@ -2618,6 +2618,188 @@ namespace MapNotePad.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahText = global::MapNotePad.Droid.Resource.Styleable.ProgressWheel_ahText;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::MapNotePad.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::MapNotePad.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
+			global::Plugin.Media.Resource.Attribute.alpha = global::MapNotePad.Droid.Resource.Attribute.alpha;
+			global::Plugin.Media.Resource.Attribute.coordinatorLayoutStyle = global::MapNotePad.Droid.Resource.Attribute.coordinatorLayoutStyle;
+			global::Plugin.Media.Resource.Attribute.font = global::MapNotePad.Droid.Resource.Attribute.font;
+			global::Plugin.Media.Resource.Attribute.fontProviderAuthority = global::MapNotePad.Droid.Resource.Attribute.fontProviderAuthority;
+			global::Plugin.Media.Resource.Attribute.fontProviderCerts = global::MapNotePad.Droid.Resource.Attribute.fontProviderCerts;
+			global::Plugin.Media.Resource.Attribute.fontProviderFetchStrategy = global::MapNotePad.Droid.Resource.Attribute.fontProviderFetchStrategy;
+			global::Plugin.Media.Resource.Attribute.fontProviderFetchTimeout = global::MapNotePad.Droid.Resource.Attribute.fontProviderFetchTimeout;
+			global::Plugin.Media.Resource.Attribute.fontProviderPackage = global::MapNotePad.Droid.Resource.Attribute.fontProviderPackage;
+			global::Plugin.Media.Resource.Attribute.fontProviderQuery = global::MapNotePad.Droid.Resource.Attribute.fontProviderQuery;
+			global::Plugin.Media.Resource.Attribute.fontStyle = global::MapNotePad.Droid.Resource.Attribute.fontStyle;
+			global::Plugin.Media.Resource.Attribute.fontVariationSettings = global::MapNotePad.Droid.Resource.Attribute.fontVariationSettings;
+			global::Plugin.Media.Resource.Attribute.fontWeight = global::MapNotePad.Droid.Resource.Attribute.fontWeight;
+			global::Plugin.Media.Resource.Attribute.keylines = global::MapNotePad.Droid.Resource.Attribute.keylines;
+			global::Plugin.Media.Resource.Attribute.layout_anchor = global::MapNotePad.Droid.Resource.Attribute.layout_anchor;
+			global::Plugin.Media.Resource.Attribute.layout_anchorGravity = global::MapNotePad.Droid.Resource.Attribute.layout_anchorGravity;
+			global::Plugin.Media.Resource.Attribute.layout_behavior = global::MapNotePad.Droid.Resource.Attribute.layout_behavior;
+			global::Plugin.Media.Resource.Attribute.layout_dodgeInsetEdges = global::MapNotePad.Droid.Resource.Attribute.layout_dodgeInsetEdges;
+			global::Plugin.Media.Resource.Attribute.layout_insetEdge = global::MapNotePad.Droid.Resource.Attribute.layout_insetEdge;
+			global::Plugin.Media.Resource.Attribute.layout_keyline = global::MapNotePad.Droid.Resource.Attribute.layout_keyline;
+			global::Plugin.Media.Resource.Attribute.statusBarBackground = global::MapNotePad.Droid.Resource.Attribute.statusBarBackground;
+			global::Plugin.Media.Resource.Attribute.ttcIndex = global::MapNotePad.Droid.Resource.Attribute.ttcIndex;
+			global::Plugin.Media.Resource.Color.browser_actions_bg_grey = global::MapNotePad.Droid.Resource.Color.browser_actions_bg_grey;
+			global::Plugin.Media.Resource.Color.browser_actions_divider_color = global::MapNotePad.Droid.Resource.Color.browser_actions_divider_color;
+			global::Plugin.Media.Resource.Color.browser_actions_text_color = global::MapNotePad.Droid.Resource.Color.browser_actions_text_color;
+			global::Plugin.Media.Resource.Color.browser_actions_title_color = global::MapNotePad.Droid.Resource.Color.browser_actions_title_color;
+			global::Plugin.Media.Resource.Color.notification_action_color_filter = global::MapNotePad.Droid.Resource.Color.notification_action_color_filter;
+			global::Plugin.Media.Resource.Color.notification_icon_bg_color = global::MapNotePad.Droid.Resource.Color.notification_icon_bg_color;
+			global::Plugin.Media.Resource.Color.ripple_material_light = global::MapNotePad.Droid.Resource.Color.ripple_material_light;
+			global::Plugin.Media.Resource.Color.secondary_text_default_material_light = global::MapNotePad.Droid.Resource.Color.secondary_text_default_material_light;
+			global::Plugin.Media.Resource.Dimension.browser_actions_context_menu_max_width = global::MapNotePad.Droid.Resource.Dimension.browser_actions_context_menu_max_width;
+			global::Plugin.Media.Resource.Dimension.browser_actions_context_menu_min_padding = global::MapNotePad.Droid.Resource.Dimension.browser_actions_context_menu_min_padding;
+			global::Plugin.Media.Resource.Dimension.compat_button_inset_horizontal_material = global::MapNotePad.Droid.Resource.Dimension.compat_button_inset_horizontal_material;
+			global::Plugin.Media.Resource.Dimension.compat_button_inset_vertical_material = global::MapNotePad.Droid.Resource.Dimension.compat_button_inset_vertical_material;
+			global::Plugin.Media.Resource.Dimension.compat_button_padding_horizontal_material = global::MapNotePad.Droid.Resource.Dimension.compat_button_padding_horizontal_material;
+			global::Plugin.Media.Resource.Dimension.compat_button_padding_vertical_material = global::MapNotePad.Droid.Resource.Dimension.compat_button_padding_vertical_material;
+			global::Plugin.Media.Resource.Dimension.compat_control_corner_material = global::MapNotePad.Droid.Resource.Dimension.compat_control_corner_material;
+			global::Plugin.Media.Resource.Dimension.compat_notification_large_icon_max_height = global::MapNotePad.Droid.Resource.Dimension.compat_notification_large_icon_max_height;
+			global::Plugin.Media.Resource.Dimension.compat_notification_large_icon_max_width = global::MapNotePad.Droid.Resource.Dimension.compat_notification_large_icon_max_width;
+			global::Plugin.Media.Resource.Dimension.notification_action_icon_size = global::MapNotePad.Droid.Resource.Dimension.notification_action_icon_size;
+			global::Plugin.Media.Resource.Dimension.notification_action_text_size = global::MapNotePad.Droid.Resource.Dimension.notification_action_text_size;
+			global::Plugin.Media.Resource.Dimension.notification_big_circle_margin = global::MapNotePad.Droid.Resource.Dimension.notification_big_circle_margin;
+			global::Plugin.Media.Resource.Dimension.notification_content_margin_start = global::MapNotePad.Droid.Resource.Dimension.notification_content_margin_start;
+			global::Plugin.Media.Resource.Dimension.notification_large_icon_height = global::MapNotePad.Droid.Resource.Dimension.notification_large_icon_height;
+			global::Plugin.Media.Resource.Dimension.notification_large_icon_width = global::MapNotePad.Droid.Resource.Dimension.notification_large_icon_width;
+			global::Plugin.Media.Resource.Dimension.notification_main_column_padding_top = global::MapNotePad.Droid.Resource.Dimension.notification_main_column_padding_top;
+			global::Plugin.Media.Resource.Dimension.notification_media_narrow_margin = global::MapNotePad.Droid.Resource.Dimension.notification_media_narrow_margin;
+			global::Plugin.Media.Resource.Dimension.notification_right_icon_size = global::MapNotePad.Droid.Resource.Dimension.notification_right_icon_size;
+			global::Plugin.Media.Resource.Dimension.notification_right_side_padding_top = global::MapNotePad.Droid.Resource.Dimension.notification_right_side_padding_top;
+			global::Plugin.Media.Resource.Dimension.notification_small_icon_background_padding = global::MapNotePad.Droid.Resource.Dimension.notification_small_icon_background_padding;
+			global::Plugin.Media.Resource.Dimension.notification_small_icon_size_as_large = global::MapNotePad.Droid.Resource.Dimension.notification_small_icon_size_as_large;
+			global::Plugin.Media.Resource.Dimension.notification_subtext_size = global::MapNotePad.Droid.Resource.Dimension.notification_subtext_size;
+			global::Plugin.Media.Resource.Dimension.notification_top_pad = global::MapNotePad.Droid.Resource.Dimension.notification_top_pad;
+			global::Plugin.Media.Resource.Dimension.notification_top_pad_large_text = global::MapNotePad.Droid.Resource.Dimension.notification_top_pad_large_text;
+			global::Plugin.Media.Resource.Drawable.notification_action_background = global::MapNotePad.Droid.Resource.Drawable.notification_action_background;
+			global::Plugin.Media.Resource.Drawable.notification_bg = global::MapNotePad.Droid.Resource.Drawable.notification_bg;
+			global::Plugin.Media.Resource.Drawable.notification_bg_low = global::MapNotePad.Droid.Resource.Drawable.notification_bg_low;
+			global::Plugin.Media.Resource.Drawable.notification_bg_low_normal = global::MapNotePad.Droid.Resource.Drawable.notification_bg_low_normal;
+			global::Plugin.Media.Resource.Drawable.notification_bg_low_pressed = global::MapNotePad.Droid.Resource.Drawable.notification_bg_low_pressed;
+			global::Plugin.Media.Resource.Drawable.notification_bg_normal = global::MapNotePad.Droid.Resource.Drawable.notification_bg_normal;
+			global::Plugin.Media.Resource.Drawable.notification_bg_normal_pressed = global::MapNotePad.Droid.Resource.Drawable.notification_bg_normal_pressed;
+			global::Plugin.Media.Resource.Drawable.notification_icon_background = global::MapNotePad.Droid.Resource.Drawable.notification_icon_background;
+			global::Plugin.Media.Resource.Drawable.notification_template_icon_bg = global::MapNotePad.Droid.Resource.Drawable.notification_template_icon_bg;
+			global::Plugin.Media.Resource.Drawable.notification_template_icon_low_bg = global::MapNotePad.Droid.Resource.Drawable.notification_template_icon_low_bg;
+			global::Plugin.Media.Resource.Drawable.notification_tile_bg = global::MapNotePad.Droid.Resource.Drawable.notification_tile_bg;
+			global::Plugin.Media.Resource.Drawable.notify_panel_notification_icon_bg = global::MapNotePad.Droid.Resource.Drawable.notify_panel_notification_icon_bg;
+			global::Plugin.Media.Resource.Id.actions = global::MapNotePad.Droid.Resource.Id.actions;
+			global::Plugin.Media.Resource.Id.action_container = global::MapNotePad.Droid.Resource.Id.action_container;
+			global::Plugin.Media.Resource.Id.action_divider = global::MapNotePad.Droid.Resource.Id.action_divider;
+			global::Plugin.Media.Resource.Id.action_image = global::MapNotePad.Droid.Resource.Id.action_image;
+			global::Plugin.Media.Resource.Id.action_text = global::MapNotePad.Droid.Resource.Id.action_text;
+			global::Plugin.Media.Resource.Id.all = global::MapNotePad.Droid.Resource.Id.all;
+			global::Plugin.Media.Resource.Id.async = global::MapNotePad.Droid.Resource.Id.async;
+			global::Plugin.Media.Resource.Id.blocking = global::MapNotePad.Droid.Resource.Id.blocking;
+			global::Plugin.Media.Resource.Id.bottom = global::MapNotePad.Droid.Resource.Id.bottom;
+			global::Plugin.Media.Resource.Id.browser_actions_header_text = global::MapNotePad.Droid.Resource.Id.browser_actions_header_text;
+			global::Plugin.Media.Resource.Id.browser_actions_menu_items = global::MapNotePad.Droid.Resource.Id.browser_actions_menu_items;
+			global::Plugin.Media.Resource.Id.browser_actions_menu_item_icon = global::MapNotePad.Droid.Resource.Id.browser_actions_menu_item_icon;
+			global::Plugin.Media.Resource.Id.browser_actions_menu_item_text = global::MapNotePad.Droid.Resource.Id.browser_actions_menu_item_text;
+			global::Plugin.Media.Resource.Id.browser_actions_menu_view = global::MapNotePad.Droid.Resource.Id.browser_actions_menu_view;
+			global::Plugin.Media.Resource.Id.center = global::MapNotePad.Droid.Resource.Id.center;
+			global::Plugin.Media.Resource.Id.center_horizontal = global::MapNotePad.Droid.Resource.Id.center_horizontal;
+			global::Plugin.Media.Resource.Id.center_vertical = global::MapNotePad.Droid.Resource.Id.center_vertical;
+			global::Plugin.Media.Resource.Id.chronometer = global::MapNotePad.Droid.Resource.Id.chronometer;
+			global::Plugin.Media.Resource.Id.clip_horizontal = global::MapNotePad.Droid.Resource.Id.clip_horizontal;
+			global::Plugin.Media.Resource.Id.clip_vertical = global::MapNotePad.Droid.Resource.Id.clip_vertical;
+			global::Plugin.Media.Resource.Id.end = global::MapNotePad.Droid.Resource.Id.end;
+			global::Plugin.Media.Resource.Id.fill = global::MapNotePad.Droid.Resource.Id.fill;
+			global::Plugin.Media.Resource.Id.fill_horizontal = global::MapNotePad.Droid.Resource.Id.fill_horizontal;
+			global::Plugin.Media.Resource.Id.fill_vertical = global::MapNotePad.Droid.Resource.Id.fill_vertical;
+			global::Plugin.Media.Resource.Id.forever = global::MapNotePad.Droid.Resource.Id.forever;
+			global::Plugin.Media.Resource.Id.icon = global::MapNotePad.Droid.Resource.Id.icon;
+			global::Plugin.Media.Resource.Id.icon_group = global::MapNotePad.Droid.Resource.Id.icon_group;
+			global::Plugin.Media.Resource.Id.info = global::MapNotePad.Droid.Resource.Id.info;
+			global::Plugin.Media.Resource.Id.italic = global::MapNotePad.Droid.Resource.Id.italic;
+			global::Plugin.Media.Resource.Id.left = global::MapNotePad.Droid.Resource.Id.left;
+			global::Plugin.Media.Resource.Id.line1 = global::MapNotePad.Droid.Resource.Id.line1;
+			global::Plugin.Media.Resource.Id.line3 = global::MapNotePad.Droid.Resource.Id.line3;
+			global::Plugin.Media.Resource.Id.none = global::MapNotePad.Droid.Resource.Id.none;
+			global::Plugin.Media.Resource.Id.normal = global::MapNotePad.Droid.Resource.Id.normal;
+			global::Plugin.Media.Resource.Id.notification_background = global::MapNotePad.Droid.Resource.Id.notification_background;
+			global::Plugin.Media.Resource.Id.notification_main_column = global::MapNotePad.Droid.Resource.Id.notification_main_column;
+			global::Plugin.Media.Resource.Id.notification_main_column_container = global::MapNotePad.Droid.Resource.Id.notification_main_column_container;
+			global::Plugin.Media.Resource.Id.right = global::MapNotePad.Droid.Resource.Id.right;
+			global::Plugin.Media.Resource.Id.right_icon = global::MapNotePad.Droid.Resource.Id.right_icon;
+			global::Plugin.Media.Resource.Id.right_side = global::MapNotePad.Droid.Resource.Id.right_side;
+			global::Plugin.Media.Resource.Id.start = global::MapNotePad.Droid.Resource.Id.start;
+			global::Plugin.Media.Resource.Id.tag_transition_group = global::MapNotePad.Droid.Resource.Id.tag_transition_group;
+			global::Plugin.Media.Resource.Id.tag_unhandled_key_event_manager = global::MapNotePad.Droid.Resource.Id.tag_unhandled_key_event_manager;
+			global::Plugin.Media.Resource.Id.tag_unhandled_key_listeners = global::MapNotePad.Droid.Resource.Id.tag_unhandled_key_listeners;
+			global::Plugin.Media.Resource.Id.text = global::MapNotePad.Droid.Resource.Id.text;
+			global::Plugin.Media.Resource.Id.text2 = global::MapNotePad.Droid.Resource.Id.text2;
+			global::Plugin.Media.Resource.Id.time = global::MapNotePad.Droid.Resource.Id.time;
+			global::Plugin.Media.Resource.Id.title = global::MapNotePad.Droid.Resource.Id.title;
+			global::Plugin.Media.Resource.Id.top = global::MapNotePad.Droid.Resource.Id.top;
+			global::Plugin.Media.Resource.Integer.status_bar_notification_info_maxnum = global::MapNotePad.Droid.Resource.Integer.status_bar_notification_info_maxnum;
+			global::Plugin.Media.Resource.Layout.browser_actions_context_menu_page = global::MapNotePad.Droid.Resource.Layout.browser_actions_context_menu_page;
+			global::Plugin.Media.Resource.Layout.browser_actions_context_menu_row = global::MapNotePad.Droid.Resource.Layout.browser_actions_context_menu_row;
+			global::Plugin.Media.Resource.Layout.notification_action = global::MapNotePad.Droid.Resource.Layout.notification_action;
+			global::Plugin.Media.Resource.Layout.notification_action_tombstone = global::MapNotePad.Droid.Resource.Layout.notification_action_tombstone;
+			global::Plugin.Media.Resource.Layout.notification_template_custom_big = global::MapNotePad.Droid.Resource.Layout.notification_template_custom_big;
+			global::Plugin.Media.Resource.Layout.notification_template_icon_group = global::MapNotePad.Droid.Resource.Layout.notification_template_icon_group;
+			global::Plugin.Media.Resource.Layout.notification_template_part_chronometer = global::MapNotePad.Droid.Resource.Layout.notification_template_part_chronometer;
+			global::Plugin.Media.Resource.Layout.notification_template_part_time = global::MapNotePad.Droid.Resource.Layout.notification_template_part_time;
+			global::Plugin.Media.Resource.String.status_bar_notification_info_overflow = global::MapNotePad.Droid.Resource.String.status_bar_notification_info_overflow;
+			global::Plugin.Media.Resource.Style.TextAppearance_Compat_Notification = global::MapNotePad.Droid.Resource.Style.TextAppearance_Compat_Notification;
+			global::Plugin.Media.Resource.Style.TextAppearance_Compat_Notification_Info = global::MapNotePad.Droid.Resource.Style.TextAppearance_Compat_Notification_Info;
+			global::Plugin.Media.Resource.Style.TextAppearance_Compat_Notification_Line2 = global::MapNotePad.Droid.Resource.Style.TextAppearance_Compat_Notification_Line2;
+			global::Plugin.Media.Resource.Style.TextAppearance_Compat_Notification_Time = global::MapNotePad.Droid.Resource.Style.TextAppearance_Compat_Notification_Time;
+			global::Plugin.Media.Resource.Style.TextAppearance_Compat_Notification_Title = global::MapNotePad.Droid.Resource.Style.TextAppearance_Compat_Notification_Title;
+			global::Plugin.Media.Resource.Style.Widget_Compat_NotificationActionContainer = global::MapNotePad.Droid.Resource.Style.Widget_Compat_NotificationActionContainer;
+			global::Plugin.Media.Resource.Style.Widget_Compat_NotificationActionText = global::MapNotePad.Droid.Resource.Style.Widget_Compat_NotificationActionText;
+			global::Plugin.Media.Resource.Style.Widget_Support_CoordinatorLayout = global::MapNotePad.Droid.Resource.Style.Widget_Support_CoordinatorLayout;
+			global::Plugin.Media.Resource.Styleable.ColorStateListItem = global::MapNotePad.Droid.Resource.Styleable.ColorStateListItem;
+			global::Plugin.Media.Resource.Styleable.ColorStateListItem_alpha = global::MapNotePad.Droid.Resource.Styleable.ColorStateListItem_alpha;
+			global::Plugin.Media.Resource.Styleable.ColorStateListItem_android_alpha = global::MapNotePad.Droid.Resource.Styleable.ColorStateListItem_android_alpha;
+			global::Plugin.Media.Resource.Styleable.ColorStateListItem_android_color = global::MapNotePad.Droid.Resource.Styleable.ColorStateListItem_android_color;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_keylines = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_keylines;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout_android_layout_gravity;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchor;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout_layout_anchorGravity = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_anchorGravity;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout_layout_behavior = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_behavior;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_insetEdge;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_Layout_layout_keyline;
+			global::Plugin.Media.Resource.Styleable.CoordinatorLayout_statusBarBackground = global::MapNotePad.Droid.Resource.Styleable.CoordinatorLayout_statusBarBackground;
+			global::Plugin.Media.Resource.Styleable.FontFamily = global::MapNotePad.Droid.Resource.Styleable.FontFamily;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_android_font = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_android_font;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_android_fontStyle = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_android_fontStyle;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_android_fontVariationSettings = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_android_fontVariationSettings;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_android_fontWeight = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_android_fontWeight;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_android_ttcIndex = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_android_ttcIndex;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_font = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_font;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_fontStyle = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_fontStyle;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_fontVariationSettings = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_fontVariationSettings;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_fontWeight = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_fontWeight;
+			global::Plugin.Media.Resource.Styleable.FontFamilyFont_ttcIndex = global::MapNotePad.Droid.Resource.Styleable.FontFamilyFont_ttcIndex;
+			global::Plugin.Media.Resource.Styleable.FontFamily_fontProviderAuthority = global::MapNotePad.Droid.Resource.Styleable.FontFamily_fontProviderAuthority;
+			global::Plugin.Media.Resource.Styleable.FontFamily_fontProviderCerts = global::MapNotePad.Droid.Resource.Styleable.FontFamily_fontProviderCerts;
+			global::Plugin.Media.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::MapNotePad.Droid.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
+			global::Plugin.Media.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::MapNotePad.Droid.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
+			global::Plugin.Media.Resource.Styleable.FontFamily_fontProviderPackage = global::MapNotePad.Droid.Resource.Styleable.FontFamily_fontProviderPackage;
+			global::Plugin.Media.Resource.Styleable.FontFamily_fontProviderQuery = global::MapNotePad.Droid.Resource.Styleable.FontFamily_fontProviderQuery;
+			global::Plugin.Media.Resource.Styleable.GradientColor = global::MapNotePad.Droid.Resource.Styleable.GradientColor;
+			global::Plugin.Media.Resource.Styleable.GradientColorItem = global::MapNotePad.Droid.Resource.Styleable.GradientColorItem;
+			global::Plugin.Media.Resource.Styleable.GradientColorItem_android_color = global::MapNotePad.Droid.Resource.Styleable.GradientColorItem_android_color;
+			global::Plugin.Media.Resource.Styleable.GradientColorItem_android_offset = global::MapNotePad.Droid.Resource.Styleable.GradientColorItem_android_offset;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_centerColor = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_centerColor;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_centerX = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_centerX;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_centerY = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_centerY;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_endColor = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_endColor;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_endX = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_endX;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_endY = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_endY;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_gradientRadius = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_gradientRadius;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_startColor = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_startColor;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_startX = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_startX;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_startY = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_startY;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_tileMode = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_tileMode;
+			global::Plugin.Media.Resource.Styleable.GradientColor_android_type = global::MapNotePad.Droid.Resource.Styleable.GradientColor_android_type;
+			global::Plugin.Media.Resource.Xml.xamarin_essentials_fileprovider_file_paths = global::MapNotePad.Droid.Resource.Xml.xamarin_essentials_fileprovider_file_paths;
 			global::Plugin.Permissions.Resource.Attribute.alpha = global::MapNotePad.Droid.Resource.Attribute.alpha;
 			global::Plugin.Permissions.Resource.Attribute.coordinatorLayoutStyle = global::MapNotePad.Droid.Resource.Attribute.coordinatorLayoutStyle;
 			global::Plugin.Permissions.Resource.Attribute.font = global::MapNotePad.Droid.Resource.Attribute.font;
@@ -11412,106 +11594,109 @@ namespace MapNotePad.Droid
 			public const int design_snackbar_background = 2131165302;
 			
 			// aapt resource value: 0x7F070077
-			public const int googleg_disabled_color_18 = 2131165303;
+			public const int gallery = 2131165303;
 			
 			// aapt resource value: 0x7F070078
-			public const int googleg_standard_color_18 = 2131165304;
+			public const int googleg_disabled_color_18 = 2131165304;
 			
 			// aapt resource value: 0x7F070079
-			public const int ic_add = 2131165305;
+			public const int googleg_standard_color_18 = 2131165305;
 			
 			// aapt resource value: 0x7F07007A
-			public const int ic_arrow_back = 2131165306;
+			public const int ic_add = 2131165306;
 			
 			// aapt resource value: 0x7F07007B
-			public const int ic_camera_alt = 2131165307;
+			public const int ic_arrow_back = 2131165307;
 			
 			// aapt resource value: 0x7F07007C
-			public const int ic_collections = 2131165308;
+			public const int ic_camera_alt = 2131165308;
 			
 			// aapt resource value: 0x7F07007D
-			public const int ic_errorstatus = 2131165309;
+			public const int ic_collections = 2131165309;
 			
 			// aapt resource value: 0x7F07007E
-			public const int ic_exit_to_app = 2131165310;
+			public const int ic_errorstatus = 2131165310;
 			
 			// aapt resource value: 0x7F07007F
-			public const int ic_mtrl_chip_checked_black = 2131165311;
+			public const int ic_exit_to_app = 2131165311;
 			
 			// aapt resource value: 0x7F070080
-			public const int ic_mtrl_chip_checked_circle = 2131165312;
+			public const int ic_mtrl_chip_checked_black = 2131165312;
 			
 			// aapt resource value: 0x7F070081
-			public const int ic_mtrl_chip_close_circle = 2131165313;
+			public const int ic_mtrl_chip_checked_circle = 2131165313;
 			
 			// aapt resource value: 0x7F070082
-			public const int ic_save = 2131165314;
+			public const int ic_mtrl_chip_close_circle = 2131165314;
 			
 			// aapt resource value: 0x7F070083
-			public const int ic_settings = 2131165315;
+			public const int ic_save = 2131165315;
 			
 			// aapt resource value: 0x7F070084
-			public const int ic_successstatus = 2131165316;
+			public const int ic_settings = 2131165316;
 			
 			// aapt resource value: 0x7F070085
-			public const int mtrl_snackbar_background = 2131165317;
+			public const int ic_successstatus = 2131165317;
 			
 			// aapt resource value: 0x7F070086
-			public const int mtrl_tabs_default_indicator = 2131165318;
+			public const int mtrl_snackbar_background = 2131165318;
 			
 			// aapt resource value: 0x7F070087
-			public const int navigation_empty_icon = 2131165319;
+			public const int mtrl_tabs_default_indicator = 2131165319;
 			
 			// aapt resource value: 0x7F070088
-			public const int notification_action_background = 2131165320;
+			public const int navigation_empty_icon = 2131165320;
 			
 			// aapt resource value: 0x7F070089
-			public const int notification_bg = 2131165321;
+			public const int notification_action_background = 2131165321;
 			
 			// aapt resource value: 0x7F07008A
-			public const int notification_bg_low = 2131165322;
+			public const int notification_bg = 2131165322;
 			
 			// aapt resource value: 0x7F07008B
-			public const int notification_bg_low_normal = 2131165323;
+			public const int notification_bg_low = 2131165323;
 			
 			// aapt resource value: 0x7F07008C
-			public const int notification_bg_low_pressed = 2131165324;
+			public const int notification_bg_low_normal = 2131165324;
 			
 			// aapt resource value: 0x7F07008D
-			public const int notification_bg_normal = 2131165325;
+			public const int notification_bg_low_pressed = 2131165325;
 			
 			// aapt resource value: 0x7F07008E
-			public const int notification_bg_normal_pressed = 2131165326;
+			public const int notification_bg_normal = 2131165326;
 			
 			// aapt resource value: 0x7F07008F
-			public const int notification_icon_background = 2131165327;
+			public const int notification_bg_normal_pressed = 2131165327;
 			
 			// aapt resource value: 0x7F070090
-			public const int notification_template_icon_bg = 2131165328;
+			public const int notification_icon_background = 2131165328;
 			
 			// aapt resource value: 0x7F070091
-			public const int notification_template_icon_low_bg = 2131165329;
+			public const int notification_template_icon_bg = 2131165329;
 			
 			// aapt resource value: 0x7F070092
-			public const int notification_tile_bg = 2131165330;
+			public const int notification_template_icon_low_bg = 2131165330;
 			
 			// aapt resource value: 0x7F070093
-			public const int notify_panel_notification_icon_bg = 2131165331;
+			public const int notification_tile_bg = 2131165331;
 			
 			// aapt resource value: 0x7F070094
-			public const int roundedbg = 2131165332;
+			public const int notify_panel_notification_icon_bg = 2131165332;
 			
 			// aapt resource value: 0x7F070095
-			public const int roundedbgdark = 2131165333;
+			public const int roundedbg = 2131165333;
 			
 			// aapt resource value: 0x7F070096
-			public const int star = 2131165334;
+			public const int roundedbgdark = 2131165334;
 			
 			// aapt resource value: 0x7F070097
-			public const int tooltip_frame_dark = 2131165335;
+			public const int star = 2131165335;
 			
 			// aapt resource value: 0x7F070098
-			public const int tooltip_frame_light = 2131165336;
+			public const int tooltip_frame_dark = 2131165336;
+			
+			// aapt resource value: 0x7F070099
+			public const int tooltip_frame_light = 2131165337;
 			
 			static Drawable()
 			{
@@ -17499,7 +17684,10 @@ namespace MapNotePad.Droid
 		{
 			
 			// aapt resource value: 0x7F110000
-			public const int xamarin_essentials_fileprovider_file_paths = 2131820544;
+			public const int file_paths = 2131820544;
+			
+			// aapt resource value: 0x7F110001
+			public const int xamarin_essentials_fileprovider_file_paths = 2131820545;
 			
 			static Xml()
 			{

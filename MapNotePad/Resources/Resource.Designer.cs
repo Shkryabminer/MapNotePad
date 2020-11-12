@@ -88,7 +88,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to FirstName.
         /// </summary>
         internal static string EditListNameLable {
             get {
@@ -97,7 +97,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to FirstName.
         /// </summary>
         internal static string EditListNamePlace {
             get {
@@ -142,7 +142,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email.
+        ///   Looks up a localized string similar to _fbProfile.
         /// </summary>
         internal static string LoginPageLoginPlace {
             get {
@@ -205,7 +205,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email.
+        ///   Looks up a localized string similar to _fbProfile.
         /// </summary>
         internal static string SignUpPageEmailEntry {
             get {
@@ -214,7 +214,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to FirstName.
         /// </summary>
         internal static string SignUpPageLoginName {
             get {

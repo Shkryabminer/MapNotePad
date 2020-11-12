@@ -103,21 +103,21 @@
 
             </Label>
 
-            <Label 
-                FontSize="14"               
+            <Label
+                FontSize="14"
                 HorizontalOptions="Center"
-                Text="or"/>
+                Text="or" />
 
             <Button
-                HorizontalOptions="Center"
-                WidthRequest="200"
-                HeightRequest="40"
                 BackgroundColor="#005DC1"
-                TextColor="White"
+                Command="{Binding FBLoginCommand}"
                 FontSize="15"
-                TextTransform="None"
+                HeightRequest="40"
+                HorizontalOptions="Center"
                 Text="Login with Facebook"
-                Command="{Binding FBLoginCommand}"/>
+                TextColor="White"
+                TextTransform="None"
+                WidthRequest="200" />
 
         </StackLayout>
     </Grid>

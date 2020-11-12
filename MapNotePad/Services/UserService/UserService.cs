@@ -6,14 +6,33 @@ namespace MapNotePad.Services.UserService
     public class UserService : IUserServcie
     {
         private readonly IRepository _repository;
-      
-        public UserService(IRepository repository)
+        private readonly ISettingsManager _settingsManager;
+
+        public UserService(IRepository repository,
+                            ISettingsManager settingsManager)
         {
             _repository = repository;
+            _settingsManager = settingsManager;
         }
 
+        #region --Public properties--
+
+
+
+        #endregion
+
         #region --IUserServiceImplementation--
-      
+
+        public string GetFirstName()
+        {
+            return _settingsManager.FirstName;
+        }
+
+        public string GetLastName()
+        {
+            return _settingsManager.LastName;
+        }
+
         public int AddOrUpdate(User user)
         {
            return _repository.AddOrrUpdate(user);
@@ -23,6 +42,7 @@ namespace MapNotePad.Services.UserService
         {
             _repository.DeleteItem(user);
         }
+       
 
         public IEnumerable<User> GetUsers()
         {

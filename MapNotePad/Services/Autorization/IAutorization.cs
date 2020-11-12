@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MapNotePad.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,8 +9,8 @@ namespace MapNotePad.Services.Autorization
     {
         bool Autorizeted();
         void LogOut();
-        int GetActiveUser();
-        void SetActiveUser(int id);
+        string GetActiveUserEmail();
+        void SetActiveUserEmail(User user);
 
     }
 }

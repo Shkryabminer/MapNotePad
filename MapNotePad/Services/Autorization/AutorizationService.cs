@@ -1,4 +1,5 @@
-﻿using Plugin.Settings;
+﻿using MapNotePad.Models;
+using Plugin.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,20 +20,22 @@ namespace MapNotePad.Services.Autorization
 
         public bool Autorizeted()
         {
-            return (_manager.AutorizatedUserId > -1);
+            return ( !string.IsNullOrEmpty(_manager.AutorizatedUserEmail));
         }
         public void LogOut()
         {
-            _manager.AutorizatedUserId = -1;
+            _manager.AutorizatedUserEmail = string.Empty;
         }
 
-        public int GetActiveUser()
+        public string GetActiveUserEmail()
         {
-            return _manager.AutorizatedUserId;
+            return _manager.AutorizatedUserEmail;
         }
-        public void SetActiveUser(int id)
+        public void SetActiveUserEmail(User user)
         {
-            _manager.AutorizatedUserId = id;
+            _manager.AutorizatedUserEmail =user.Email;
+            _manager.FirstName = user.FirstName;
+            _manager.LastName = user.LastName;
         }
 
         #endregion

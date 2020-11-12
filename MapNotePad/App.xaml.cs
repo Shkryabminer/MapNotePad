@@ -20,6 +20,9 @@ using MapNotePad.Services.PermissionService;
 using Plugin.Permissions.Abstractions;
 using Plugin.Permissions;
 using MapNotePad.Services.FBAuthService;
+using MapNotePad.Services.WeatherService;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 
 namespace MapNotePad
 {
@@ -62,6 +65,7 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<ISettings>(CrossSettings.Current);
             containerRegistry.RegisterInstance<IUserDialogs>(UserDialogs.Instance);
             containerRegistry.RegisterInstance<IPermissions>(CrossPermissions.Current);
+            containerRegistry.RegisterInstance<IMedia>(CrossMedia.Current);
 
 
             //      Servvices
@@ -74,6 +78,7 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<IPasswordValidator>(Container.Resolve<PasswordValidator>()); //Service
             containerRegistry.RegisterInstance<IPermissionService>(Container.Resolve<PermissionService>());
             containerRegistry.RegisterInstance<IFBAuthService>(Container.Resolve<FBAuthService>());
+            containerRegistry.RegisterInstance<IWeatherService>(Container.Resolve<WeatherService>());
         }
 
         protected override void OnStart()

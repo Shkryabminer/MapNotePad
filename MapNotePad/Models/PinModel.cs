@@ -11,21 +11,21 @@ namespace MapNotePad.Models
         public string Name { get; set; }
         public double Latitude { get; set; }
         public double Longtitude { get; set; }
-        public int UserID { get; set; }
+        public string UserEmail { get; set; }
 
         public string KeyWords { get; set; }
               
         public bool IsActive { get; set; }
-
+        public string Picture { get; set; }
 
         public PinModel()
         {
-            KeyWords = string.Empty;
+            KeyWords = string.Empty;            
         }
 
-        public PinModel(int id) : this()
+        public PinModel(string userEmail) : this()
         {
-            UserID = id;
+            UserEmail = userEmail;
         }
     }
 }

@@ -11,16 +11,18 @@ namespace MapNotePad.Services
     {
 
         private readonly ISettings _setPlugin;
+
         public SettingsManager(ISettings plugin)
         {
             _setPlugin = plugin;
         }
 
         #region --ISettings implementation--
-        public int AutorizatedUserId
+       
+        public string AutorizatedUserEmail
         {
-            get => _setPlugin.GetValueOrDefault(nameof(AutorizatedUserId), -1);
-            set => _setPlugin.AddOrUpdateValue(nameof(AutorizatedUserId), value);
+            get => _setPlugin.GetValueOrDefault(nameof(AutorizatedUserEmail), string.Empty);
+            set => _setPlugin.AddOrUpdateValue(nameof(AutorizatedUserEmail), value);
         }
         public int SelectedSortMethode
         {
@@ -50,6 +52,18 @@ namespace MapNotePad.Services
             get => _setPlugin.GetValueOrDefault(nameof(Zoom), 41.0);
             set => _setPlugin.AddOrUpdateValue(nameof(Zoom), value);
         }
+        public string FirstName
+        {
+            get => _setPlugin.GetValueOrDefault(nameof(FirstName),string.Empty);
+            set => _setPlugin.AddOrUpdateValue(nameof(FirstName),value);
+        }
+        public string LastName
+        {
+            get => _setPlugin.GetValueOrDefault(nameof(LastName), string.Empty);
+            set => _setPlugin.AddOrUpdateValue(nameof(LastName), value);
+        }
+
+
         #endregion
 
 

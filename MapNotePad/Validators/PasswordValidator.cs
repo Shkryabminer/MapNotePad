@@ -11,7 +11,7 @@ namespace MapNotePad.Services.Validators
         {
             string mess = "Valid";
             foreach (IUser user in users)
-                if (user.Name == login)
+                if (user.FirstName == login)
                      mess= "LoginIsAlreadyTaken";
                 else if (login.Length < 4 || login.Length > 16)
                     mess ="IncorrectLoginLength";

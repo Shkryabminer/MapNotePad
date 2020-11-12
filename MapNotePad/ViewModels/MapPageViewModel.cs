@@ -5,6 +5,7 @@ using MapNotePad.Pickers;
 using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PermissionService;
 using MapNotePad.Services.PinService;
+using MapNotePad.Services.WeatherService;
 using MapNotePad.ViewModels.Interfaces;
 using Plugin.Permissions.Abstractions;
 using Prism.Navigation;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -27,18 +29,21 @@ namespace MapNotePad.ViewModels
         private readonly IPinService _pinService;
         private readonly IAutorization _autorizationService;
         private readonly IPermissionService _permissionService;
+        private readonly IWeatherService _weatherService;
 
         public MapPageViewModel(INavigationService navigationService,
                                 IPinService pinService,
                                 IAutorization autorizationService,
                                 IUserDialogs userDialogs,
-                                IPermissionService permissionService)
+                                IPermissionService permissionService,
+                                IWeatherService weatherService)
                                 : base(navigationService)
         {
             _permissionService = permissionService;
             _userDialogs = userDialogs;
             _pinService = pinService;
             _autorizationService = autorizationService;
+            _weatherService = weatherService;
         }
 
         #region --Public properties--       
@@ -52,7 +57,6 @@ namespace MapNotePad.ViewModels
         }
 
         private string _searchBar;
-
         public string SearchBar
         {
             get => _searchBar;
@@ -73,6 +77,41 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _selectedPin, value);
         }
 
+        private Pin _onMpTappedPin;
+        public Pin OnMapTappedPin
+        {
+            get => _onMpTappedPin;
+            set => SetProperty(ref _onMpTappedPin, value);
+        }
+
+        private WeatherModel _pinTappedWeather;
+        public WeatherModel PinTappedWeather
+        {
+            get => _pinTappedWeather;
+            set => SetProperty(ref _pinTappedWeather, value);
+        }
+
+        private string _mapTappedPinPicture;
+        public string MapTappedPinPicture
+        {
+            get => _mapTappedPinPicture ??= Constants.picture;
+            set => SetProperty(ref _mapTappedPinPicture, value);
+        }
+
+        private string _description;
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
+        private bool _infoIsVisible;
+        public bool InfoIsVisible
+        {
+            get => _infoIsVisible;
+            set => SetProperty(ref _infoIsVisible, value);
+        }
+
         private CameraPosition _lastCameraPosition;
         public CameraPosition LastCameraPosition
         {
@@ -87,6 +126,12 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _startCameraPosition, value);
         }
 
+        private User activeUSer;
+        public User ActiveUser
+        {
+            get => activeUSer;
+            set => SetProperty(ref activeUSer, value);
+        }
 
         private ICommand _cameraChangedCommand;
         public ICommand CameraChangedCommand => _cameraChangedCommand ??= new Command<CameraPosition>(OnCameraChangedCommand);
@@ -94,26 +139,40 @@ namespace MapNotePad.ViewModels
         private ICommand _pinClickedCommand;
         public ICommand PinClickedCommand => _pinClickedCommand ??= new Command<Pin>(OnPinClickedCommand);
 
-
+        private ICommand _mapClickedCommand;
+        public ICommand MapClickedCommand => _mapClickedCommand ??= new Command(OnMapClickedCommand);
+                
         #endregion
 
 
         #region --OnCommand handlers--
 
-        private void OnPinClickedCommand(Pin pin)
+        private async void OnPinClickedCommand(Pin pin)
         {
             if (pin != null)
             {
-                var config = SetActionSheetConfig(pin);
+               
 
-                _userDialogs.ActionSheet(config);
+                PinTappedWeather = await _weatherService.GetWeatherData(pin.Position.Latitude,pin.Position.Longitude);
+               
+                SetActionSheetConfig(pin);
+                InfoIsVisible = true;
+                //_userDialogs.ActionSheet(config);
             }
         }
+
         private void OnCameraChangedCommand(CameraPosition obj)
         {
             LastCameraPosition = obj;
         }
 
+        private void OnMapClickedCommand()
+        {
+            if (InfoIsVisible)
+            {
+                InfoIsVisible = false;
+            }
+        }
 
         #endregion
 
@@ -147,11 +206,15 @@ namespace MapNotePad.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            Pins = _pinService.GetActivePins(_autorizationService.GetActiveUser()).ToList();
+            Pins = _pinService.GetActivePinsByEmail(_autorizationService.GetActiveUserEmail()).ToList();
 
             if (parameters.TryGetValue("selectedCell", out PinModelViewModel selectedCell))
             {
                 SetLocationToMap(selectedCell);
+            }
+            else if (parameters.TryGetValue(Constants.NavigationParameters.User, out User activeUser))
+            {
+                ActiveUser = activeUser;
             }
             else
             {
@@ -184,8 +247,16 @@ namespace MapNotePad.ViewModels
             SelectedPin = pinModel.ToPin();
         }
 
-        private ActionSheetConfig SetActionSheetConfig(Pin pin)
+        private void SetActionSheetConfig(Pin pin)
         {
+            OnMapTappedPin = pin;
+
+            string[] strings = (string[])pin.Tag;
+
+            MapTappedPinPicture = strings[1];
+
+            Description = strings[0];
+
             ActionSheetConfig config = new ActionSheetConfig
             {
                 Title = pin.Label,
@@ -199,21 +270,21 @@ namespace MapNotePad.ViewModels
 
             config.SetCancel(null, null, null);
 
-            return config;
+          //  return config;
         }
 
         private void SortPinCollection()
         {
             if (!string.IsNullOrEmpty(SearchBar))
             {
-                var activePins = _pinService.GetActivePins(_autorizationService.GetActiveUser());
+                var activePins = _pinService.GetActivePinsByEmail(_autorizationService.GetActiveUserEmail());
 
                 Pins = activePins.Pick(SearchBar);
             }
 
             else
             {
-                Pins = _pinService.GetActivePins(_autorizationService.GetActiveUser()).ToList();
+                Pins = _pinService.GetActivePinsByEmail(_autorizationService.GetActiveUserEmail()).ToList();
             }
         }
         private async Task SetLocationButton()

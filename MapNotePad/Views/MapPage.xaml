@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls;assembly=MapNotePad"
     xmlns:converters="clr-namespace:MapNotePad.Converters"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:prism="http://prismlibrary.com"
     xmlns:views="clr-namespace:MapNotePad.Views">
 
@@ -32,8 +34,8 @@
             VerticalOptions="FillAndExpand">
 
             <Frame
-                Padding="0"
                 Margin="10,10"
+                Padding="0"
                 BackgroundColor="White"
                 BorderColor="#2196F3"
                 CornerRadius="20"
@@ -55,7 +57,6 @@
             </Frame>
         </Frame>
 
-
         <controls:GeneralMap
             Grid.Row="1"
             CameraPosition="{Binding LastCameraPosition, Mode=TwoWay}"
@@ -73,9 +74,118 @@
                     EventArgsParameterPath="Pin"
                     EventName="PinClicked" />
 
-            </controls:GeneralMap.Behaviors>
+                <prism:EventToCommandBehavior Command="{Binding MapClickedCommand}" EventName="MapClicked" />
 
+            </controls:GeneralMap.Behaviors>
         </controls:GeneralMap>
+
+        <!--  Sliding frame  -->
+
+        <controls:SlidingFramePinInfo
+            Grid.Row="1"
+            BackgroundColor="WhiteSmoke"
+            BorderColor="Blue"
+            CornerRadius="10"
+            HasShadow="False"
+            HeightRequest="250"
+            HorizontalOptions="Center"
+            IsVisible="{Binding InfoIsVisible}"
+            VerticalOptions="Center"
+            WidthRequest="200">
+
+            <controls:SlidingFramePinInfo.Padding>
+                <OnPlatform
+                    x:TypeArguments="Thickness"
+                    Android="0,0"
+                    iOS="-5,-10" />
+
+
+            </controls:SlidingFramePinInfo.Padding>
+
+            <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.4*" />
+                    <RowDefinition Height="0.4*" />
+                    <RowDefinition Height="0.2*" />
+                </Grid.RowDefinitions>
+
+                <ffimageloading:CachedImage
+                    Grid.Row="0"
+                    Aspect="AspectFit"
+                    DownsampleToViewSize="True"
+                    ErrorPlaceholder="gallery.png"
+                    HorizontalOptions="Fill"
+                    LoadingPlaceholder="gallery.png"
+                    Source="{Binding MapTappedPinPicture}"
+                    VerticalOptions="Fill" />
+
+                <Label
+                    Grid.Row="1"
+                    Margin="0"
+                    FontAttributes="Italic"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="{Binding OnMapTappedPin.Label}"
+                    VerticalOptions="Start" />
+
+                <StackLayout
+                    Grid.Row="1"
+                    Margin="0,30,0,0"
+                    HorizontalOptions="CenterAndExpand"
+                    Orientation="Horizontal">
+
+                    <Label
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding OnMapTappedPin.Position.Latitude, StringFormat='Latitude: {0:f7}'}" />
+                    <Label
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding OnMapTappedPin.Position.Longitude, StringFormat='Longitude: {0:f7}'}" />
+                </StackLayout>
+
+                <Label
+                    Margin="0,0,5,0"
+                    Text="{Binding Description}"
+                    VerticalOptions="End" />
+
+                <Label
+                    Grid.Row="1"
+                    Margin="10"
+                    HorizontalOptions="Start"
+                    Text="{Binding Description}" />
+
+                <StackLayout
+                    Grid.Row="2"
+                    HorizontalOptions="Center"
+                    Orientation="Horizontal"
+                    VerticalOptions="Center">
+
+                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span FontAttributes="Bold" Text="Temperature&#10;" />
+
+                                <Span Text="{Binding PinTappedWeather.main.temp, StringFormat='{0:f0}°'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label HorizontalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span FontAttributes="Bold" Text="Feels like&#10;" />
+                                <Span Text="{Binding PinTappedWeather.main.temp, StringFormat='{0:f0}°'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                </StackLayout>
+
+            </Grid>
+
+        </controls:SlidingFramePinInfo>
 
 
 

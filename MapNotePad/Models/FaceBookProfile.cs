@@ -5,25 +5,30 @@ using System.Text;
 
 namespace MapNotePad.Models
 {
-    public class FBProfile
+    public class FaceBookProfile : User
     {
-        public string Name { get; set; }
+        [JsonProperty("Picture")]
+        
         public Picture Picture { get; set; }
         public string Locale { get; set; }
         public string Link { get; set; }
         public Cover Cover { get; set; }
+
         [JsonProperty("age_range")]
         public AgeRange AgeRange { get; set; }
         public Device[] Devices { get; set; }
+
         [JsonProperty("first_name")]
-        public string FirstName { get; set; }
+        public override string FirstName { get; set; }
+
         [JsonProperty("last_name")]
-        public string LastName { get; set; }
+        public override string LastName { get; set; }
         public string Gender { get; set; }
         public bool IsVerified { get; set; }
         public string Id { get; set; }
+
         [JsonProperty("email")]
-        public string Email { get; set; }
+        public override string Email { get; set; }
     }
 
     public class Picture

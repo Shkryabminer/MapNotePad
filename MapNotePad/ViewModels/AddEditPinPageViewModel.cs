@@ -4,10 +4,12 @@ using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PermissionService;
 using MapNotePad.Services.PinService;
 using MapNotePad.Validators;
+using Plugin.Media.Abstractions;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -21,17 +23,20 @@ namespace MapNotePad.ViewModels
         private readonly IAutorization _autorizationService;
         private readonly IUserDialogs _userDialogs;
         private readonly IPermissionService _permissionService;
+        private readonly IMedia _mediaPlugin;
 
         public AddEditPinPageViewModel(INavigationService navigationService,
                                         IPinService pinService,
                                         IAutorization autorization,
                                         IUserDialogs userDialogs,
-                                        IPermissionService permissionService) : base(navigationService)
+                                        IPermissionService permissionService,
+                                        IMedia mediaPlugin) : base(navigationService)
         {
             _userDialogs = userDialogs;
             _autorizationService = autorization;
             _pinService = pinService;
             _permissionService = permissionService;
+            _mediaPlugin = mediaPlugin;
         }
 
         #region --Public properties--
@@ -56,26 +61,41 @@ namespace MapNotePad.ViewModels
             get => _isLocationButtonEnabled;
             set => SetProperty(ref _isLocationButtonEnabled, value);
         }
+        private bool _pictureMenuIsActive;
+        public bool PictureMenuIsActive
+        {
+            get => _pictureMenuIsActive;
+            set => SetProperty(ref _pictureMenuIsActive, value);
+        }
 
         private ICommand _savePinCommand;
-        public ICommand SavePinCommand => _savePinCommand??= new Command(OnSavePinCommand);
+        public ICommand SavePinCommand => _savePinCommand ??= new Command(OnSavePinCommand);
 
         private ICommand _mapClickedCommand;
-        public ICommand MapClickedCommand => _mapClickedCommand??= new Command<Position>(OnMapClickedCommand);
+        public ICommand MapClickedCommand => _mapClickedCommand ??= new Command<Position>(OnMapClickedCommand);
 
         private ICommand _GoBackCommand;
         public ICommand GoBackCommand => _GoBackCommand ??= new Command(OnGoBackCommand);
 
+        private ICommand _cameraPictureCommand;
+        public ICommand CameraPictureCommand => _cameraPictureCommand ??= new Command(OnCameraPictureCommand);
+
+        private ICommand _storagePictureCommand;
+        public ICommand StoragePictureCommand => _storagePictureCommand ??= new Command(OnStoragePictureCommand);
+
+        private ICommand _showImageCommand;
+        public ICommand ShowImageMenu => _showImageCommand ??= new Command(() => PictureMenuIsActive = !PictureMenuIsActive);
+
         #endregion
 
-        
+
         #region --OnCommandHandlers--
 
         private async void OnSavePinCommand()
         {
             if (CheckFields())
             {
-                CurrentPinModel.UserID = _autorizationService.GetActiveUser();
+                CurrentPinModel.UserEmail = _autorizationService.GetActiveUserEmail();
                 _pinService.SaveOrUpdatePin(CurrentPinModel);
                 await NavigationService.GoBackAsync();
             }
@@ -85,39 +105,90 @@ namespace MapNotePad.ViewModels
         {
             if (point != null)
             {
-                CurrentPinModel = new PinModelViewModel(new PinModel());
+                if (CurrentPinModel == null)
+                {
+                    CurrentPinModel = new PinModelViewModel(new PinModel());
+                }
+                else
+                {
+                    //alternative brunch
+                }
                 CurrentPinModel.Latitude = point.Latitude;
                 CurrentPinModel.Longtitude = point.Longitude;
-                CreatePin();              
+
+                CreatePin();
             }
+            else
+            {
+                // alternative branch
+            }
+        }
+        private async void OnCameraPictureCommand()
+        {
+            if (_mediaPlugin.IsTakePhotoSupported && _mediaPlugin.IsCameraAvailable)
+            {
+                var options = new StoreCameraMediaOptions();
+                options.SaveToAlbum = true;
+                options.PhotoSize = PhotoSize.Custom;
+                options.CustomPhotoSize = 600;
+
+                MediaFile file = await _mediaPlugin.TakePhotoAsync(options);
+                if (file != null)
+                {
+                    CurrentPinModel.Picture = file.Path;
+                }
+            }
+        }
+
+        private async void OnStoragePictureCommand()
+        {
+            if (_mediaPlugin.IsPickPhotoSupported)
+            {
+                MediaFile file = await _mediaPlugin.PickPhotoAsync();
+
+                if (file != null)
+                {
+                    CurrentPinModel.Picture = file.Path; 
+                }
+            }
+        }
+
+        private async void OnGoBackCommand()
+        {
+            await NavigationService.GoBackAsync();
         }
 
         #endregion
 
         #region --Overrides--
-     
+
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            base.OnPropertyChanged(args);           
+            base.OnPropertyChanged(args);
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
-            var pinModelVM = parameters.GetValue<IPinModel>(nameof(PinModelViewModel)) as PinModelViewModel; //trygetvalue, nameof
+            var pinModelVM = parameters.GetValue<PinModelViewModel>(nameof(PinModelViewModel)) as PinModelViewModel; //trygetvalue, nameof
 
+            Debug.WriteLine("");
             if (pinModelVM != null)
             {
                 CurrentPinModel = pinModelVM;
+            }
+            else
+            {
+                CurrentPinModel = new PinModelViewModel(new PinModel());
             }
         }
 
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
-             await   base.InitializeAsync(parameters);
+            await base.InitializeAsync(parameters);
 
-             await SetLocationButton();
+            await SetLocationButton();
 
         }
         #endregion
@@ -144,9 +215,15 @@ namespace MapNotePad.ViewModels
             return pinValidator.PinModelIsValid(CurrentPinModel);
         }
 
-        private async void OnGoBackCommand()
+
+        private async void SetPictureFromGalery()
         {
-            await NavigationService.GoBackAsync();
+            if (_mediaPlugin.IsPickPhotoSupported)
+            {
+                MediaFile file = await _mediaPlugin.PickPhotoAsync();
+                CurrentPinModel.Picture = file.Path;
+                RaisePropertyChanged(nameof(CurrentPinModel));
+            }
         }
 
         #endregion

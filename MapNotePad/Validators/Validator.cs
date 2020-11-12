@@ -8,12 +8,12 @@ namespace MapNotePad.Validators
 {
     public  class Validator
     {
-        //public static Validator Email{ get; private set; }
+        //public static Validator _fbProfile{ get; private set; }
         //public static Validator Password { get; private set; }
 
         //static Validator()
         //{
-        //    Email = new Validator(Constants._email_pattern);
+        //    _fbProfile = new Validator(Constants._email_pattern);
         //}
         //protected Validator(string pattern)
         //{

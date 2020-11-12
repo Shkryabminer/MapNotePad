@@ -11,6 +11,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+
             <Style x:Key="FrameStyle" TargetType="Frame">
                 <Setter Property="Margin" Value="5,0" />
                 <Setter Property="BorderColor" Value="Blue" />
@@ -42,12 +43,17 @@
     </ContentPage.Resources>
 
     <Grid>
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer />
+        </Grid.GestureRecognizers>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="0.5*" />
             <RowDefinition Height="0.5*" />
         </Grid.RowDefinitions>
+
+        <!--  Custom Navigation Bar  -->
 
         <Frame
             Grid.Row="0"
@@ -67,16 +73,29 @@
                     HorizontalOptions="Start"
                     Text="back"
                     VerticalOptions="Center">
+
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
 
                 <Image
+                    Margin="40,0"
+                    HorizontalOptions="End"
+                    Source="ic_collections"
+                    VerticalOptions="Fill">
+
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowImageMenu}" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Image
                     Margin="10,0"
                     HorizontalOptions="End"
                     Source="ic_save"
                     VerticalOptions="Fill">
+
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SavePinCommand}" />
                     </Image.GestureRecognizers>
@@ -86,6 +105,9 @@
 
         </Frame>
 
+        <!--  Main content  -->
+
+        
         <StackLayout
             Grid.Row="1"
             Margin="0,5,0,0"
@@ -109,7 +131,7 @@
             </Frame>
 
             <Label
-                Margin="10,0"
+                Margin="10,15,0,0"
                 HorizontalOptions="Start"
                 Text="{x:Static localization:Resource.EditListDescriptLable}"
                 TextColor="{DynamicResource SecondaryTextColor}"
@@ -125,38 +147,81 @@
                 TextColor="{DynamicResource SescriptionTextColor}"
                 VerticalOptions="StartAndExpand" />
 
-            <Label
-                Margin="10,0,0,0"
-                FontSize="12"
-                Text="{x:Static localization:Resource.EditLatitudeLable}"
-                TextColor="{DynamicResource SecondaryTextColor}" />
+            <Grid>
 
-            <Frame HeightRequest="40" Style="{StaticResource Key=FrameStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
 
-                <controls:CommonEntry
-                    Placeholder="{x:Static localization:Resource.EditLatitudePlace}"
-                    PlaceholderColor="{DynamicResource SecondaryTextColor}"
-                    Style="{StaticResource EntryStyle}"
-                    Text="{Binding CurrentPinModel.Latitude}" />
 
-            </Frame>
+                <Label
+                    Grid.Column="0"
+                    Margin="10,0,0,0"
+                    FontSize="12"
+                    Text="{x:Static localization:Resource.EditLatitudeLable}"
+                    TextColor="{DynamicResource SecondaryTextColor}" />
 
-            <Label
-                Margin="10,0,0,0"
-                FontSize="12"
-                Text="{x:Static localization:Resource.EditLongitudeLable}"
-                TextColor="{DynamicResource SecondaryTextColor}" />
+                <Frame
+                    Grid.Column="0"
+                    Margin="0,20,0,0"
+                    HeightRequest="40"
+                    Style="{StaticResource Key=FrameStyle}">
 
-            <Frame HeightRequest="40" Style="{StaticResource Key=FrameStyle}">
+                    <controls:CommonEntry
+                        Placeholder="{x:Static localization:Resource.EditLatitudePlace}"
+                        PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                        Style="{StaticResource EntryStyle}"
+                        Text="{Binding CurrentPinModel.Latitude}" />
 
-                <controls:CommonEntry
-                    Placeholder="{x:Static localization:Resource.EditLongitudePlace}"
-                    PlaceholderColor="{DynamicResource SecondaryTextColor}"
-                    Style="{StaticResource EntryStyle}"
-                    Text="{Binding CurrentPinModel.Longtitude}" />
-            </Frame>
+                </Frame>
+
+                <Label
+                    Grid.Column="1"
+                    Margin="10,0,0,0"
+                    FontSize="12"
+                    Text="{x:Static localization:Resource.EditLongitudeLable}"
+                    TextColor="{DynamicResource SecondaryTextColor}" />
+
+                <Frame
+                    Grid.Column="1"
+                    Margin="0,20,0,0"
+                    HeightRequest="40"
+                    Style="{StaticResource Key=FrameStyle}">
+
+                    <controls:CommonEntry
+                        Placeholder="{x:Static localization:Resource.EditLongitudePlace}"
+                        PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                        Style="{StaticResource EntryStyle}"
+                        Text="{Binding CurrentPinModel.Longtitude}" />
+                </Frame>
+
+            </Grid>
 
         </StackLayout>
+        <Frame
+            Grid.Row="1"
+            HeightRequest="80"
+            IsVisible="{Binding PictureMenuIsActive}"
+            VerticalOptions="Start"
+            HorizontalOptions="End"
+            WidthRequest="100">
+
+            <StackLayout Orientation="Vertical">
+
+                <Label Text="Image from Camera">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CameraPictureCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label Text="Image from Storage">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StoragePictureCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </Frame>
 
         <controls:CustomMap
             Grid.Row="2"

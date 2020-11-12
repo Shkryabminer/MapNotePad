@@ -19,7 +19,7 @@
 
     <!--  Pages can be added as references or inline  -->
     <TabbedPage.Children>
-        <local:MapPage Title="MAP"/>
+        <local:MapPage Title="MAP" />
         <local:PinsListPage Title="PINS" />
     </TabbedPage.Children>
 

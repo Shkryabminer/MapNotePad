@@ -6,6 +6,8 @@ using Foundation;
 using Prism;
 using Prism.Ioc;
 using UIKit;
+using Xamarin.Auth;
+
 
 namespace MapNotePad.iOS
 {
@@ -25,17 +27,25 @@ namespace MapNotePad.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            global::Xamarin.Auth.Presenters.XamarinIOS.AuthenticationConfiguration.Init();
+
             Xamarin.FormsGoogleMaps.Init("AIzaSyA_jUiRp62G1vLTJIraIIgVei083TmcDIU");
+
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+
             LoadApplication(new App(new IOSInitializer()));
 
             return base.FinishedLaunching(app, options);
         }
+       
     }
+
     public class IOSInitializer : IPlatformInitializer
     {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-           
+         //  containerRegistry.RegisterInstance<interface>(class.Instance);
         }
     }
 }

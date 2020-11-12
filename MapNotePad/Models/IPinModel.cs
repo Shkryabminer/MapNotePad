@@ -6,8 +6,9 @@
         double Latitude { get; set; }
         double Longtitude { get; set; }
         string KeyWords { get; set; }
-        int UserID { get; set; }
+        string UserEmail { get; set; }
         bool IsActive { get; set; }
+        string Picture { get; set; }
                         
     }
 }

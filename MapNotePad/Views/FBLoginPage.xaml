@@ -102,8 +102,6 @@
                 Text="Login"
                 TextColor="LightGray" />
 
-
-
         </StackLayout>
     </Grid>
 

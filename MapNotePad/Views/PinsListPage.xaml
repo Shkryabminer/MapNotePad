@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls"
     xmlns:localization="clr-namespace:MapNotePad.Resources"
+    xmlns:prism="http://prismlibrary.com"
     xmlns:views="clr-namespace:MapNotePad.Views">
 
     <ContentPage.Resources>
@@ -14,7 +15,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid>
+    <Grid >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -46,29 +47,35 @@
 
             </Frame>
 
-            <Image
+            <controls:NavBarProfileButton
                 Margin="0,0,5,0"
+                Padding="0"
+                BackgroundColor="LightGray"
+                Command="{Binding ShowMenuCommand}"
+                CornerRadius="20"
+                FirstName="{Binding FirstName}"
+                FontSize="14"
+                HeightRequest="40"
                 HorizontalOptions="End"
-                Source="ic_exit_to_app"
-                WidthRequest="70">
-
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding LogOutCommand}" />
-                </Image.GestureRecognizers>
-
-            </Image>
+                LastName="{Binding LastName}"
+                TextColor="Black"
+                VerticalOptions="Center"
+                WidthRequest="40" />
 
         </Grid>
 
+       
         <ListView
             x:Name="profilesListView"
             Grid.Row="1"
             HasUnevenRows="True"
+            HorizontalOptions="FillAndExpand"
             InputTransparent="False"
             ItemsSource="{Binding Pins}"
             SelectionMode="None"
-            SeparatorVisibility="None">
-
+            SeparatorVisibility="None"
+            VerticalOptions="Fill">
+            
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell x:Name="Cell">
@@ -133,6 +140,37 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
+        <controls:SlideFramePinsPage
+            Grid.Row="1"
+            HasShadow="False"
+            Margin="0,0,-145,0"
+            BackgroundColor="White"
+            BorderColor="#2196F3"
+            CornerRadius="20"
+            HeightRequest="40"
+            HorizontalOptions="End"
+            IsActive="{Binding IsActiveFrame}"
+            VerticalOptions="Start"
+            WidthRequest="100">
+
+            <StackLayout
+                HorizontalOptions="Start"
+                Orientation="Vertical"
+                Spacing="10"
+                VerticalOptions="Start">
+
+                <Label Text="LogOut"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       TextColor="#2196F3">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnLogOutCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+
+        </controls:SlideFramePinsPage>
 
         <Button
             Grid.Row="1"
@@ -151,5 +189,8 @@
             VerticalOptions="End"
             WidthRequest="{StaticResource Key=ButtonSize}" />
 
+
     </Grid>
+
+
 </views:BaseContentPage>

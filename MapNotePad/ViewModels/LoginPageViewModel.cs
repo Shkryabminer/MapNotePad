@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using MapNotePad.Models;
 using Device = Xamarin.Forms.Device;
 using MapNotePad.Services.FBAuthService;
+using MapNotePad.Services.UserService;
 
 namespace MapNotePad.ViewModels
 {
@@ -24,18 +25,21 @@ namespace MapNotePad.ViewModels
         private readonly IAutorization _autorizationService;
         private readonly IUserDialogs _userDialogs;
         private readonly IFBAuthService _fbAuthService;
+        private readonly IUserServcie _userService;
 
         public LoginPageViewModel(INavigationService navigationService,
                                   IAutorization autorization,
                                   IAuthentificationService authentificationService,
                                   IUserDialogs userDialogs,
-                                  IFBAuthService fBAuthService)
+                                  IFBAuthService fBAuthService,
+                                  IUserServcie userServcie)
                                   : base(navigationService)
         {
             _authentificationService = authentificationService;
             _autorizationService = autorization;
             _userDialogs = userDialogs;
             _fbAuthService = fBAuthService;
+            _userService = userServcie;
         }
 
         #region --Public Properties--
@@ -71,21 +75,25 @@ namespace MapNotePad.ViewModels
 
         private async void OnFBLoginCommand(object obj)
         {
-            var email = await _fbAuthService.GetFBAccauntEmail();
-
-            Debug.WriteLine(email);
+            var fbProfile = await _fbAuthService.GetFBAccauntEmail();
+            _autorizationService.SetActiveUserEmail(fbProfile);
+            //_userService.ActiveUser = fbProfile;
+            
+            GoToMapPage(fbProfile);
+           // Debug.WriteLine(fbProfile);
         }
 
        
 
-        private async void OnSignInButtonCommand()
+        private  void OnSignInButtonCommand()
         {
             var authUser = _authentificationService.GetAuthUser(Email, Password);
 
             if (authUser != null)
             {
-                _autorizationService.SetActiveUser(authUser.ID);
-                await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}");
+              //  _userService.ActiveUser = (User)authUser;
+                _autorizationService.SetActiveUserEmail((User)authUser);
+                GoToMapPage(authUser);
             }
             else
             {
@@ -107,7 +115,7 @@ namespace MapNotePad.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            if (parameters.TryGetValue("Email", out string eMail))
+            if (parameters.TryGetValue("_fbProfile", out string eMail))
             {
                 Email = eMail;
             }
@@ -121,6 +129,13 @@ namespace MapNotePad.ViewModels
 
         #region --Private handlers--
 
+        private async void GoToMapPage(IUser user)
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add(Constants.NavigationParameters.User, user);
+
+            await NavigationService.NavigateAsync($"/{nameof(NavigationPage)}/{nameof(MainTabbedPage)}?selectedTab={nameof(MapPage)}", navigationParameters);
+        }
         
         #endregion
     }
