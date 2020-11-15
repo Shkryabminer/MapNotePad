@@ -26,16 +26,16 @@ namespace MapNotePad.Behaviors
         }
         private void OnCurrentPageChanged(object sender, EventArgs e)
         {
-            var newpage = this.AssociatedObject.CurrentPage;
+            var newpage = AssociatedObject.CurrentPage;
 
-            if (this.CurrentPage != null)
+            if (CurrentPage != null)
             {
                 var parameters = new NavigationParameters();
-                PageUtilities.OnNavigatedFrom(this.CurrentPage, parameters);
+                PageUtilities.OnNavigatedFrom(CurrentPage, parameters);
                 PageUtilities.OnNavigatedTo(newpage, parameters);
             }
 
-            this.CurrentPage = newpage;
+            CurrentPage = newpage;
         }
         #endregion
 

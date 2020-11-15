@@ -63,7 +63,6 @@ namespace MapNotePad.Services
             set => _setPlugin.AddOrUpdateValue(nameof(LastName), value);
         }
 
-
         #endregion
 
 

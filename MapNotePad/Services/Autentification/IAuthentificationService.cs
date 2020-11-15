@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MapNotePad.Services
 {
   public  interface IAuthentificationService
     {
     
-        bool IsAutenficated(string login, string password);
-        IUser GetAuthUser(string login, string password);
+       Task<bool> IsAutenficatedAsync(string login, string password);
+        Task<IUser> GetAuthUserAsync(string login, string password);
 
     }
 }

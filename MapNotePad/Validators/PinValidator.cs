@@ -15,7 +15,7 @@ namespace MapNotePad.Validators
         {
             bool isValid;
 
-            isValid = LocationIsValid(model.Latitude) && LocationIsValid(model.Longtitude) && NameIsValid(model.Name);
+            isValid = LatitudeIsValid(model.Latitude) && LongitudeIsValid(model.Longtitude) && NameIsValid(model.Name);
             
             return isValid;
         }
@@ -23,9 +23,14 @@ namespace MapNotePad.Validators
 
         #region --Private helpers--
 
-        private bool LocationIsValid(double location)
+        private bool LatitudeIsValid(double location)
         {
-            return location >= 0 && location <= 360;
+            return location >= -90 && location <= 90;
+        }
+
+        private bool LongitudeIsValid(double location)
+        {
+            return location >= -180 && location <= 180;
         }
 
         private bool NameIsValid(string name)

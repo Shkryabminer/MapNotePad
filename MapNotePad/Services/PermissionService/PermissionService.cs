@@ -13,25 +13,19 @@ namespace MapNotePad.Services.PermissionService
     {
         private readonly IPermissions _permissionPluggin;
 
-        public PermissionService(IUserDialogs userDialogs,
-                                  IPermissions permissionPluggin)
-        {           
-           _permissionPluggin = permissionPluggin;
-        }
-
-        #region --IPermissionService implementation--
-
-        public async Task<bool> HasCameraPermission()
+        public PermissionService(IPermissions permissionPluggin)
         {
-            return false;
+            _permissionPluggin = permissionPluggin;
         }
 
-        public async Task<PermissionStatus> GetLocationPermissionStatus()
+        #region --IPermissionService implementation--       
+
+        public async Task<PermissionStatus> GetPermissionStatus<T>() where T : BasePermission, new()
         {
             PermissionStatus status = PermissionStatus.Unknown;
             try
             {
-               status = await _permissionPluggin.RequestPermissionAsync<LocationPermission>();
+                status = await _permissionPluggin.RequestPermissionAsync<T>();
             }
 
             catch (Exception ex)
@@ -41,14 +35,12 @@ namespace MapNotePad.Services.PermissionService
 
             return await Task.FromResult(status);
         }
-       
 
-        public async Task<bool> CheckLoacationPermission()
+
+        public async Task<bool> CheckPermission<T>() where T : BasePermission, new()
         {
-            return await GetLocationPermissionStatus() == PermissionStatus.Granted;
+            return await GetPermissionStatus<T>() == PermissionStatus.Granted;
         }
-
-
 
         #endregion
     }

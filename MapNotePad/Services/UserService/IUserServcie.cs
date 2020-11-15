@@ -2,19 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MapNotePad.Services.UserService
 {
    public interface IUserServcie
     {
-        IEnumerable<User> GetUsers();
+        Task<IEnumerable<User>> GetUsersAsync();
 
-        int AddOrUpdate(User user);
+        Task<int> AddOrUpdateAsync(User user);
 
-        void DeleteUser(User user);
+        Task<int> DeleteUserAsync(User user);
 
-        string GetFirstName();
+        string GetFirstName { get;}
 
-        string GetLastName();
+        string GetLastName { get; }
     }
 }

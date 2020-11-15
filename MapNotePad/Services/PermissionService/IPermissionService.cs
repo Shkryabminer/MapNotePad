@@ -1,4 +1,5 @@
-﻿using Plugin.Permissions.Abstractions;
+﻿using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +9,9 @@ namespace MapNotePad.Services.PermissionService
 {
    public interface IPermissionService
     {
-       Task<PermissionStatus> GetLocationPermissionStatus();
+        Task<PermissionStatus> GetPermissionStatus<T>() where T : BasePermission, new();
 
-        Task<bool> CheckLoacationPermission();
-       Task<bool> HasCameraPermission();
+        Task<bool> CheckPermission<T>() where T : BasePermission, new();
+        
     }
 }

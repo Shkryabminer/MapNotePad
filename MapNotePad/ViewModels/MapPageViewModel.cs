@@ -7,6 +7,7 @@ using MapNotePad.Services.PermissionService;
 using MapNotePad.Services.PinService;
 using MapNotePad.Services.WeatherService;
 using MapNotePad.ViewModels.Interfaces;
+using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using Prism.Navigation;
 using System;
@@ -141,7 +142,7 @@ namespace MapNotePad.ViewModels
 
         private ICommand _mapClickedCommand;
         public ICommand MapClickedCommand => _mapClickedCommand ??= new Command(OnMapClickedCommand);
-                
+
         #endregion
 
 
@@ -151,13 +152,15 @@ namespace MapNotePad.ViewModels
         {
             if (pin != null)
             {
-               
+                PinTappedWeather = await _weatherService.GetWeatherData(pin.Position.Latitude, pin.Position.Longitude);
 
-                PinTappedWeather = await _weatherService.GetWeatherData(pin.Position.Latitude,pin.Position.Longitude);
-               
-                SetActionSheetConfig(pin);
+                SetPinInfo(pin);
+
                 InfoIsVisible = true;
-                //_userDialogs.ActionSheet(config);
+            }
+            else 
+            {
+                Debug.WriteLine("Pin is null");
             }
         }
 
@@ -171,6 +174,10 @@ namespace MapNotePad.ViewModels
             if (InfoIsVisible)
             {
                 InfoIsVisible = false;
+            }
+            else
+            { 
+            //Other way
             }
         }
 
@@ -202,13 +209,13 @@ namespace MapNotePad.ViewModels
             await SetLocationButton();
         }
 
-        public override void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
-            Pins = _pinService.GetActivePinsByEmail(_autorizationService.GetActiveUserEmail()).ToList();
+            Pins = (await _pinService.GetActivePinsAsync()).ToList();
 
-            if (parameters.TryGetValue("selectedCell", out PinModelViewModel selectedCell))
+            if (parameters.TryGetValue(Constants.NavigationParameters.SelectedCell, out PinModelViewModel selectedCell))
             {
                 SetLocationToMap(selectedCell);
             }
@@ -227,13 +234,13 @@ namespace MapNotePad.ViewModels
             base.OnNavigatedFrom(parameters);
         }
 
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        protected override async void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
 
             if (args.PropertyName == nameof(SearchBar))
             {
-                SortPinCollection();
+                await SortPinCollection();
             }
         }
 
@@ -244,10 +251,13 @@ namespace MapNotePad.ViewModels
 
         private void SetLocationToMap(PinModelViewModel pinModel)
         {
+            StartCameraPosition = new CameraPosition(new Position(pinModel.Latitude, pinModel.Longtitude), 
+                                                                  LastCameraPosition.Zoom);
+
             SelectedPin = pinModel.ToPin();
         }
 
-        private void SetActionSheetConfig(Pin pin)
+        private void SetPinInfo(Pin pin)
         {
             OnMapTappedPin = pin;
 
@@ -255,41 +265,28 @@ namespace MapNotePad.ViewModels
 
             MapTappedPinPicture = strings[1];
 
-            Description = strings[0];
+            Description = strings[0];          
 
-            ActionSheetConfig config = new ActionSheetConfig
-            {
-                Title = pin.Label,
-
-            }; // set all here
-
-            config.SetUseBottomSheet(true);
-
-            config.Add($"Latitude:  {pin.Position.Latitude}");
-            config.Add($"Longitude: {pin.Position.Longitude}");
-
-            config.SetCancel(null, null, null);
-
-          //  return config;
         }
 
-        private void SortPinCollection()
+        private async Task SortPinCollection()
         {
             if (!string.IsNullOrEmpty(SearchBar))
             {
-                var activePins = _pinService.GetActivePinsByEmail(_autorizationService.GetActiveUserEmail());
+                var activePins = await _pinService.GetActivePinsAsync();
 
                 Pins = activePins.Pick(SearchBar);
             }
 
             else
             {
-                Pins = _pinService.GetActivePinsByEmail(_autorizationService.GetActiveUserEmail()).ToList();
+                Pins = (await _pinService.GetActivePinsAsync()).ToList();
             }
         }
+
         private async Task SetLocationButton()
         {
-            IsLocationButton = await _permissionService.CheckLoacationPermission();
+            IsLocationButton = await _permissionService.CheckPermission<LocationPermission>();
         }
 
 

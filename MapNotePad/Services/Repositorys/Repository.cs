@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace MapNotePad.Services
 {
     public class Repository : IRepository
     {
-        private SQLiteConnection _dataBase;
+        private SQLiteAsyncConnection _dataBase;
 
         private string _dataPath;
         public string DataPath
@@ -31,14 +32,14 @@ namespace MapNotePad.Services
        
         public Repository()
         {
-            _dataBase = new SQLiteConnection(DataPath); // replace to async connection
-            _dataBase.CreateTable<User>();
-            _dataBase.CreateTable<PinModel>();
+            _dataBase = new SQLiteAsyncConnection(DataPath); // replace to async connection
+            _dataBase.CreateTableAsync<User>();
+            _dataBase.CreateTableAsync<PinModel>();
 
         }
         #region --IRepository implement--
 
-        public int AddOrrUpdate<T>(T item) where T : class, IEntity, new()
+        public async Task<int> AddOrrUpdateAsync<T>(T item) where T : class, IEntity, new()
         {
             int i;
 
@@ -46,11 +47,11 @@ namespace MapNotePad.Services
             {
                 if (item.ID == 0)
                 {
-                    i = _dataBase.Insert(item);
+                    i =await _dataBase.InsertAsync(item);
                 }
                 else
                 {
-                    i = _dataBase.Update(item);
+                    i = await _dataBase.UpdateAsync(item);
                 }
             }
             else
@@ -61,33 +62,40 @@ namespace MapNotePad.Services
             return i;
         }
 
-        public void DeleteItem<T>(T item) where T : class, IEntity, new()
+        public  async Task<int> DeleteItemAsync<T>(T item) where T : class, IEntity, new()
         {
+            int i = -1;
             if (item != null)
             {
-                _dataBase.Delete<T>(item.ID);
+             i= await  _dataBase.DeleteAsync<T>(item.ID);
             }
             else
             {
                 Debug.WriteLine("Item is null");
             }
+            return i;
         }
 
-        public IEnumerable<T> GetItems<T>() where T : class, IEntity, new()
+        public  Task<List<T>> GetItemsAsync<T>() where T : class, IEntity, new()
         {
-            return _dataBase.Table<T>();
+            return _dataBase.Table<T>().ToListAsync();
         }
 
-        public IEnumerable<T> GetItems<T>(Func<T, bool> pred) where T : class, IEntity, new()
+        public Task<List<T>> GetItems<T>(Func<T, bool> pred) where T : class, IEntity, new()
         {
-            return _dataBase.Table<T>();
+            return _dataBase.Table<T>().ToListAsync();
         }
 
         //make get item
 
         public Task<T> GetItemAsync<T>(Func<T, bool> pred) where T : class, IEntity, new()
         {
-            return Task.FromResult(_dataBase.Get<T>(pred));
+            return _dataBase.GetAsync<T>(pred);
+        }
+
+      public  Task<List<T>> FindByAsync<T>(Expression<Func<T, bool>> predicate) where T:class,IEntity,new()
+        {
+            return _dataBase.Table<T>().Where(predicate).ToListAsync();
         }
 
         #endregion

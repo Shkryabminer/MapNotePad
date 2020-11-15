@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MapNotePad.Services.FBAuthService
 {
     public interface IFBAuthService
     {
-        Task<FaceBookProfile> GetFBAccauntEmail();        
+        Task<FaceBookProfile> GetFBAccauntEmail(CancellationTokenSource cts);        
     }
 }

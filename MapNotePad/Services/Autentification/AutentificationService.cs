@@ -5,6 +5,7 @@ using System.Linq;
 using MapNotePad.Models;
 using MapNotePad.Services;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MapNotePad.Services
 {
@@ -16,19 +17,20 @@ namespace MapNotePad.Services
         {
             _data = repository;
         }
+       
         #region --IAutentification implementation--
 
-        public IUser GetAuthUser(string email, string password)
+        public async Task<IUser> GetAuthUserAsync(string email, string password)
         {
             IUser user;
 
-            if(IsAutenficated(email,password))
-            {                
-                var c = from u in _data.GetItems<User>()
-                        where u.Email.ToLower() == email.ToLower() && u.Password == password
-                        select u;
-                //duplicate
-                user = c.First();
+            bool isAuthentificated = await IsAutenficatedAsync(email, password);
+
+            if(isAuthentificated)
+            {
+                var collection = await GetUsersAsync(email, password);
+                
+                user = collection.First();
             }
             else
             {
@@ -39,14 +41,25 @@ namespace MapNotePad.Services
             return user;
         }
 
-        public bool IsAutenficated(string login, string password)
-        {           
-            var c = from u in _data.GetItems<User>() // wtf is c, wtf is u
-                    where u.Email.ToUpper() == login.ToUpper() && u.Password == password
-                    select u;
-            //duplicate
-            return (c != null && c.Any());
+        public async Task<bool> IsAutenficatedAsync(string login, string password)
+        {
+            var collection = await GetUsersAsync(login, password);
+            
+            return (collection != null && collection.Any());
         }
+
+        #endregion
+
+        #region --Private helpers--
+
+        private async Task<IEnumerable<User>> GetUsersAsync(string login, string password)
+        {
+            var collection = from user in await _data.GetItemsAsync<User>()
+                             where user.Email.ToUpper() == login.ToUpper() && user.Password == password
+                             select user;
+            return collection;
+        }
+
         #endregion
     }
 }

@@ -4,18 +4,10 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls;assembly=MapNotePad"
-    xmlns:converters="clr-namespace:MapNotePad.Converters"
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     xmlns:prism="http://prismlibrary.com"
     xmlns:views="clr-namespace:MapNotePad.Views">
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converters:PinClickedEvenArgsConverter x:Key="PinClickedConverter" />
-            <converters:EntryTextChangedEventArgsConverter x:Key="TextChangedConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -23,44 +15,42 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Frame
+        <Grid
             Grid.Row="0"
             Margin="0"
             Padding="0"
             BackgroundColor="#2196F3"
-            CornerRadius="0"
-            HasShadow="False"
             HorizontalOptions="Fill"
             VerticalOptions="FillAndExpand">
 
-            <Frame
-                Margin="10,10"
-                Padding="0"
-                BackgroundColor="White"
-                BorderColor="#2196F3"
-                CornerRadius="20"
+            <Image
+                Grid.Row="0"
+                Margin="35,0"
+                HeightRequest="20"
+                HorizontalOptions="Start"
+                Source="search.png"
+                VerticalOptions="Center"
+                WidthRequest="20" />
+
+            <controls:CommonEntry
+                Margin="60,0"
+                BackgroundColor="WhiteSmoke"
+                CornerRadius="15"
+                FontSize="15"
                 HeightRequest="30"
                 HorizontalOptions="Start"
-                Opacity="1"
+                Placeholder="search"
+                Text="{Binding SearchBar}"
+                TextColor="Black"
                 VerticalOptions="Center"
-                WidthRequest="270">
+                WidthRequest="200" />
 
-                <controls:CommonEntry
-                    Margin="5,-10"
-                    BackgroundColor="Transparent"
-                    FontSize="Large"
-                    HorizontalOptions="FillAndExpand"
-                    Text="{Binding SearchBar}"
-                    TextColor="Black"
-                    VerticalOptions="EndAndExpand" />
-
-            </Frame>
-        </Frame>
+        </Grid>
 
         <controls:GeneralMap
             Grid.Row="1"
             CameraPosition="{Binding LastCameraPosition, Mode=TwoWay}"
-            CheckPoint="{Binding SelectedPin}"
+            CheckPoint="{Binding SelectedPin, Mode=TwoWay}"
             CollectionOfPins="{Binding Pins}"
             MapStartCameraPosition="{Binding StartCameraPosition, Mode=TwoWay}"
             MyLocationEnabled="{Binding IsLocationButton}"
@@ -70,7 +60,6 @@
 
                 <prism:EventToCommandBehavior
                     Command="{Binding PinClickedCommand}"
-                    EventArgsConverter="{StaticResource PinClickedConverter}"
                     EventArgsParameterPath="Pin"
                     EventName="PinClicked" />
 
@@ -97,7 +86,7 @@
                 <OnPlatform
                     x:TypeArguments="Thickness"
                     Android="0,0"
-                    iOS="-5,-10" />
+                    iOS="0,0" />
 
 
             </controls:SlidingFramePinInfo.Padding>
@@ -143,6 +132,7 @@
                         HorizontalOptions="Center"
                         HorizontalTextAlignment="Center"
                         Text="{Binding OnMapTappedPin.Position.Longitude, StringFormat='Longitude: {0:f7}'}" />
+
                 </StackLayout>
 
                 <Label
@@ -163,16 +153,17 @@
                     VerticalOptions="Center">
 
                     <Label HorizontalOptions="Center" HorizontalTextAlignment="Center">
+
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span FontAttributes="Bold" Text="Temperature&#10;" />
-
                                 <Span Text="{Binding PinTappedWeather.main.temp, StringFormat='{0:f0}°'}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
 
                     <Label HorizontalOptions="Center" HorizontalTextAlignment="Center">
+
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span FontAttributes="Bold" Text="Feels like&#10;" />

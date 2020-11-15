@@ -76,10 +76,10 @@ namespace MapNotePad.ViewModels
                 Password = this.Password,
                 Email = this.Email
             };
-
-            if (ValidatedUser())
+            var isValid = ValidatedUser();
+            if (isValid)
             {
-                _userService.AddOrUpdate(user);
+              await  _userService.AddOrUpdateAsync(user);
 
                 var navParam = new NavigationParameters
                  {
@@ -90,7 +90,7 @@ namespace MapNotePad.ViewModels
             }
             else
             {
-                await _userDialogs.AlertAsync("Invalid email or Password error");
+                await _userDialogs.AlertAsync("Invalid email or PasswordValidator error");
             }
         }
 
@@ -100,8 +100,8 @@ namespace MapNotePad.ViewModels
 
         private bool ValidatedUser()
         {
-            return Validator.Validate(Email, Constants._emailPattern)&&
-                   Validator.Validate(Password, Constants._passwordPattern)&&
+            return Validator.ValidatePassword(Email, Constants._emailPattern)&&
+                   Validator.ValidatePassword(Password, Constants._passwordPattern)&&
                    Password==PasswordConfirm;
         }
 

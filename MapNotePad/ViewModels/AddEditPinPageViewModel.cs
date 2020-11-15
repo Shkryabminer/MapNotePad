@@ -5,6 +5,7 @@ using MapNotePad.Services.PermissionService;
 using MapNotePad.Services.PinService;
 using MapNotePad.Validators;
 using Plugin.Media.Abstractions;
+using Plugin.Permissions;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
@@ -61,12 +62,19 @@ namespace MapNotePad.ViewModels
             get => _isLocationButtonEnabled;
             set => SetProperty(ref _isLocationButtonEnabled, value);
         }
+
         private bool _pictureMenuIsActive;
         public bool PictureMenuIsActive
         {
             get => _pictureMenuIsActive;
             set => SetProperty(ref _pictureMenuIsActive, value);
         }
+
+        private ICommand _urlPictureCommand;
+        public ICommand UrlPictureCommand => _urlPictureCommand ??= new Command(OnUrlPictureCommand);               
+
+        private ICommand _disableMenuCommand;
+        public ICommand DisableMenuCommand => _disableMenuCommand ??= new Command(OnDisableMenuCommand);
 
         private ICommand _savePinCommand;
         public ICommand SavePinCommand => _savePinCommand ??= new Command(OnSavePinCommand);
@@ -91,12 +99,23 @@ namespace MapNotePad.ViewModels
 
         #region --OnCommandHandlers--
 
+        private void OnDisableMenuCommand()
+        {
+            if (PictureMenuIsActive)
+            {
+                PictureMenuIsActive = false;
+            }
+            else
+            {
+                //other branch
+            }
+        }
         private async void OnSavePinCommand()
         {
             if (CheckFields())
             {
                 CurrentPinModel.UserEmail = _autorizationService.GetActiveUserEmail();
-                _pinService.SaveOrUpdatePin(CurrentPinModel);
+                await _pinService.SaveOrUpdatePinAsync(CurrentPinModel);
                 await NavigationService.GoBackAsync();
             }
         }
@@ -113,6 +132,7 @@ namespace MapNotePad.ViewModels
                 {
                     //alternative brunch
                 }
+
                 CurrentPinModel.Latitude = point.Latitude;
                 CurrentPinModel.Longtitude = point.Longitude;
 
@@ -123,20 +143,31 @@ namespace MapNotePad.ViewModels
                 // alternative branch
             }
         }
+
         private async void OnCameraPictureCommand()
         {
-            if (_mediaPlugin.IsTakePhotoSupported && _mediaPlugin.IsCameraAvailable)
-            {
-                var options = new StoreCameraMediaOptions();
-                options.SaveToAlbum = true;
-                options.PhotoSize = PhotoSize.Custom;
-                options.CustomPhotoSize = 600;
+            var cameraAllowed = await _permissionService.CheckPermission<CameraPermission>();
 
-                MediaFile file = await _mediaPlugin.TakePhotoAsync(options);
-                if (file != null)
+            if (cameraAllowed)
+            {
+                if (_mediaPlugin.IsTakePhotoSupported && _mediaPlugin.IsCameraAvailable)
                 {
-                    CurrentPinModel.Picture = file.Path;
+                    var options = new StoreCameraMediaOptions();
+                    options.SaveToAlbum = true;
+                    options.PhotoSize = PhotoSize.Custom;
+                    options.CustomPhotoSize = 600;
+
+                    MediaFile file = await _mediaPlugin.TakePhotoAsync(options);
+
+                    if (file != null)
+                    {
+                        CurrentPinModel.Picture = file.Path;
+                    }
                 }
+            }
+            else
+            {
+                await _userDialogs.AlertAsync("You need allow to use camera on your device",okText:"Ok");
             }
         }
 
@@ -148,9 +179,22 @@ namespace MapNotePad.ViewModels
 
                 if (file != null)
                 {
-                    CurrentPinModel.Picture = file.Path; 
+                    CurrentPinModel.Picture = file.Path;
+                }
+                else
+                {
+                    Debug.WriteLine("CurrentPinModel == null");
                 }
             }
+            else
+            {
+                Debug.WriteLine("Pick photo is not supported");
+            }
+        }
+        private async void OnUrlPictureCommand()
+        {
+            var result = await _userDialogs.PromptAsync("Enter your URL", "Picture URL", "Ok", "Cancell",placeholder:"Url", inputType: InputType.Url);
+            CurrentPinModel.Picture = result.Text;
         }
 
         private async void OnGoBackCommand()
@@ -197,7 +241,7 @@ namespace MapNotePad.ViewModels
 
         private async Task SetLocationButton()
         {
-            IsLocationButtonEnabled = await _permissionService.CheckLoacationPermission();
+            IsLocationButtonEnabled = await _permissionService.CheckPermission<LocationPermission>();
         }
 
         private void CreatePin()
@@ -215,14 +259,13 @@ namespace MapNotePad.ViewModels
             return pinValidator.PinModelIsValid(CurrentPinModel);
         }
 
-
         private async void SetPictureFromGalery()
         {
             if (_mediaPlugin.IsPickPhotoSupported)
             {
                 MediaFile file = await _mediaPlugin.PickPhotoAsync();
                 CurrentPinModel.Picture = file.Path;
-                RaisePropertyChanged(nameof(CurrentPinModel));
+               // RaisePropertyChanged(nameof(CurrentPinModel));
             }
         }
 

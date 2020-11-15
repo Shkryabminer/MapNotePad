@@ -1,5 +1,6 @@
 ﻿using MapNotePad.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MapNotePad.Services.UserService
 {
@@ -23,30 +24,30 @@ namespace MapNotePad.Services.UserService
 
         #region --IUserServiceImplementation--
 
-        public string GetFirstName()
+        public string GetFirstName
         {
-            return _settingsManager.FirstName;
+            get=> _settingsManager.FirstName;
         }
 
-        public string GetLastName()
+        public string GetLastName
         {
-            return _settingsManager.LastName;
+            get => _settingsManager.LastName;
         }
 
-        public int AddOrUpdate(User user)
+        public async Task<int> AddOrUpdateAsync(User user)
         {
-           return _repository.AddOrrUpdate(user);
+           return await _repository.AddOrrUpdateAsync(user);
         }
 
-        public void DeleteUser(User user)
+        public async Task<int> DeleteUserAsync(User user)
         {
-            _repository.DeleteItem(user);
+         return  await _repository.DeleteItemAsync(user);
         }
        
 
-        public IEnumerable<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return _repository.GetItems<User>();
+            return await _repository.GetItemsAsync<User>();
         }
         #endregion
     }

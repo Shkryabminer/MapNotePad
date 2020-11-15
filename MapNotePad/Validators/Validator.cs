@@ -8,26 +8,33 @@ namespace MapNotePad.Validators
 {
     public  class Validator
     {
-        //public static Validator _fbProfile{ get; private set; }
-        //public static Validator Password { get; private set; }
+        public static Validator EmailValidator { get; private set; }
+        public static Validator PasswordValidator { get; private set; }
 
-        //static Validator()
-        //{
-        //    _fbProfile = new Validator(Constants._email_pattern);
-        //}
-        //protected Validator(string pattern)
-        //{
-        //    Pattern = pattern;
-        //}
+        static Validator()
+        {
+            EmailValidator = new Validator(Constants._emailPattern);
+            PasswordValidator = new Validator(Constants._passwordPattern);
+        }
+
+        protected Validator(string pattern)
+        {
+            Pattern = pattern;
+        }
 
         public  string Pattern { get; set; }
 
-        public static bool Validate(string message, Validator validator)
+        public static bool ValidateEmail(string message, Validator validator)
+        {
+            return !string.IsNullOrEmpty(message) && Regex.IsMatch(message, validator.Pattern,RegexOptions.IgnoreCase);
+        }
+
+        public static bool ValidatePassword(string message, Validator validator)
         {
             return !string.IsNullOrEmpty(message)&&Regex.IsMatch(message, validator.Pattern);
         }
 
-        public static bool Validate(string message, string pattern)
+        public static bool ValidatePassword(string message, string pattern)
         {
             return !string.IsNullOrEmpty(message) && Regex.IsMatch(message, pattern);
         }

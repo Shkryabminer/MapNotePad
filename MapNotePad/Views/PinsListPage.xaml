@@ -15,7 +15,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid >
+    <Grid>
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding DisableMenuCommand}" />
+        </Grid.GestureRecognizers>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -24,28 +27,29 @@
 
         <Grid Grid.Row="0" BackgroundColor="#2196F3">
 
-            <Frame
-                Margin="5,0"
-                Padding="0"
-                BorderColor="Blue"
-                CornerRadius="20"
-                HasShadow="False"
+            <Image
+                Grid.Row="0"
+                Margin="35,0"
+                HeightRequest="20"
+                HorizontalOptions="Start"
+                Source="search.png"
+                VerticalOptions="Center"
+                WidthRequest="20" />
+
+            <controls:CommonEntry
+                Margin="60,0"
+                BackgroundColor="WhiteSmoke"
+                CornerRadius="15"
+                FontSize="15"
                 HeightRequest="30"
-                HorizontalOptions="StartAndExpand"
-                VerticalOptions="CenterAndExpand"
-                WidthRequest="270">
+                HorizontalOptions="Start"
+                Placeholder="search"
+                Text="{Binding SearchBar}"
+                TextColor="Black"
+                VerticalOptions="Center"
+                WidthRequest="200" />
 
-                <controls:CommonEntry
-                    Margin="10,-10"
-                    BackgroundColor="Transparent"
-                    FontSize="Large"
-                    HorizontalOptions="FillAndExpand"
-                    MinimumWidthRequest="60"
-                    Text="{Binding SearchBar}"
-                    TextColor="Black"
-                    VerticalOptions="Center" />
-
-            </Frame>
+            <!--</Frame>-->
 
             <controls:NavBarProfileButton
                 Margin="0,0,5,0"
@@ -64,7 +68,6 @@
 
         </Grid>
 
-       
         <ListView
             x:Name="profilesListView"
             Grid.Row="1"
@@ -75,19 +78,29 @@
             SelectionMode="None"
             SeparatorVisibility="None"
             VerticalOptions="Fill">
-            
+
+            <ListView.Behaviors>
+                <prism:EventToCommandBehavior
+                    Command="{Binding CellTappedCommand}"
+                    EventArgsParameterPath="Item"
+                    EventName="ItemTapped" />
+            </ListView.Behaviors>
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell x:Name="Cell">
                         <ViewCell.ContextActions>
+
                             <MenuItem
-                                Command="{Binding BindingContext.EditPinModel, Source={x:Reference profilesListView}}"
+                                Command="{Binding BindingContext.EditPinModelCommand, Source={x:Reference profilesListView}}"
                                 CommandParameter="{Binding .}"
                                 Text="{x:Static localization:Resource.PinsListMenuItemEdit}" />
+
                             <MenuItem
-                                Command="{Binding BindingContext.DeleteProfileCommand, Source={x:Reference profilesListView}}"
+                                Command="{Binding BindingContext.DeletePinCommand, Source={x:Reference profilesListView}}"
                                 CommandParameter="{Binding .}"
                                 Text="{x:Static localization:Resource.PinsListMenuItemDelete}" />
+
                         </ViewCell.ContextActions>
 
                         <ViewCell.View>
@@ -99,9 +112,6 @@
 
                                 <StackLayout Grid.Column="1" Orientation="Vertical">
 
-                                    <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding BindingContext.CellTappedCommand, Source={x:Reference profilesListView}}" CommandParameter="{Binding .}" />
-                                    </StackLayout.GestureRecognizers>
                                     <Label
                                         FontAttributes="Bold"
                                         Text="{Binding Name}"
@@ -117,14 +127,16 @@
                                     BackgroundColor="White"
                                     Command="{Binding BindingContext.ChangeStatusPinCommand, Source={x:Reference profilesListView}}"
                                     CommandParameter="{Binding .}"
-                                    ImageSource="star">
+                                    ImageSource="star.png">
                                     <Button.Triggers>
+
                                         <DataTrigger
                                             Binding="{Binding IsActive}"
                                             TargetType="Button"
                                             Value="True">
                                             <Setter Property="Opacity" Value="1" />
                                         </DataTrigger>
+
                                         <DataTrigger
                                             Binding="{Binding IsActive}"
                                             TargetType="Button"
@@ -140,14 +152,14 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
+
         <controls:SlideFramePinsPage
             Grid.Row="1"
-            HasShadow="False"
             Margin="0,0,-145,0"
             BackgroundColor="White"
             BorderColor="#2196F3"
             CornerRadius="20"
+            HasShadow="False"
             HeightRequest="40"
             HorizontalOptions="End"
             IsActive="{Binding IsActiveFrame}"
@@ -160,12 +172,14 @@
                 Spacing="10"
                 VerticalOptions="Start">
 
-                <Label Text="LogOut"
-                       FontAttributes="Bold"
-                       FontSize="15"
-                       TextColor="#2196F3">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    Text="LogOut"
+                    TextColor="#2196F3">
+
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding OnLogOutCommand}" />
+                        <TapGestureRecognizer Command="{Binding LogOutCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>

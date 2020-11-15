@@ -12,39 +12,24 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <Style x:Key="FrameStyle" TargetType="Frame">
-                <Setter Property="Margin" Value="5,0" />
-                <Setter Property="BorderColor" Value="Blue" />
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="HorizontalOptions" Value="Fill" />
-                <Setter Property="HeightRequest" Value="40" />
-                <Setter Property="HasShadow" Value="False" />
-                <Setter Property="Padding" Value="0.0" />
-            </Style>
-
             <Style x:Key="EntryStyle" TargetType="controls:CommonEntry">
-
-                <Setter Property="Margin">
-                    <Setter.Value>
-                        <OnPlatform
-                            x:TypeArguments="Thickness"
-                            Android="20,-3"
-                            iOS="20,8" />
-                    </Setter.Value>
-                </Setter>
-
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="BorderColor" Value="Blue" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="HeightRequest" Value="30" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="FontSize" Value="16" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="TextColor" Value="Blue" />
                 <Setter Property="VerticalOptions" Value="End" />
             </Style>
+
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <Grid>
         <Grid.GestureRecognizers>
-            <TapGestureRecognizer />
+            <TapGestureRecognizer Command="{Binding DisableMenuCommand}" />
         </Grid.GestureRecognizers>
 
         <Grid.RowDefinitions>
@@ -59,7 +44,7 @@
             Grid.Row="0"
             Margin="0"
             Padding="0"
-            BackgroundColor="LightBlue"
+            BackgroundColor="#2196F3"
             CornerRadius="0"
             HasShadow="False"
             HorizontalOptions="Fill"
@@ -107,7 +92,7 @@
 
         <!--  Main content  -->
 
-        
+
         <StackLayout
             Grid.Row="1"
             Margin="0,5,0,0"
@@ -120,18 +105,19 @@
                 Text="{x:Static localization:Resource.EditListNameLable}"
                 TextColor="{DynamicResource SecondaryTextColor}" />
 
-            <Frame HeightRequest="40" Style="{StaticResource Key=FrameStyle}">
 
-                <controls:CommonEntry
-                    Placeholder="{x:Static localization:Resource.EditListNamePlace}"
-                    PlaceholderColor="{DynamicResource SecondaryTextColor}"
-                    Style="{StaticResource EntryStyle}"
-                    Text="{Binding CurrentPinModel.Name}" />
 
-            </Frame>
+            <controls:CommonEntry
+                Margin="10,0"
+                Placeholder="{x:Static localization:Resource.EditListNamePlace}"
+                PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                Style="{StaticResource EntryStyle}"
+                Text="{Binding CurrentPinModel.Name}" />
+
+
 
             <Label
-                Margin="10,15,0,0"
+                Margin="10,5,0,0"
                 HorizontalOptions="Start"
                 Text="{x:Static localization:Resource.EditListDescriptLable}"
                 TextColor="{DynamicResource SecondaryTextColor}"
@@ -140,6 +126,7 @@
             <Editor
                 Margin="10,0"
                 AutoSize="TextChanges"
+                HeightRequest="60"
                 HorizontalOptions="FillAndExpand"
                 MaxLength="120"
                 Placeholder="{x:Static localization:Resource.EditListDescriptLable}"
@@ -157,54 +144,50 @@
 
                 <Label
                     Grid.Column="0"
-                    Margin="10,0,0,0"
+                    Margin="10,0,20,0"
                     FontSize="12"
                     Text="{x:Static localization:Resource.EditLatitudeLable}"
                     TextColor="{DynamicResource SecondaryTextColor}" />
 
-                <Frame
+
+
+                <controls:CommonEntry
                     Grid.Column="0"
-                    Margin="0,20,0,0"
-                    HeightRequest="40"
-                    Style="{StaticResource Key=FrameStyle}">
+                    Margin="10,15,10,0"
+                    Placeholder="{x:Static localization:Resource.EditLatitudePlace}"
+                    PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding CurrentPinModel.Latitude}" />
 
-                    <controls:CommonEntry
-                        Placeholder="{x:Static localization:Resource.EditLatitudePlace}"
-                        PlaceholderColor="{DynamicResource SecondaryTextColor}"
-                        Style="{StaticResource EntryStyle}"
-                        Text="{Binding CurrentPinModel.Latitude}" />
 
-                </Frame>
 
                 <Label
                     Grid.Column="1"
-                    Margin="10,0,0,0"
+                    Margin="10,0,20,0"
                     FontSize="12"
                     Text="{x:Static localization:Resource.EditLongitudeLable}"
                     TextColor="{DynamicResource SecondaryTextColor}" />
 
-                <Frame
+                <controls:CommonEntry
                     Grid.Column="1"
-                    Margin="0,20,0,0"
-                    HeightRequest="40"
-                    Style="{StaticResource Key=FrameStyle}">
-
-                    <controls:CommonEntry
-                        Placeholder="{x:Static localization:Resource.EditLongitudePlace}"
-                        PlaceholderColor="{DynamicResource SecondaryTextColor}"
-                        Style="{StaticResource EntryStyle}"
-                        Text="{Binding CurrentPinModel.Longtitude}" />
-                </Frame>
+                    Margin="10,15,10,0"
+                    Placeholder="{x:Static localization:Resource.EditLongitudePlace}"
+                    PlaceholderColor="{DynamicResource SecondaryTextColor}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding CurrentPinModel.Longtitude}" />
 
             </Grid>
 
         </StackLayout>
+
+        <!--  Slideble frame  -->
+
         <Frame
             Grid.Row="1"
-            HeightRequest="80"
+            HeightRequest="100"
+            HorizontalOptions="End"
             IsVisible="{Binding PictureMenuIsActive}"
             VerticalOptions="Start"
-            HorizontalOptions="End"
             WidthRequest="100">
 
             <StackLayout Orientation="Vertical">
@@ -220,6 +203,13 @@
                         <TapGestureRecognizer Command="{Binding StoragePictureCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
+
+                <Label Text="Image from URL">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding UrlPictureCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
             </StackLayout>
         </Frame>
 

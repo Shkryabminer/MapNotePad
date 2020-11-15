@@ -16,6 +16,7 @@ using MapNotePad.Models;
 using Device = Xamarin.Forms.Device;
 using MapNotePad.Services.FBAuthService;
 using MapNotePad.Services.UserService;
+using System.Threading;
 
 namespace MapNotePad.ViewModels
 {
@@ -43,6 +44,8 @@ namespace MapNotePad.ViewModels
         }
 
         #region --Public Properties--
+
+        public CancellationTokenSource CTS { get; private set; }
 
         private string _email;
         public string Email
@@ -75,19 +78,30 @@ namespace MapNotePad.ViewModels
 
         private async void OnFBLoginCommand(object obj)
         {
-            var fbProfile = await _fbAuthService.GetFBAccauntEmail();
-            _autorizationService.SetActiveUserEmail(fbProfile);
-            //_userService.ActiveUser = fbProfile;
-            
-            GoToMapPage(fbProfile);
-           // Debug.WriteLine(fbProfile);
-        }
+            FaceBookProfile fbProfile;
+            CTS = new CancellationTokenSource();
 
-       
+            using (_userDialogs.Loading("Press cancell to abort authorisation",()=>CTS.Cancel()))
+            {
+                
+                fbProfile = await _fbAuthService.GetFBAccauntEmail(CTS);
+            }
 
-        private  void OnSignInButtonCommand()
+            if (fbProfile != null)
+            {
+                _autorizationService.SetActiveUserEmail(fbProfile);
+
+                GoToMapPage(fbProfile);
+            }
+            else
+            {
+                await _userDialogs.AlertAsync("Error",null,"Ok");
+            }
+        }       
+
+        private async void OnSignInButtonCommand()
         {
-            var authUser = _authentificationService.GetAuthUser(Email, Password);
+            var authUser = await _authentificationService.GetAuthUserAsync(Email, Password);
 
             if (authUser != null)
             {
@@ -115,7 +129,7 @@ namespace MapNotePad.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            if (parameters.TryGetValue("_fbProfile", out string eMail))
+            if (parameters.TryGetValue("EmailValidator", out string eMail))
             {
                 Email = eMail;
             }

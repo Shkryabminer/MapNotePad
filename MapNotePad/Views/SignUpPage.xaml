@@ -11,24 +11,29 @@
         <ResourceDictionary>
 
             <Style x:Key="FrameStyle" TargetType="Frame">
-                <Setter Property="Margin" Value="5,0" />
-                <Setter Property="BorderColor" Value="Blue" />
-                <Setter Property="CornerRadius" Value="20" />
-                <Setter Property="HorizontalOptions" Value="Fill" />
-                <Setter Property="HeightRequest" Value="30" />
-            </Style>
 
-            <Style x:Key="EntryStyle" TargetType="controls:CommonEntry">
-
-                <Setter Property="Margin">
+                <Setter Property="Padding">
                     <Setter.Value>
                         <OnPlatform
                             x:TypeArguments="Thickness"
-                            Android="10,-10"
-                            iOS="20,8" />
+                            Android="1"
+                            iOS="0" />
                     </Setter.Value>
                 </Setter>
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="Margin" Value="10,0" />
+                <Setter Property="BorderColor" Value="Blue" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="HeightRequest" Value="40" />
+            </Style>
 
+            <Style x:Key="EntryStyle" TargetType="controls:CommonEntry">
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="Margin" Value="10,0"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="BorderColor" Value="Blue" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
                 <Setter Property="FontSize" Value="20" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
@@ -74,42 +79,41 @@
             Orientation="Vertical"
             Spacing="10">
 
-            <Frame Style="{StaticResource Key=FrameStyle}">
+           
 
                 <controls:CommonEntry
                     Placeholder="{x:Static localization:Resource.SignUpPageEmailEntry}"
                     Style="{StaticResource EntryStyle}"
                     Text="{Binding Email}" />
-            </Frame>
+            
 
 
-            <Frame Style="{StaticResource Key=FrameStyle}">
+           
 
                 <controls:CommonEntry
                     Placeholder="{x:Static localization:Resource.SignUpPageLoginName}"
                     Style="{StaticResource EntryStyle}"
                     Text="{Binding Name}" />
-            </Frame>
+            
 
-
-            <Frame Style="{StaticResource Key=FrameStyle}">
+           
 
                 <controls:CommonEntry
                     IsPassword="True"
                     Placeholder="{x:Static localization:Resource.SignUpPagePasswordEntry}"
                     Style="{StaticResource EntryStyle}"
                     Text="{Binding Password}" />
-            </Frame>
+            
 
 
-            <Frame Style="{StaticResource Key=FrameStyle}">
+           
 
                 <controls:CommonEntry
                     IsPassword="True"
                     Placeholder="{x:Static localization:Resource.SignUpConfirmPass}"
                     Style="{StaticResource EntryStyle}"
                     Text="{Binding PasswordConfirm}" />
-            </Frame>
+          
 
 
         </StackLayout>

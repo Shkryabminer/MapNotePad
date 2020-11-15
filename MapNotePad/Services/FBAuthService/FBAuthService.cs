@@ -1,10 +1,12 @@
-﻿using MapNotePad.Models;
+﻿using Acr.UserDialogs;
+using MapNotePad.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Auth;
 using Xamarin.Forms;
@@ -18,30 +20,11 @@ namespace MapNotePad.Services.FBAuthService
 
         #region --IFBAuthService implementation--
 
-        public async Task<FaceBookProfile> GetFBAccauntEmail()
+        public async Task<FaceBookProfile> GetFBAccauntEmail(CancellationTokenSource cts)
         {
-            string clientID = string.Empty;
-            string redirectUri = string.Empty;
-            bool isUsingNativeUI = false; 
-
-            switch (Device.RuntimePlatform)
-            {
-                case Device.Android:
-                    {
-                        isUsingNativeUI = false;
-                        clientID = Constants.FacebookClient.AppID;
-                        redirectUri = Constants.FacebookClient.FacebookAndroidRedirectUrl;
-                        break;
-                    }
-
-                case Device.iOS:
-                    {
-                        isUsingNativeUI = false;
-                        clientID = Constants.FacebookClient.AppID;
-                        redirectUri = Constants.FacebookClient.FacebookIOSRedirectUrl;
-                        break;
-                    }
-            }
+            string clientID = Constants.FacebookClient.AppID; ;
+            string redirectUri = Constants.FacebookClient.FacebookRedirectUrl; 
+            bool isUsingNativeUI = false;            
 
             var authentificator = new OAuth2Authenticator(
                                           clientID,
@@ -53,8 +36,10 @@ namespace MapNotePad.Services.FBAuthService
             var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
 
             try
-            {
-                presenter.Login(authentificator);
+            {               
+                {
+                    presenter.Login(authentificator);
+                }
             }
             catch (Exception e)
             {
@@ -63,7 +48,7 @@ namespace MapNotePad.Services.FBAuthService
 
             authentificator.Completed += Authentificator_Completed;
 
-            return await WaitForEmail();
+            return await WaitForEmail(cts.Token);
         }
 
         #endregion
@@ -103,11 +88,11 @@ namespace MapNotePad.Services.FBAuthService
             return data;
         }
 
-        private async Task<FaceBookProfile> WaitForEmail()
+        private async Task<FaceBookProfile> WaitForEmail(CancellationToken cts)
         {
            await Task.Run(()=>
            { 
-               while (_fbProfile==null)
+               while (!cts.IsCancellationRequested && _fbProfile==null)
                {                   
                }
            });

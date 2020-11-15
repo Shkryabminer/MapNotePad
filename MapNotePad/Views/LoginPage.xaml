@@ -19,17 +19,11 @@
             </Style>
 
             <Style x:Key="EntryStyle" TargetType="controls:CommonEntry">
-
-                <Setter Property="Margin">
-                    <Setter.Value>
-                        <OnPlatform
-                            x:TypeArguments="Thickness"
-                            Android="10,-10"
-                            iOS="20,8" />
-                    </Setter.Value>
-                </Setter>
-
-                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="BorderColor" Value="Blue" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="BackgroundColor" Value="White" />
                 <Setter Property="FontSize" Value="20" />
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="TextColor" Value="Blue" />
@@ -55,29 +49,23 @@
             Spacing="40"
             VerticalOptions="CenterAndExpand">
 
-            <Frame Style="{StaticResource Key=FrameStyle}">
+            <controls:CommonEntry
+                Placeholder="{x:Static localization:Resource.LoginPageLoginPlace}"
+                Style="{StaticResource EntryStyle}"
+                Text="{Binding Email}" />
 
-                <controls:CommonEntry
-                    Placeholder="{x:Static localization:Resource.LoginPageLoginPlace}"
-                    Style="{StaticResource EntryStyle}"
-                    Text="{Binding Email}" />
-
-            </Frame>
-
-            <Frame Style="{StaticResource Key=FrameStyle}">
-
-                <controls:CommonEntry
-                    IsPassword="True"
-                    Placeholder="{x:Static localization:Resource.LoginPagePasswordPlace}"
-                    Style="{StaticResource EntryStyle}"
-                    Text="{Binding Password}" />
-            </Frame>
+            <controls:CommonEntry
+                IsPassword="True"
+                Placeholder="{x:Static localization:Resource.LoginPagePasswordPlace}"
+                Style="{StaticResource EntryStyle}"
+                Text="{Binding Password}" />
 
         </StackLayout>
 
         <StackLayout Grid.Row="2" Orientation="Vertical">
 
             <Button
+                Padding="0"
                 BackgroundColor="Orange"
                 BorderWidth="1"
                 Command="{Binding SignButtonCommand}"

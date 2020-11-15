@@ -4,6 +4,7 @@ using MapNotePad.ViewModels;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xamarin.Forms.GoogleMaps;
 
@@ -22,31 +23,27 @@ namespace MapNotePad.Services.PinService
 
         #region --IProfileService impement--
 
-        public void DeletePin(PinModelViewModel prof)
+        public async Task<int> DeletePinAsync(PinModelViewModel prof)
         {
-            _repository.DeleteItem(prof.ToPinModel());
+            return await _repository.DeleteItemAsync(prof.ToPinModel());
         }
 
-        public IEnumerable<PinModelViewModel> GetPinModels(string email)
+        public async Task<IEnumerable<PinModelViewModel>> GetAllPinsAsync()
         {
-            return _repository.GetItems<PinModel>().Where(x => x.UserEmail == email)
-                              .Select(pin => pin.ToViewModel());
+            return await GetPinViewModelsByEmailAsync();
         }
 
-        public IEnumerable<PinModelViewModel> GetActivePinsByEmail(string email)
-        {
-            return GetPinModels(email).Where(x => x.IsActive);
-        }
-               
 
-        public IEnumerable<PinModelViewModel> GetAllPins()
+        public async Task<IEnumerable<PinModelViewModel>> GetActivePinsAsync()
         {
-            return _repository.GetItems<PinModel>().Select(pin => pin.ToViewModel()); 
+            var listModels = await GetPinViewModelsByEmailAsync();
+
+            return listModels.Where(x => x.IsActive);
         }
 
-        public void SaveOrUpdatePin(PinModelViewModel pin)
+        public async Task<int> SaveOrUpdatePinAsync(PinModelViewModel pin)
         {
-            _repository.AddOrrUpdate(pin.ToPinModel());
+            return await _repository.AddOrrUpdateAsync(pin.ToPinModel());
         }
 
         public CameraPosition LoadCameraPosition()
@@ -54,9 +51,6 @@ namespace MapNotePad.Services.PinService
             return new CameraPosition(new Position(_settingsManager.CameraLatitude,
                                                    _settingsManager.CameraLongitude),
                                                    _settingsManager.Zoom);
-
-
-
         }
 
         public void SaveCameraPosotion(CameraPosition cameraPosition)
@@ -64,13 +58,21 @@ namespace MapNotePad.Services.PinService
             _settingsManager.CameraLatitude = cameraPosition.Target.Latitude;
             _settingsManager.CameraLongitude = cameraPosition.Target.Longitude;
             _settingsManager.Zoom = cameraPosition.Zoom;
-        }    
+        }
 
 
         #endregion
 
         #region --Private helpers--
 
+        public async Task<IEnumerable<PinModelViewModel>> GetPinViewModelsByEmailAsync()
+        {
+            var email = _settingsManager.AutorizatedUserEmail;
+
+            var listPM = await _repository.FindByAsync<PinModel>(x => x.UserEmail == email);
+
+            return listPM.Select(x => x.ToViewModel());
+        }
         #endregion
     }
 }

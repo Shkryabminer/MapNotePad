@@ -20,12 +20,7 @@ namespace MapNotePad.Views
         }
         protected override void OnDisappearing()
         {
-            base.OnDisappearing();
-
-            if (BindingContext is IDestructible bindable)
-            {
-               // bindable.Destroy();
-            }
+            base.OnDisappearing();            
         }
     }
 }

@@ -142,7 +142,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _fbProfile.
+        ///   Looks up a localized string similar to EmailValidator.
         /// </summary>
         internal static string LoginPageLoginPlace {
             get {
@@ -151,7 +151,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
+        ///   Looks up a localized string similar to PasswordValidator.
         /// </summary>
         internal static string LoginPagePasswordPlace {
             get {
@@ -205,7 +205,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _fbProfile.
+        ///   Looks up a localized string similar to EmailValidator.
         /// </summary>
         internal static string SignUpPageEmailEntry {
             get {
@@ -223,7 +223,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
+        ///   Looks up a localized string similar to PasswordValidator.
         /// </summary>
         internal static string SignUpPagePasswordEntry {
             get {
@@ -232,7 +232,7 @@ namespace MapNotePad.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password.
+        ///   Looks up a localized string similar to PasswordValidator.
         /// </summary>
         internal static string SignUpPassword {
             get {

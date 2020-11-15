@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
@@ -15,11 +16,26 @@ namespace MapNotePad.Controls
 
         public static readonly BindableProperty CheckPointProperty =
                                                 BindableProperty.Create(
-                                                nameof(CheckPoint),
+                                                propertyName: nameof(CheckPoint),
                                                 typeof(Pin),
                                                 typeof(GeneralMap));
+                                               
 
+        public Pin CheckPoint
+        {
+            get => (Pin)GetValue(CheckPointProperty);
+            set => SetValue(CheckPointProperty, value);
+        }
 
+        //private static void OnSelectedPinChanged(BindableObject bindable, object oldValue, object newValue)
+        //{
+        //    if (newValue != null && bindable is GeneralMap map)
+        //    {
+        //        MapSpan location = MapSpan.FromCenterAndRadius(map.CheckPoint.Position, Xamarin.Forms.GoogleMaps.Distance.FromKilometers(50));
+
+        //        map.MoveToRegion(location, true);
+        //    }
+        //}
 
         public static readonly BindableProperty MapStartCameraPositionProperty =
                                                     BindableProperty.Create(
@@ -33,12 +49,6 @@ namespace MapNotePad.Controls
             get => (CameraPosition)GetValue(MapStartCameraPositionProperty);
             set => SetValue(MapStartCameraPositionProperty, value);
         }
-
-        public Pin CheckPoint
-        {
-            get => (Pin)GetValue(CheckPointProperty);
-            set => SetValue(CheckPointProperty, value);
-        }
         #endregion       
 
         #region --Overrides--
@@ -48,26 +58,13 @@ namespace MapNotePad.Controls
             if (propertyName == nameof(CollectionOfPins))
             {
                 SetPins();
-            }
-            if (propertyName == nameof(CheckPoint))
-            {
-                MapSpan location = MapSpan.FromCenterAndRadius(CheckPoint.Position,Xamarin.Forms.GoogleMaps.Distance.FromKilometers(50));
-
-                MoveToRegion(location, true);
-            }
+            }           
         }
-
 
         #endregion
 
         #region --Private helpers--
-
-        private CameraUpdate GetCameraUpdate()
-        {
-            return CameraUpdateFactory.NewPositionZoom
-                    (MapStartCameraPosition.Target,
-                    MapStartCameraPosition.Zoom);
-        }
+               
 
         private static void OnStartPositionChanged(BindableObject bindable, object oldValue, object newValue)
         {
