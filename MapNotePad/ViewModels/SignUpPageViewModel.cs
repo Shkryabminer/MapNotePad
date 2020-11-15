@@ -83,7 +83,7 @@ namespace MapNotePad.ViewModels
 
                 var navParam = new NavigationParameters
                  {
-                     { nameof(Email), _email }
+                     { Constants.NavigationParameters.Email, Email }
                  };
 
                 await NavigationService.NavigateAsync($"/{nameof(LoginPage)}", navParam);
@@ -100,8 +100,8 @@ namespace MapNotePad.ViewModels
 
         private bool ValidatedUser()
         {
-            return Validator.ValidatePassword(Email, Constants._emailPattern)&&
-                   Validator.ValidatePassword(Password, Constants._passwordPattern)&&
+            return Validator.ValidateEmail(Email, Validator.EmailValidator)&&
+                   Validator.ValidatePassword(Password, Validator.PasswordValidator)&&
                    Password==PasswordConfirm;
         }
 

@@ -32,7 +32,6 @@ namespace MapNotePad.ViewModels
             get => _id;
             private set => SetProperty(ref _id, value);
         }
-
         private string _name;
         public string Name
         {

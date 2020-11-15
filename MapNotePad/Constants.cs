@@ -19,6 +19,7 @@ namespace MapNotePad
 
         public static class NavigationParameters
         {
+            public const string Email = "Email";
             public const string Pin = "Pin";
             public const string User = "User";
             public const string SelectedCell = "SelectedCell";

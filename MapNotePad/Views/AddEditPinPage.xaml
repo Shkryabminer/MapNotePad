@@ -4,7 +4,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:MapNotePad.Controls"
-    xmlns:converters="clr-namespace:MapNotePad.Converters;assembly=MapNotePad"
     xmlns:localization="clr-namespace:MapNotePad.Resources"
     xmlns:prism="http://prismlibrary.com"
     xmlns:views="clr-namespace:MapNotePad.Views">
@@ -105,16 +104,12 @@
                 Text="{x:Static localization:Resource.EditListNameLable}"
                 TextColor="{DynamicResource SecondaryTextColor}" />
 
-
-
             <controls:CommonEntry
                 Margin="10,0"
                 Placeholder="{x:Static localization:Resource.EditListNamePlace}"
                 PlaceholderColor="{DynamicResource SecondaryTextColor}"
                 Style="{StaticResource EntryStyle}"
                 Text="{Binding CurrentPinModel.Name}" />
-
-
 
             <Label
                 Margin="10,5,0,0"
@@ -124,9 +119,9 @@
                 VerticalOptions="Start" />
 
             <Editor
-                Margin="10,0"
+                Margin="10,10"
                 AutoSize="TextChanges"
-                HeightRequest="60"
+                HeightRequest="130"
                 HorizontalOptions="FillAndExpand"
                 MaxLength="120"
                 Placeholder="{x:Static localization:Resource.EditListDescriptLable}"
@@ -141,15 +136,12 @@
                     <ColumnDefinition Width="0.5*" />
                 </Grid.ColumnDefinitions>
 
-
                 <Label
                     Grid.Column="0"
                     Margin="10,0,20,0"
                     FontSize="12"
                     Text="{x:Static localization:Resource.EditLatitudeLable}"
                     TextColor="{DynamicResource SecondaryTextColor}" />
-
-
 
                 <controls:CommonEntry
                     Grid.Column="0"
@@ -158,8 +150,6 @@
                     PlaceholderColor="{DynamicResource SecondaryTextColor}"
                     Style="{StaticResource EntryStyle}"
                     Text="{Binding CurrentPinModel.Latitude}" />
-
-
 
                 <Label
                     Grid.Column="1"
@@ -193,18 +183,21 @@
             <StackLayout Orientation="Vertical">
 
                 <Label Text="Image from Camera">
+
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CameraPictureCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
 
                 <Label Text="Image from Storage">
+
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding StoragePictureCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
 
                 <Label Text="Image from URL">
+
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding UrlPictureCommand}" />
                     </Label.GestureRecognizers>

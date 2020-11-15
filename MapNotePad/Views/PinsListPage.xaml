@@ -68,6 +68,7 @@
 
         </Grid>
 
+
         <ListView
             x:Name="profilesListView"
             Grid.Row="1"
@@ -105,6 +106,7 @@
 
                         <ViewCell.View>
                             <Grid Padding="5,5" HeightRequest="65">
+
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="3*" />
@@ -124,7 +126,7 @@
 
                                 <Button
                                     Grid.Column="0"
-                                    BackgroundColor="White"
+                                    BackgroundColor="Transparent"
                                     Command="{Binding BindingContext.ChangeStatusPinCommand, Source={x:Reference profilesListView}}"
                                     CommandParameter="{Binding .}"
                                     ImageSource="star.png">
@@ -151,6 +153,7 @@
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
+
         </ListView>
 
         <controls:SlideFramePinsPage
@@ -182,6 +185,7 @@
                         <TapGestureRecognizer Command="{Binding LogOutCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
+
             </StackLayout>
 
         </controls:SlideFramePinsPage>

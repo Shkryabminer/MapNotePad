@@ -15,6 +15,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!--  NavigationBar  -->
+
         <Grid
             Grid.Row="0"
             Margin="0"
@@ -40,12 +42,14 @@
                 HeightRequest="30"
                 HorizontalOptions="Start"
                 Placeholder="search"
-                Text="{Binding SearchBar}"
+                Text="{Binding SearchEntry}"
                 TextColor="Black"
                 VerticalOptions="Center"
                 WidthRequest="200" />
 
         </Grid>
+
+        <!--  Map  -->
 
         <controls:GeneralMap
             Grid.Row="1"
@@ -76,11 +80,11 @@
             BorderColor="Blue"
             CornerRadius="10"
             HasShadow="False"
-            HeightRequest="250"
+            HeightRequest="350"
             HorizontalOptions="Center"
             IsVisible="{Binding InfoIsVisible}"
             VerticalOptions="Center"
-            WidthRequest="200">
+            WidthRequest="250">
 
             <controls:SlidingFramePinInfo.Padding>
                 <OnPlatform
@@ -88,14 +92,14 @@
                     Android="0,0"
                     iOS="0,0" />
 
-
             </controls:SlidingFramePinInfo.Padding>
 
             <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.4*" />
-                    <RowDefinition Height="0.4*" />
+                    <RowDefinition Height="0.3*" />
+                    <RowDefinition Height="0.25*" />
+                    <RowDefinition Height="0.25*" />
                     <RowDefinition Height="0.2*" />
                 </Grid.RowDefinitions>
 
@@ -136,20 +140,22 @@
                 </StackLayout>
 
                 <Label
-                    Margin="0,0,5,0"
-                    Text="{Binding Description}"
-                    VerticalOptions="End" />
+                    Grid.Row="2"
+                    Margin="10,5,0,0"
+                    Text="Description"
+                    VerticalOptions="Start" />
 
                 <Label
-                    Grid.Row="1"
-                    Margin="10"
+                    Grid.Row="2"
+                    Margin="10,30,10,0"
                     HorizontalOptions="Start"
                     Text="{Binding Description}" />
 
                 <StackLayout
-                    Grid.Row="2"
+                    Grid.Row="3"
                     HorizontalOptions="Center"
                     Orientation="Horizontal"
+                    Spacing="15"
                     VerticalOptions="Center">
 
                     <Label HorizontalOptions="Center" HorizontalTextAlignment="Center">

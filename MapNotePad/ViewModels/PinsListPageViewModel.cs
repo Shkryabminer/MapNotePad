@@ -9,16 +9,12 @@ using MapNotePad.Views;
 using Prism.Common;
 using Prism.Navigation;
 using Prism.Navigation.TabbedPages;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.GoogleMaps;
 
 namespace MapNotePad.ViewModels
 {
@@ -100,14 +96,13 @@ namespace MapNotePad.ViewModels
         public ICommand _listFocusedCommand;
         public ICommand ListFocusedCommand => _listFocusedCommand ??= new Command(OnListFocusedCommand);
 
-
-
         private ICommand _showMenuCommand;
         public ICommand ShowMenuCommand => _showMenuCommand ??= new Command(OnShowMenuCommand);
 
         public ICommand CellTappedCommand => new Command<PinModelViewModel>(OnCellTappedCommand);
 
-        public ICommand ChangeStatusPinCommand => new Command<object>(OnChangeStatusPinCommand);
+        private ICommand _changeStatusPinCommand;
+        public ICommand ChangeStatusPinCommand => _changeStatusPinCommand ??= new Command<PinModelViewModel>(OnChangeStatusPinCommand);
 
         #endregion
 
@@ -144,17 +139,16 @@ namespace MapNotePad.ViewModels
         {
             if (!IsActiveFrame)
             {
-
-
                 if (pinVM != null)
                 {
                     if (pinVM.IsActive)
                     {
                         var parametres = new NavigationParameters
                         {
-                            { Constants.NavigationParameters.SelectedCell, pinVM }
-                         };
-                        #region -- Dirty little secret --
+                            { Constants.NavigationParameters.SelectedCell, pinVM}
+                        };
+
+                        #region -- Dirty little secret from SV --
 
                         var currentPage = (NavigationService as IPageAware).Page;
 
@@ -183,15 +177,13 @@ namespace MapNotePad.ViewModels
             }
         }
 
-        private async void OnChangeStatusPinCommand(object obj)
+        private async void OnChangeStatusPinCommand(PinModelViewModel obj)
         {
-            var pinModelVM = obj as PinModelViewModel;
-
-            if (pinModelVM != null)
+            if (obj != null)
             {
-                pinModelVM.IsActive = !pinModelVM.IsActive;
+                obj.IsActive = !obj.IsActive;
 
-                await _pinService.SaveOrUpdatePinAsync(pinModelVM);
+                await _pinService.SaveOrUpdatePinAsync(obj);
             }
         }
 
@@ -222,12 +214,10 @@ namespace MapNotePad.ViewModels
             {
                 var config = new ConfirmConfig
                 {
-
-                }; // set here
-
-                config.Message = "Do you realy want to delete the profile";
-                config.OkText = "Yes";
-                config.CancelText = "No";
+                    Message = "Do you realy want to delete the profile",
+                    OkText = "Yes",
+                    CancelText = "No"
+                };
 
                 var delete = await _userDialogs.ConfirmAsync(config);
 

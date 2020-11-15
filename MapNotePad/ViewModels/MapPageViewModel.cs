@@ -6,21 +6,16 @@ using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PermissionService;
 using MapNotePad.Services.PinService;
 using MapNotePad.Services.WeatherService;
-using MapNotePad.ViewModels.Interfaces;
 using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using Prism.Navigation;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace MapNotePad.ViewModels
 {
@@ -58,7 +53,7 @@ namespace MapNotePad.ViewModels
         }
 
         private string _searchBar;
-        public string SearchBar
+        public string SearchEntry
         {
             get => _searchBar;
             set => SetProperty(ref _searchBar, value);
@@ -238,7 +233,7 @@ namespace MapNotePad.ViewModels
         {
             base.OnPropertyChanged(args);
 
-            if (args.PropertyName == nameof(SearchBar))
+            if (args.PropertyName == nameof(SearchEntry))
             {
                 await SortPinCollection();
             }
@@ -250,8 +245,19 @@ namespace MapNotePad.ViewModels
         #region --Private helpers
 
         private void SetLocationToMap(PinModelViewModel pinModel)
-        {
-            StartCameraPosition = new CameraPosition(new Position(pinModel.Latitude, pinModel.Longtitude), 
+        {         
+
+            if (LastCameraPosition == null)
+            {
+                LastCameraPosition = _pinService.LoadCameraPosition();
+            }
+            else
+            {
+                //
+            }
+
+            StartCameraPosition = new CameraPosition(new Position(pinModel.Latitude,
+                                                                   pinModel.Longtitude),
                                                                   LastCameraPosition.Zoom);
 
             SelectedPin = pinModel.ToPin();
@@ -271,11 +277,11 @@ namespace MapNotePad.ViewModels
 
         private async Task SortPinCollection()
         {
-            if (!string.IsNullOrEmpty(SearchBar))
+            if (!string.IsNullOrEmpty(SearchEntry))
             {
                 var activePins = await _pinService.GetActivePinsAsync();
 
-                Pins = activePins.Pick(SearchBar);
+                Pins = activePins.Pick(SearchEntry);
             }
 
             else

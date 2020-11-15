@@ -129,7 +129,7 @@ namespace MapNotePad.ViewModels
         {
             base.OnNavigatedTo(parameters);
 
-            if (parameters.TryGetValue("EmailValidator", out string eMail))
+            if (parameters.TryGetValue(Constants.NavigationParameters.Email, out string eMail))
             {
                 Email = eMail;
             }

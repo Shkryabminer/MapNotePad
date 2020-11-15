@@ -49,7 +49,7 @@ namespace MapNotePad.Services
 
         public double Zoom
         {
-            get => _setPlugin.GetValueOrDefault(nameof(Zoom), 41.0);
+            get => _setPlugin.GetValueOrDefault(nameof(Zoom), 12);
             set => _setPlugin.AddOrUpdateValue(nameof(Zoom), value);
         }
         public string FirstName

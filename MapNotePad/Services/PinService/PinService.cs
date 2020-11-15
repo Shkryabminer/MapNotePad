@@ -2,9 +2,7 @@
 using MapNotePad.Models;
 using MapNotePad.ViewModels;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xamarin.Forms.GoogleMaps;
 
