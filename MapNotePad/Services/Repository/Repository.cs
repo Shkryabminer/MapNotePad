@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MapNotePad.Services
@@ -19,15 +18,18 @@ namespace MapNotePad.Services
         {
             get
             {
-                if (_dataPath == null) 
-                { 
+                if (_dataPath == null)
+                {
                     _dataPath = Constants.dataBasePath;
+                }
+                else
+                { 
+                //other
                 }
 
                 return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _dataPath);
             }
-            set => _dataPath = value;
-            
+            set => _dataPath = value;            
         }
        
         public Repository()
@@ -35,36 +37,37 @@ namespace MapNotePad.Services
             _dataBase = new SQLiteAsyncConnection(DataPath); // replace to async connection
             _dataBase.CreateTableAsync<User>();
             _dataBase.CreateTableAsync<PinModel>();
-
         }
+
         #region --IRepository implement--
 
         public async Task<int> AddOrrUpdateAsync<T>(T item) where T : class, IEntity, new()
         {
-            int i;
+            int id;
 
             if (item != null)
             {
                 if (item.ID == 0)
                 {
-                    i =await _dataBase.InsertAsync(item);
+                    id =await _dataBase.InsertAsync(item);
                 }
                 else
                 {
-                    i = await _dataBase.UpdateAsync(item);
+                    id = await _dataBase.UpdateAsync(item);
                 }
             }
             else
             {
-                i = 0;
+                id = 0;
             }
 
-            return i;
+            return id;
         }
 
         public  async Task<int> DeleteItemAsync<T>(T item) where T : class, IEntity, new()
         {
             int i = -1;
+
             if (item != null)
             {
              i= await  _dataBase.DeleteAsync<T>(item.ID);
@@ -84,9 +87,7 @@ namespace MapNotePad.Services
         public Task<List<T>> GetItems<T>(Func<T, bool> pred) where T : class, IEntity, new()
         {
             return _dataBase.Table<T>().ToListAsync();
-        }
-
-        //make get item
+        }        
 
         public Task<T> GetItemAsync<T>(Func<T, bool> pred) where T : class, IEntity, new()
         {

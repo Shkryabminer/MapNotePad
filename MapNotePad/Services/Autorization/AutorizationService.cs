@@ -1,14 +1,9 @@
 ﻿using MapNotePad.Models;
-using Plugin.Settings;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MapNotePad.Services.Autorization
 {
-    public class AutorizationService : IAutorization
-    {
-        
+    public class AutorizationService : IAutorizationService
+    {        
         private readonly ISettingsManager _manager;
        
         public AutorizationService(ISettingsManager manager)
@@ -20,8 +15,9 @@ namespace MapNotePad.Services.Autorization
 
         public bool Autorizeted()
         {
-            return ( !string.IsNullOrEmpty(_manager.AutorizatedUserEmail));
+            return (!string.IsNullOrEmpty(_manager.AutorizatedUserEmail));
         }
+
         public void LogOut()
         {
             _manager.AutorizatedUserEmail = string.Empty;
@@ -31,6 +27,7 @@ namespace MapNotePad.Services.Autorization
         {
             return _manager.AutorizatedUserEmail;
         }
+
         public void SetActiveUserEmail(User user)
         {
             _manager.AutorizatedUserEmail =user.Email;

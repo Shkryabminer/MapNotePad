@@ -68,7 +68,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Converters\" />
     <Folder Include="Services\SettingsManager\" />
   </ItemGroup>
 </Project>

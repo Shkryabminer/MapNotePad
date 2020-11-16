@@ -1,10 +1,7 @@
-﻿using Acr.UserDialogs;
-using Plugin.Permissions;
+﻿using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MapNotePad.Services.PermissionService
@@ -27,7 +24,6 @@ namespace MapNotePad.Services.PermissionService
             {
                 status = await _permissionPluggin.RequestPermissionAsync<T>();
             }
-
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
@@ -35,7 +31,6 @@ namespace MapNotePad.Services.PermissionService
 
             return await Task.FromResult(status);
         }
-
 
         public async Task<bool> CheckPermission<T>() where T : BasePermission, new()
         {

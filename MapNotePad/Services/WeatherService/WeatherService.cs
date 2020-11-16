@@ -1,9 +1,7 @@
 ﻿using MapNotePad.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MapNotePad.Services.WeatherService
@@ -22,7 +20,6 @@ namespace MapNotePad.Services.WeatherService
         }
 
         #region --Private helpers
-
        
         private string GetPreparedParth(double latitude, double longitude)
         {

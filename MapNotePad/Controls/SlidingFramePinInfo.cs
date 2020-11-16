@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 namespace MapNotePad.Controls
 {
-   public class SlidingFramePinInfo : Frame
+    public class SlidingFramePinInfo : Frame
     {
         public SlidingFramePinInfo()
         {
@@ -16,6 +13,7 @@ namespace MapNotePad.Controls
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
+
             if (propertyName == nameof(IsVisible))
             {
                 if (IsVisible == true)

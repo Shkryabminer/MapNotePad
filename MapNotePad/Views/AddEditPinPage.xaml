@@ -55,7 +55,8 @@
                     Margin="10,0"
                     FontSize="15"
                     HorizontalOptions="Start"
-                    Text="back"
+                    TextColor="White"
+                    Text="Back"
                     VerticalOptions="Center">
 
                     <Label.GestureRecognizers>
@@ -64,7 +65,7 @@
                 </Label>
 
                 <Image
-                    Margin="40,0"
+                    Margin="55,0"
                     HorizontalOptions="End"
                     Source="ic_collections"
                     VerticalOptions="Fill">
@@ -75,7 +76,7 @@
                 </Image>
 
                 <Image
-                    Margin="10,0"
+                    Margin="20,0"
                     HorizontalOptions="End"
                     Source="ic_save"
                     VerticalOptions="Fill">
@@ -174,11 +175,13 @@
 
         <Frame
             Grid.Row="1"
-            HeightRequest="100"
+            Padding="5"
+            HasShadow="False"
+            HeightRequest="130"
             HorizontalOptions="End"
             IsVisible="{Binding PictureMenuIsActive}"
             VerticalOptions="Start"
-            WidthRequest="100">
+            WidthRequest="110">
 
             <StackLayout Orientation="Vertical">
 
@@ -209,6 +212,7 @@
         <controls:CustomMap
             Grid.Row="2"
             CollectionOfPins="{Binding Pins, Mode=TwoWay}"
+            MapStartCameraPosition="{Binding CameraPosition}"
             MyLocationEnabled="{Binding IsLocationButtonEnabled}"
             VerticalOptions="FillAndExpand">
 

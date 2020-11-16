@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 namespace MapNotePad.Controls
 {
     public class SlideFramePinsPage : Frame
     {
-        public static BindableProperty IsActiveProperty = BindableProperty.Create(
-                                                                nameof(IsActive),
-                                                                typeof(bool),
-                                                                typeof(SlideFramePinsPage));
+        public static BindableProperty IsActiveProperty =
+            BindableProperty.Create(nameof(IsActive), typeof(bool), typeof(SlideFramePinsPage));
+
         public bool IsActive
         {
             get => (bool)GetValue(IsActiveProperty);

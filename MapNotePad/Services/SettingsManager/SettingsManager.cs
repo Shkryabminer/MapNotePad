@@ -1,15 +1,9 @@
-﻿using MapNotePad;
-using Plugin.Settings.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using Plugin.Settings.Abstractions;
 
 namespace MapNotePad.Services
 {
     public class SettingsManager : ISettingsManager
     {
-
         private readonly ISettings _setPlugin;
 
         public SettingsManager(ISettings plugin)
@@ -24,11 +18,13 @@ namespace MapNotePad.Services
             get => _setPlugin.GetValueOrDefault(nameof(AutorizatedUserEmail), string.Empty);
             set => _setPlugin.AddOrUpdateValue(nameof(AutorizatedUserEmail), value);
         }
+
         public int SelectedSortMethode
         {
             get => _setPlugin.GetValueOrDefault(nameof(SelectedSortMethode), 0);
             set => _setPlugin.AddOrUpdateValue(nameof(SelectedSortMethode), value);
         }
+
         public string LanguageSource
         {
             get => _setPlugin.GetValueOrDefault(nameof(LanguageSource), Constants._english);
@@ -49,7 +45,7 @@ namespace MapNotePad.Services
 
         public double Zoom
         {
-            get => _setPlugin.GetValueOrDefault(nameof(Zoom), 12);
+            get => _setPlugin.GetValueOrDefault(nameof(Zoom), 12.0);
             set => _setPlugin.AddOrUpdateValue(nameof(Zoom), value);
         }
         public string FirstName

@@ -7,26 +7,32 @@ namespace MapNotePad.Controls
         public static BindableProperty CornerRadiusProperty =
            BindableProperty.Create(nameof(CornerRadius), typeof(int), typeof(CommonEntry), 0);
 
-        public static BindableProperty BorderThicknessProperty =
-            BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(CommonEntry), 0);
-
-        public static BindableProperty PaddingProperty =
-            BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(CommonEntry), new Thickness(5));
-
-        public static BindableProperty BorderColorProperty =
-            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(CommonEntry), Color.Transparent);
-
         public int CornerRadius
         {
             get => (int)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
 
+        public static BindableProperty BorderThicknessProperty =
+            BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(CommonEntry), 0);
+
         public int BorderThickness
         {
             get => (int)GetValue(BorderThicknessProperty);
             set => SetValue(BorderThicknessProperty, value);
         }
+
+        public static BindableProperty PaddingProperty =
+            BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(CommonEntry), new Thickness(5));
+        public Thickness Padding
+        {
+            get => (Thickness)GetValue(PaddingProperty);
+            set => SetValue(PaddingProperty, value);
+        }
+
+        public static BindableProperty BorderColorProperty =
+            BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(CommonEntry), Color.Transparent);
+
         public Color BorderColor
         {
             get => (Color)GetValue(BorderColorProperty);
@@ -36,10 +42,6 @@ namespace MapNotePad.Controls
         /// This property cannot be changed at runtime in iOS.
         /// </summary>
         /// 
-        public Thickness Padding
-        {
-            get => (Thickness)GetValue(PaddingProperty);
-            set => SetValue(PaddingProperty, value);
-        }
+
     }
 }

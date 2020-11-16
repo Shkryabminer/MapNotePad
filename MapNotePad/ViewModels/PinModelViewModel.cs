@@ -1,9 +1,5 @@
 ﻿using MapNotePad.Models;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace MapNotePad.ViewModels
 {
@@ -20,6 +16,7 @@ namespace MapNotePad.ViewModels
             IsActive = pinModel.IsActive;
             Picture = pinModel.Picture;
         }
+
         public PinModelViewModel()
         { 
         }
@@ -30,8 +27,9 @@ namespace MapNotePad.ViewModels
         public int ID
         {
             get => _id;
-            private set => SetProperty(ref _id, value);
+            set => SetProperty(ref _id, value);
         }
+
         private string _name;
         public string Name
         {
@@ -80,7 +78,7 @@ namespace MapNotePad.ViewModels
             get => _picture;
             set => SetProperty(ref _picture, value);
         }
-        #endregion
 
+        #endregion
     }
 }

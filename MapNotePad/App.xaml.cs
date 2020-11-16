@@ -1,5 +1,4 @@
 ﻿using Prism.Unity;
-using System;
 using Xamarin.Forms;
 using Prism.Ioc;
 using Prism;
@@ -8,10 +7,7 @@ using MapNotePad.ViewModels;
 using System.Threading.Tasks;
 using MapNotePad.Services.Autorization;
 using MapNotePad.Services.UserService;
-using System.Linq;
 using MapNotePad.Services;
-
-using MapNotePad.Services.Validators;
 using Plugin.Settings.Abstractions;
 using Plugin.Settings;
 using Acr.UserDialogs;
@@ -29,12 +25,13 @@ namespace MapNotePad
     public partial class App : PrismApplication
     {
 
-        private IAutorization AutorizationService => Container.Resolve<IAutorization>();
+        private IAutorizationService AutorizationService => Container.Resolve<IAutorizationService>();
         private IUserServcie _userService => Container.Resolve<IUserServcie>();
 
         public App()
         {
             InitializeComponent();
+            
         }
         public App(IPlatformInitializer platformInitializer = null) : base(platformInitializer)
         { }
@@ -52,10 +49,8 @@ namespace MapNotePad
         {
             //      Navigation
             containerRegistry.RegisterForNavigation<NavigationPage>();
-
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<SignUpPage, SignUpPageViewModel>();
-
             containerRegistry.RegisterForNavigation<MainTabbedPage>();
             containerRegistry.RegisterForNavigation<MapPage, MapPageViewModel>();
             containerRegistry.RegisterForNavigation<PinsListPage, PinsListPageViewModel>();
@@ -67,15 +62,13 @@ namespace MapNotePad
             containerRegistry.RegisterInstance<IPermissions>(CrossPermissions.Current);
             containerRegistry.RegisterInstance<IMedia>(CrossMedia.Current);
 
-
             //      Servvices
             containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
             containerRegistry.RegisterInstance<ISettingsManager>(Container.Resolve<SettingsManager>());
             containerRegistry.RegisterInstance<IPinService>(Container.Resolve<PinService>());
             containerRegistry.RegisterInstance<IUserServcie>(Container.Resolve<UserService>());
-            containerRegistry.RegisterInstance<IAuthentificationService>(Container.Resolve<AutentificationService>());
-            containerRegistry.RegisterInstance<IAutorization>(Container.Resolve<AutorizationService>()); //Service
-            containerRegistry.RegisterInstance<IPasswordValidator>(Container.Resolve<PasswordValidator>()); //Service
+            containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
+            containerRegistry.RegisterInstance<IAutorizationService>(Container.Resolve<AutorizationService>());           
             containerRegistry.RegisterInstance<IPermissionService>(Container.Resolve<PermissionService>());
             containerRegistry.RegisterInstance<IFBAuthService>(Container.Resolve<FBAuthService>());
             containerRegistry.RegisterInstance<IWeatherService>(Container.Resolve<WeatherService>());
@@ -94,8 +87,7 @@ namespace MapNotePad
 
         #region --Private Helpers--
         private async Task InitNavigationAsync()
-        {
-            
+        {            
             if (AutorizationService.Autorizeted())
             { 
                 await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainTabbedPage)}"); 

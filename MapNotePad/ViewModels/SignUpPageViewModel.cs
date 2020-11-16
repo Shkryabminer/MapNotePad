@@ -4,7 +4,6 @@ using MapNotePad.Services.UserService;
 using MapNotePad.Validators;
 using MapNotePad.Views;
 using Prism.Navigation;
-using System;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -46,6 +45,7 @@ namespace MapNotePad.ViewModels
             get => _password;
             set => SetProperty(ref _password, value);
         }
+
         private string _passwordConfirm;
         public string PasswordConfirm
         {
@@ -54,10 +54,10 @@ namespace MapNotePad.ViewModels
         }
 
         private ICommand _goBackCommand;
-        public ICommand GoBackCommand => _goBackCommand ??= new Command(OnGoBackCommand);        
+        public ICommand GoBackCommand => _goBackCommand ??= new Command(OnGoBackCommand);
 
         private ICommand _signUpCommand;
-        public ICommand SignUpCommand =>_signUpCommand??= new Command(OnSignUpCommand);
+        public ICommand SignUpCommand => _signUpCommand ??= new Command(OnSignUpCommand);
 
         #endregion
 
@@ -76,10 +76,12 @@ namespace MapNotePad.ViewModels
                 Password = this.Password,
                 Email = this.Email
             };
+
             var isValid = ValidatedUser();
+
             if (isValid)
             {
-              await  _userService.AddOrUpdateAsync(user);
+                await _userService.AddOrUpdateAsync(user);
 
                 var navParam = new NavigationParameters
                  {
@@ -100,9 +102,9 @@ namespace MapNotePad.ViewModels
 
         private bool ValidatedUser()
         {
-            return Validator.ValidateEmail(Email, Validator.EmailValidator)&&
-                   Validator.ValidatePassword(Password, Validator.PasswordValidator)&&
-                   Password==PasswordConfirm;
+            return Validator.ValidateEmail(Email, Validator.EmailValidator) &&
+                   Validator.ValidatePassword(Password, Validator.PasswordValidator) &&
+                   Password == PasswordConfirm;
         }
 
         #endregion

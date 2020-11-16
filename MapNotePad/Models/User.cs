@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SQLite;
+﻿using SQLite;
 
 namespace MapNotePad.Models
 {
@@ -10,15 +7,13 @@ namespace MapNotePad.Models
     {
         [PrimaryKey, AutoIncrement,Column("ID")]
         public  int ID { get; set ; }
-        public virtual string FirstName { get; set; }
-        public string Password { get; set; }
-        public virtual string Email { get; set; }
-        public virtual string LastName { get; set; }
 
-        //public User()
-        //{
-        //    FirstName = string.Empty;
-        //    LastName = string.Empty;
-        //}
+        public virtual string FirstName { get; set; }
+
+        public string Password { get; set; }
+
+        public virtual string Email { get; set; }
+
+        public virtual string LastName { get; set; }        
     }
 }

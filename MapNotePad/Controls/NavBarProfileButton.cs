@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Xamarin.Forms;
 
 namespace MapNotePad.Controls
@@ -17,10 +14,8 @@ namespace MapNotePad.Controls
 
         #region --Public properties--
 
-        public static BindableProperty FirstNameProperty = BindableProperty.
-                                                                Create(nameof(FirstName),
-                                                                       typeof(string),
-                                                                       typeof(NavBarProfileButton));
+        public static BindableProperty FirstNameProperty =
+            BindableProperty.Create(nameof(FirstName), typeof(string), typeof(NavBarProfileButton));
 
         public string FirstName
         {
@@ -28,10 +23,8 @@ namespace MapNotePad.Controls
             set => SetValue(FirstNameProperty, value);
         }
 
-        public static BindableProperty LastNameProperty = BindableProperty.
-                                                        Create(nameof(LastName),
-                                                               typeof(string),
-                                                               typeof(NavBarProfileButton));
+        public static BindableProperty LastNameProperty =
+            BindableProperty.Create(nameof(LastName), typeof(string), typeof(NavBarProfileButton));
 
         public string LastName
         {
@@ -42,6 +35,7 @@ namespace MapNotePad.Controls
         #endregion
 
         #region --Overrides--
+
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
@@ -49,14 +43,15 @@ namespace MapNotePad.Controls
             if (propertyName == nameof(FirstName))
             {
                 if (!string.IsNullOrEmpty(FirstName))
-                {                    
+                {
                     SetNames(FirstName);
                 }
                 else
                 {
+                    //other
                 }
-
             }
+
             if (propertyName == nameof(LastName))
             {
                 if (!string.IsNullOrEmpty(LastName))
@@ -65,6 +60,7 @@ namespace MapNotePad.Controls
                 }
                 else
                 {
+                    //  other
                 }
             }
         }
@@ -80,10 +76,10 @@ namespace MapNotePad.Controls
                 Text = value.First<Char>().ToString().ToUpper();
             }
             else
-            { 
-            Text += value.First<Char>().ToString().ToUpper();
+            {
+                Text += value.First<Char>().ToString().ToUpper();
             }
-           
+
         }
         #endregion
     }

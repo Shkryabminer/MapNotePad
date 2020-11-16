@@ -1,14 +1,11 @@
-﻿using MapNotePad.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace MapNotePad.Validators
 {
     public  class Validator
     {
         public static Validator EmailValidator { get; private set; }
+
         public static Validator PasswordValidator { get; private set; }
 
         static Validator()
@@ -37,7 +34,6 @@ namespace MapNotePad.Validators
         public static bool ValidatePassword(string message, string pattern)
         {
             return !string.IsNullOrEmpty(message) && Regex.IsMatch(message, pattern);
-        }
-        
+        }        
     }
 }

@@ -1,16 +1,13 @@
-﻿using MapNotePad.Models;
-using System.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using MapNotePad.ViewModels;
 using System.Diagnostics;
 
 namespace MapNotePad.Pickers
 {
-    public static class PinModelPicker // to static
+    public static class PinModelPicker 
     {
         #region --IPinModelsPicker implementation--
+
         public static List<PinModelViewModel> Pick(this IEnumerable<PinModelViewModel> collection, string input)
         {
             List<PinModelViewModel> newList = new List<PinModelViewModel>();
@@ -34,9 +31,10 @@ namespace MapNotePad.Pickers
                     newList.Add(pinModelVM);
                 }
             }
+
             return newList;
         }
-        #endregion
 
+        #endregion
     }
 }

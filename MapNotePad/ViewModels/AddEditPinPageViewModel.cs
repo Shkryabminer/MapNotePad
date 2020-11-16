@@ -7,9 +7,7 @@ using MapNotePad.Validators;
 using Plugin.Media.Abstractions;
 using Plugin.Permissions;
 using Prism.Navigation;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -21,14 +19,14 @@ namespace MapNotePad.ViewModels
     public class AddEditPinPageViewModel : BaseViewModel
     {
         private readonly IPinService _pinService;
-        private readonly IAutorization _autorizationService;
+        private readonly IAutorizationService _autorizationService;
         private readonly IUserDialogs _userDialogs;
         private readonly IPermissionService _permissionService;
         private readonly IMedia _mediaPlugin;
 
         public AddEditPinPageViewModel(INavigationService navigationService,
                                         IPinService pinService,
-                                        IAutorization autorization,
+                                        IAutorizationService autorization,
                                         IUserDialogs userDialogs,
                                         IPermissionService permissionService,
                                         IMedia mediaPlugin) : base(navigationService)
@@ -68,10 +66,17 @@ namespace MapNotePad.ViewModels
         {
             get => _pictureMenuIsActive;
             set => SetProperty(ref _pictureMenuIsActive, value);
+        }       
+
+        private CameraPosition _cameraPosition;
+        public CameraPosition CameraPosition
+        {
+            get => _cameraPosition;
+            set => SetProperty(ref _cameraPosition, value);
         }
 
         private ICommand _urlPictureCommand;
-        public ICommand UrlPictureCommand => _urlPictureCommand ??= new Command(OnUrlPictureCommand);               
+        public ICommand UrlPictureCommand => _urlPictureCommand ??= new Command(OnUrlPictureCommand);
 
         private ICommand _disableMenuCommand;
         public ICommand DisableMenuCommand => _disableMenuCommand ??= new Command(OnDisableMenuCommand);
@@ -96,20 +101,13 @@ namespace MapNotePad.ViewModels
 
         #endregion
 
-
         #region --OnCommandHandlers--
 
         private void OnDisableMenuCommand()
         {
-            if (PictureMenuIsActive)
-            {
-                PictureMenuIsActive = false;
-            }
-            else
-            {
-                //other branch
-            }
+            PictureMenuIsActive = false;
         }
+
         private async void OnSavePinCommand()
         {
             if (CheckFields())
@@ -117,6 +115,10 @@ namespace MapNotePad.ViewModels
                 CurrentPinModel.UserEmail = _autorizationService.GetActiveUserEmail();
                 await _pinService.SaveOrUpdatePinAsync(CurrentPinModel);
                 await NavigationService.GoBackAsync();
+            }
+            else
+            {
+                await _userDialogs.AlertAsync("Incorrect parameters", okText: "Ok");
             }
         }
 
@@ -167,7 +169,7 @@ namespace MapNotePad.ViewModels
             }
             else
             {
-                await _userDialogs.AlertAsync("You need allow to use camera on your device",okText:"Ok");
+                await _userDialogs.AlertAsync("You need allow to use camera on your device", okText: "Ok");
             }
         }
 
@@ -193,7 +195,7 @@ namespace MapNotePad.ViewModels
         }
         private async void OnUrlPictureCommand()
         {
-            var result = await _userDialogs.PromptAsync("Enter your URL", "Picture URL", "Ok", "Cancell",placeholder:"Url", inputType: InputType.Url);
+            var result = await _userDialogs.PromptAsync("Enter your URL", "Picture URL", "Ok", "Cancell", placeholder: "Url", inputType: InputType.Url);
             CurrentPinModel.Picture = result.Text;
         }
 
@@ -204,28 +206,32 @@ namespace MapNotePad.ViewModels
 
         #endregion
 
-        #region --Overrides--
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-        {
-            base.OnPropertyChanged(args);
-        }
+        #region --Overrides--               
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
-            var pinModelVM = parameters.GetValue<PinModelViewModel>(nameof(PinModelViewModel)) as PinModelViewModel; //trygetvalue, nameof
-
-            Debug.WriteLine("");
-            if (pinModelVM != null)
+            if (parameters.TryGetValue(nameof(PinModelViewModel), out PinModelViewModel pinModelVM))
             {
-                CurrentPinModel = pinModelVM;
+                if (pinModelVM != null)
+                {
+                    CurrentPinModel = pinModelVM;
+                    CreatePin();
+                    SetLocationToMap(CurrentPinModel);
+                }
+                else
+                {
+                    var email = _autorizationService.GetActiveUserEmail();
+                    CurrentPinModel = new PinModelViewModel(new PinModel(email));
+                    SetLocationToMap(null);
+                }
             }
             else
             {
-                CurrentPinModel = new PinModelViewModel(new PinModel());
+                Debug.WriteLine("Navigation parameter error");
             }
+           
         }
 
         public override async Task InitializeAsync(INavigationParameters parameters)
@@ -233,7 +239,6 @@ namespace MapNotePad.ViewModels
             await base.InitializeAsync(parameters);
 
             await SetLocationButton();
-
         }
         #endregion
 
@@ -259,13 +264,19 @@ namespace MapNotePad.ViewModels
             return pinValidator.PinModelIsValid(CurrentPinModel);
         }
 
-        private async void SetPictureFromGalery()
+        private void SetLocationToMap(PinModelViewModel pinModel)
         {
-            if (_mediaPlugin.IsPickPhotoSupported)
+            var cameraPostion = _pinService.LoadCameraPosition();
+          
+            if (pinModel == null)
             {
-                MediaFile file = await _mediaPlugin.PickPhotoAsync();
-                CurrentPinModel.Picture = file.Path;
-               // RaisePropertyChanged(nameof(CurrentPinModel));
+                CameraPosition = cameraPostion;
+            }
+            else
+            {
+                CameraPosition = new CameraPosition(new Position(pinModel.Latitude,
+                                                                 pinModel.Longtitude),
+                                                                 cameraPostion.Zoom);
             }
         }
 

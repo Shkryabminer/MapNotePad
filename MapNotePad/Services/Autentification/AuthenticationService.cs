@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MapNotePad.Models;
-using MapNotePad.Services;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace MapNotePad.Services
 {
-    public  class AutentificationService : IAuthentificationService
+    public  class AuthenticationService : IAuthenticationService
     {
         private readonly IRepository _data;
        
-        public AutentificationService(IRepository repository)
+        public AuthenticationService(IRepository repository)
         {
             _data = repository;
         }
@@ -50,6 +47,7 @@ namespace MapNotePad.Services
 
         #endregion
 
+
         #region --Private helpers--
 
         private async Task<IEnumerable<User>> GetUsersAsync(string login, string password)
@@ -57,6 +55,7 @@ namespace MapNotePad.Services
             var collection = from user in await _data.GetItemsAsync<User>()
                              where user.Email.ToUpper() == login.ToUpper() && user.Password == password
                              select user;
+
             return collection;
         }
 

@@ -31,7 +31,6 @@ namespace MapNotePad.Services.PinService
             return await GetPinViewModelsByEmailAsync();
         }
 
-
         public async Task<IEnumerable<PinModelViewModel>> GetActivePinsAsync()
         {
             var listModels = await GetPinViewModelsByEmailAsync();
@@ -58,7 +57,6 @@ namespace MapNotePad.Services.PinService
             _settingsManager.Zoom = cameraPosition.Zoom;
         }
 
-
         #endregion
 
         #region --Private helpers--
@@ -71,6 +69,7 @@ namespace MapNotePad.Services.PinService
 
             return listPM.Select(x => x.ToViewModel());
         }
+
         #endregion
     }
 }

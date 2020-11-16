@@ -11,7 +11,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <x:Double x:Key="ButtonSize">100</x:Double>
-            <x:Int32 x:Key="CornerRadius">50</x:Int32>
+            <x:Single x:Key="CornerRadius">50</x:Single>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -44,7 +44,7 @@
                 HeightRequest="30"
                 HorizontalOptions="Start"
                 Placeholder="search"
-                Text="{Binding SearchBar}"
+                Text="{Binding SearchEntry}"
                 TextColor="Black"
                 VerticalOptions="Center"
                 WidthRequest="200" />
@@ -105,7 +105,7 @@
                         </ViewCell.ContextActions>
 
                         <ViewCell.View>
-                            <Grid Padding="5,5" HeightRequest="65">
+                            <Grid Padding="5,5" HeightRequest="70">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
@@ -129,7 +129,8 @@
                                     BackgroundColor="Transparent"
                                     Command="{Binding BindingContext.ChangeStatusPinCommand, Source={x:Reference profilesListView}}"
                                     CommandParameter="{Binding .}"
-                                    ImageSource="star.png">
+                                    ImageSource="star.png"
+                                    VerticalOptions="Center">
                                     <Button.Triggers>
 
                                         <DataTrigger
@@ -190,23 +191,32 @@
 
         </controls:SlideFramePinsPage>
 
-        <Button
+        <Frame
             Grid.Row="1"
             Margin="40"
-            BackgroundColor="{DynamicResource BtnAddColor}"
+            Padding="0"
+            BackgroundColor="Transparent"
             BorderColor="{DynamicResource BtnAddBorder}"
-            BorderWidth="5"
-            Command="{Binding AddNewPinCommand}"
             CornerRadius="{StaticResource Key=CornerRadius}"
-            Font="60"
-            FontAttributes="Bold"
             HeightRequest="{StaticResource Key=ButtonSize}"
             HorizontalOptions="End"
-            Text="{x:Static localization:Resource.PinsListAddProffButton}"
-            TextColor="{DynamicResource BtnAddText}"
             VerticalOptions="End"
-            WidthRequest="{StaticResource Key=ButtonSize}" />
+            WidthRequest="{StaticResource Key=ButtonSize}">
 
+            <Image
+                Aspect="Fill"
+                HeightRequest="{StaticResource Key=ButtonSize}"
+                HorizontalOptions="Center"
+                Source="add_icon.png"
+                VerticalOptions="Center"
+                WidthRequest="{StaticResource Key=ButtonSize}">
+
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddNewPinCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+
+        </Frame>
 
     </Grid>
 

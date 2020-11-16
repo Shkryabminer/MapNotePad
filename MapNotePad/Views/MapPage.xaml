@@ -69,10 +69,15 @@
 
                 <prism:EventToCommandBehavior Command="{Binding MapClickedCommand}" EventName="MapClicked" />
 
+                <prism:EventToCommandBehavior
+                    Command="{Binding CameraChangedCommand}"
+                    EventArgsParameterPath="Position"
+                    EventName="CameraChanged"/>
+
             </controls:GeneralMap.Behaviors>
         </controls:GeneralMap>
 
-        <!--  Sliding frame  -->
+          <!--Sliding frame-->  
 
         <controls:SlidingFramePinInfo
             Grid.Row="1"
@@ -163,7 +168,7 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span FontAttributes="Bold" Text="Temperature&#10;" />
-                                <Span Text="{Binding PinTappedWeather.main.temp, StringFormat='{0:f0}°'}" />
+                                <Span Text="{Binding PinTappedWeather.Main.Temp, StringFormat='{0:f0}°'}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -173,7 +178,7 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span FontAttributes="Bold" Text="Feels like&#10;" />
-                                <Span Text="{Binding PinTappedWeather.main.temp, StringFormat='{0:f0}°'}" />
+                                <Span Text="{Binding PinTappedWeather.Main.Feels_like, StringFormat='{0:f0}°'}" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MapNotePad.Models
+﻿namespace MapNotePad.Models
 {
-   public interface IEntity
+    public interface IEntity
     {
         int ID { get; set; }
     }

@@ -5,15 +5,7 @@ using MapNotePad.Services;
 using MapNotePad.Services.Autorization;
 using System.Windows.Input;
 using Xamarin.Forms;
-using System;
-using Xamarin.Auth;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Json;
-using Newtonsoft.Json;
 using MapNotePad.Models;
-using Device = Xamarin.Forms.Device;
 using MapNotePad.Services.FBAuthService;
 using MapNotePad.Services.UserService;
 using System.Threading;
@@ -22,15 +14,15 @@ namespace MapNotePad.ViewModels
 {
     public class LoginPageViewModel : BaseViewModel
     {
-        private readonly IAuthentificationService _authentificationService;
-        private readonly IAutorization _autorizationService;
+        private readonly IAuthenticationService _authentificationService;
+        private readonly IAutorizationService _autorizationService;
         private readonly IUserDialogs _userDialogs;
         private readonly IFBAuthService _fbAuthService;
         private readonly IUserServcie _userService;
 
         public LoginPageViewModel(INavigationService navigationService,
-                                  IAutorization autorization,
-                                  IAuthentificationService authentificationService,
+                                  IAutorizationService autorization,
+                                  IAuthenticationService authentificationService,
                                   IUserDialogs userDialogs,
                                   IFBAuthService fBAuthService,
                                   IUserServcie userServcie)
@@ -70,9 +62,7 @@ namespace MapNotePad.ViewModels
         private ICommand _fbLoginCommand;
         public ICommand FBLoginCommand => _fbLoginCommand ??= new Command(OnFBLoginCommand);
 
-
         #endregion
-
 
         #region  --Oncommand handlers--
 
@@ -82,8 +72,7 @@ namespace MapNotePad.ViewModels
             CTS = new CancellationTokenSource();
 
             using (_userDialogs.Loading("Press cancell to abort authorisation",()=>CTS.Cancel()))
-            {
-                
+            {                
                 fbProfile = await _fbAuthService.GetFBAccauntEmail(CTS);
             }
 
@@ -104,14 +93,12 @@ namespace MapNotePad.ViewModels
             var authUser = await _authentificationService.GetAuthUserAsync(Email, Password);
 
             if (authUser != null)
-            {
-              //  _userService.ActiveUser = (User)authUser;
+            {              
                 _autorizationService.SetActiveUserEmail((User)authUser);
                 GoToMapPage(authUser);
             }
             else
-            {
-                //string mes = _translator.GetTranslate("IncorrectLoginOrPassw");
+            {               
                 _userDialogs.Alert("Invalid login or password");
                 Password = "";
             }
@@ -125,6 +112,7 @@ namespace MapNotePad.ViewModels
         #endregion
 
         #region     --Overrides--  
+
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
@@ -153,5 +141,4 @@ namespace MapNotePad.ViewModels
         
         #endregion
     }
-
 }

@@ -1,21 +1,22 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MapNotePad.Models.FBProfile;
+using Newtonsoft.Json;
 
 namespace MapNotePad.Models
 {
     public class FaceBookProfile : User
     {
-        [JsonProperty("Picture")]
-        
+        [JsonProperty("Picture")]        
         public Picture Picture { get; set; }
+
         public string Locale { get; set; }
+
         public string Link { get; set; }
+
         public Cover Cover { get; set; }
 
         [JsonProperty("age_range")]
         public AgeRange AgeRange { get; set; }
+
         public Device[] Devices { get; set; }
 
         [JsonProperty("first_name")]
@@ -23,40 +24,15 @@ namespace MapNotePad.Models
 
         [JsonProperty("last_name")]
         public override string LastName { get; set; }
+
         public string Gender { get; set; }
+
         public bool IsVerified { get; set; }
+
         public string Id { get; set; }
 
         [JsonProperty("email")]
         public override string Email { get; set; }
-    }
-
-    public class Picture
-    {
-        public Data Data { get; set; }
-    }
-
-    public class Data
-    {
-        public bool IsSilhouette { get; set; }
-        public string Url { get; set; }
-    }
-
-    public class Cover
-    {
-        public string Id { get; set; }
-        public int OffsetY { get; set; }
-        public string Source { get; set; }
-    }
-
-    public class AgeRange
-    {
-        public int Min { get; set; }
-    }
-
-    public class Device
-    {
-        public string Os { get; set; }
     }
 }
 

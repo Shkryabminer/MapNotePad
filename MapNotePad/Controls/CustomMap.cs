@@ -1,10 +1,6 @@
 ﻿using MapNotePad.Extensions;
-using MapNotePad.Models;
 using MapNotePad.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
@@ -19,14 +15,10 @@ namespace MapNotePad.Controls
             UiSettings.MyLocationButtonEnabled = true;
         }
 
-
         #region --public properties--
 
         public static readonly BindableProperty CollectionOfPinsProperty =
-                               BindableProperty.Create(nameof(CollectionOfPins),
-                                                       typeof(List<PinModelViewModel>), 
-                                                       typeof(CustomMap));
-              
+            BindableProperty.Create(nameof(CollectionOfPins), typeof(List<PinModelViewModel>), typeof(CustomMap));
 
         public List<PinModelViewModel> CollectionOfPins
         {
@@ -35,9 +27,17 @@ namespace MapNotePad.Controls
         }
         #endregion
 
-       
+        public static readonly BindableProperty MapStartCameraPositionProperty =
+           BindableProperty.Create(nameof(MapStartCameraPosition), typeof(CameraPosition), typeof(CustomMap), propertyChanged: OnStartPositionChanged);
+
+        public CameraPosition MapStartCameraPosition
+        {
+            get => (CameraPosition)GetValue(MapStartCameraPositionProperty);
+            set => SetValue(MapStartCameraPositionProperty, value);
+        }
+
         #region --Overrides--
-       
+
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
@@ -45,13 +45,9 @@ namespace MapNotePad.Controls
             if (propertyName == nameof(CollectionOfPins))
             {
                 SetPins();
-             //   RaisePropertyChanged(nameof(Pins));
             }
         }
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-        }
+
         #endregion
 
         #region --Private helpers--
@@ -60,7 +56,6 @@ namespace MapNotePad.Controls
         {
             Pins.Clear();
 
-            
             foreach (PinModelViewModel p in CollectionOfPins)
             {
                 if (p.Name == null)
@@ -72,12 +67,16 @@ namespace MapNotePad.Controls
             }
         }
 
-        private MapSpan GetLocation()
+        private static void OnStartPositionChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var center = new Position(CollectionOfPins.First().Latitude, CollectionOfPins.First().Longtitude);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.NewCameraPosition((CameraPosition)newValue);
 
-            return MapSpan.FromCenterAndRadius(center, Xamarin.Forms.GoogleMaps.Distance.FromKilometers(10));
-        }      
+            var customlMap = (CustomMap)bindable;
+
+            customlMap.InitialCameraUpdate = cameraUpdate;
+
+            customlMap.MoveCamera(cameraUpdate);
+        }
 
         #endregion
     }

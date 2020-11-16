@@ -70,7 +70,7 @@ namespace MapNotePad.iOS.Renderers
                 if (_padding != value)
                 {
                     _padding = value;
-                    //InvalidateIntrinsicContentSize();
+                   
                 }
             }
         }

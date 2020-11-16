@@ -14,19 +14,13 @@ namespace MapNotePad.Services.UserService
         {
             _repository = repository;
             _settingsManager = settingsManager;
-        }
-
-        #region --Public properties--
-
-
-
-        #endregion
+        }       
 
         #region --IUserServiceImplementation--
 
         public string GetFirstName
         {
-            get=> _settingsManager.FirstName;
+            get => _settingsManager.FirstName;
         }
 
         public string GetLastName
@@ -42,13 +36,13 @@ namespace MapNotePad.Services.UserService
         public async Task<int> DeleteUserAsync(User user)
         {
          return  await _repository.DeleteItemAsync(user);
-        }
-       
+        }       
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await _repository.GetItemsAsync<User>();
         }
+
         #endregion
     }
 }

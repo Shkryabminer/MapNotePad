@@ -1,6 +1,4 @@
 ﻿using Acr.UserDialogs;
-using MapNotePad.Extensions;
-using MapNotePad.Models;
 using MapNotePad.Pickers;
 using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PinService;
@@ -21,12 +19,12 @@ namespace MapNotePad.ViewModels
     public class PinsListPageViewModel : BaseViewModel
     {
         private readonly IUserDialogs _userDialogs;
-        private readonly IAutorization _autorizationService;
+        private readonly IAutorizationService _autorizationService;
         private readonly IPinService _pinService;
         private readonly IUserServcie _userServcie;
 
         public PinsListPageViewModel(INavigationService navigationService,
-                                    IAutorization autorization,
+                                    IAutorizationService autorization,
                                     IPinService pinService,
                                     IUserDialogs userDialogs,
                                     IUserServcie userServcie)
@@ -52,11 +50,11 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _pins, value);
         }
 
-        private string _firstNmae;
+        private string _firstName;
         public string FirstName
         {
-            get => _firstNmae;
-            set => SetProperty(ref _firstNmae, value);
+            get => _firstName;
+            set => SetProperty(ref _firstName, value);
         }
 
         private string _lastName;
@@ -66,18 +64,20 @@ namespace MapNotePad.ViewModels
             set => SetProperty(ref _lastName, value);
         }
 
-        private string _searchBar;
-        public string SearchBar
+        private string _searchEntry;
+        public string SearchEntry
         {
-            get => _searchBar;
-            set => SetProperty(ref _searchBar, value);
+            get => _searchEntry;
+            set => SetProperty(ref _searchEntry, value);
         }
+
         private bool _isActiveFrame;
         public bool IsActiveFrame
         {
             get => _isActiveFrame;
             set => SetProperty(ref _isActiveFrame, value);
-        }
+        }               
+
         private ICommand _disableMenuCommand;
         public ICommand DisableMenuCommand => _disableMenuCommand ??= new Command(OnDisableMenuCommand);
 
@@ -99,7 +99,8 @@ namespace MapNotePad.ViewModels
         private ICommand _showMenuCommand;
         public ICommand ShowMenuCommand => _showMenuCommand ??= new Command(OnShowMenuCommand);
 
-        public ICommand CellTappedCommand => new Command<PinModelViewModel>(OnCellTappedCommand);
+        private ICommand _cellTappedCommand;
+        public ICommand CellTappedCommand => _cellTappedCommand ??= new Command<PinModelViewModel>(OnCellTappedCommand);
 
         private ICommand _changeStatusPinCommand;
         public ICommand ChangeStatusPinCommand => _changeStatusPinCommand ??= new Command<PinModelViewModel>(OnChangeStatusPinCommand);
@@ -201,9 +202,7 @@ namespace MapNotePad.ViewModels
 
         public void OnAddNewModelPinCommand(object obj)
         {
-            var prof = new PinModel(_autorizationService.GetActiveUserEmail());
-
-            GoToEditPinPage(prof.ToViewModel());
+            GoToEditPinPage(null);
         }
 
         private async void OnDeletePinCommand(object obj)
@@ -231,6 +230,10 @@ namespace MapNotePad.ViewModels
                     Debug.WriteLine("Delete confirm canceled");
                 }
             }
+            else
+            { 
+            //Other
+            }
         }
 
         #endregion
@@ -253,7 +256,7 @@ namespace MapNotePad.ViewModels
         {
             base.OnPropertyChanged(args);
 
-            if (args.PropertyName == nameof(SearchBar))
+            if (args.PropertyName == nameof(SearchEntry))
             {
                 await SortPinCollection();
             }
@@ -287,11 +290,11 @@ namespace MapNotePad.ViewModels
 
         private async Task SortPinCollection()
         {
-            if (!string.IsNullOrEmpty(SearchBar))
+            if (!string.IsNullOrEmpty(SearchEntry))
             {
                 var activePins = await _pinService.GetAllPinsAsync();
 
-                var sortedPins = activePins.Pick(SearchBar);
+                var sortedPins = activePins.Pick(SearchEntry);
 
                 Pins = new ObservableCollection<PinModelViewModel>(sortedPins);
             }

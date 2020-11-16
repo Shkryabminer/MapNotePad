@@ -1,8 +1,6 @@
-﻿using Acr.UserDialogs;
-using MapNotePad.Extensions;
+﻿using MapNotePad.Extensions;
 using MapNotePad.Models;
 using MapNotePad.Pickers;
-using MapNotePad.Services.Autorization;
 using MapNotePad.Services.PermissionService;
 using MapNotePad.Services.PinService;
 using MapNotePad.Services.WeatherService;
@@ -21,24 +19,18 @@ namespace MapNotePad.ViewModels
 {
     public class MapPageViewModel : BaseViewModel
     {
-        private readonly IUserDialogs _userDialogs;
         private readonly IPinService _pinService;
-        private readonly IAutorization _autorizationService;
         private readonly IPermissionService _permissionService;
         private readonly IWeatherService _weatherService;
 
         public MapPageViewModel(INavigationService navigationService,
                                 IPinService pinService,
-                                IAutorization autorizationService,
-                                IUserDialogs userDialogs,
                                 IPermissionService permissionService,
                                 IWeatherService weatherService)
                                 : base(navigationService)
         {
             _permissionService = permissionService;
-            _userDialogs = userDialogs;
             _pinService = pinService;
-            _autorizationService = autorizationService;
             _weatherService = weatherService;
         }
 
@@ -153,7 +145,7 @@ namespace MapNotePad.ViewModels
 
                 InfoIsVisible = true;
             }
-            else 
+            else
             {
                 Debug.WriteLine("Pin is null");
             }
@@ -162,6 +154,11 @@ namespace MapNotePad.ViewModels
         private void OnCameraChangedCommand(CameraPosition obj)
         {
             LastCameraPosition = obj;
+
+            if (LastCameraPosition != null)
+            {
+                _pinService.SaveCameraPosotion(LastCameraPosition);
+            }
         }
 
         private void OnMapClickedCommand()
@@ -171,24 +168,14 @@ namespace MapNotePad.ViewModels
                 InfoIsVisible = false;
             }
             else
-            { 
-            //Other way
+            {
+                //Other way
             }
         }
 
         #endregion
 
         #region --Overrides--     
-
-
-        public override void SaveCameraPosition()
-        {
-            base.SaveCameraPosition();
-            if (LastCameraPosition != null)
-            {
-                _pinService.SaveCameraPosotion(LastCameraPosition);
-            }
-        }
 
         public override void Initialize(INavigationParameters parameters)
         {
@@ -239,13 +226,12 @@ namespace MapNotePad.ViewModels
             }
         }
 
-
         #endregion
 
         #region --Private helpers
 
         private void SetLocationToMap(PinModelViewModel pinModel)
-        {         
+        {
 
             if (LastCameraPosition == null)
             {
@@ -271,7 +257,7 @@ namespace MapNotePad.ViewModels
 
             MapTappedPinPicture = strings[1];
 
-            Description = strings[0];          
+            Description = strings[0];
 
         }
 
@@ -294,7 +280,6 @@ namespace MapNotePad.ViewModels
         {
             IsLocationButton = await _permissionService.CheckPermission<LocationPermission>();
         }
-
 
         #endregion
     }

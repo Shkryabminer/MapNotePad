@@ -1,30 +1,25 @@
-﻿using Acr.UserDialogs;
-using MapNotePad.Models;
+﻿using MapNotePad.Models;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Auth;
-using Xamarin.Forms;
-using Device = Xamarin.Forms.Device;
 
 namespace MapNotePad.Services.FBAuthService
 {
     public class FBAuthService : IFBAuthService
     {
-        public FaceBookProfile _fbProfile { get; set; }
+        public FaceBookProfile _fbProfile { get; set; } = null;
 
         #region --IFBAuthService implementation--
 
         public async Task<FaceBookProfile> GetFBAccauntEmail(CancellationTokenSource cts)
         {
             string clientID = Constants.FacebookClient.AppID; ;
-            string redirectUri = Constants.FacebookClient.FacebookRedirectUrl; 
-            bool isUsingNativeUI = false;            
+            string redirectUri = Constants.FacebookClient.FacebookRedirectUrl;
+            bool isUsingNativeUI = false;
 
             var authentificator = new OAuth2Authenticator(
                                           clientID,
@@ -36,7 +31,7 @@ namespace MapNotePad.Services.FBAuthService
             var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
 
             try
-            {               
+            {
                 {
                     presenter.Login(authentificator);
                 }
@@ -55,7 +50,6 @@ namespace MapNotePad.Services.FBAuthService
 
         #region -- Private helpers --
 
-
         private async void Authentificator_Completed(object sender, AuthenticatorCompletedEventArgs e)
         {
             var authentificator = sender as OAuth2Authenticator;
@@ -70,7 +64,6 @@ namespace MapNotePad.Services.FBAuthService
 
                 _fbProfile = prof;
             }
-
             else
             {
                 _fbProfile = null;
@@ -90,14 +83,17 @@ namespace MapNotePad.Services.FBAuthService
 
         private async Task<FaceBookProfile> WaitForEmail(CancellationToken cts)
         {
-           await Task.Run(()=>
-           { 
-               while (!cts.IsCancellationRequested && _fbProfile==null)
-               {                   
-               }
-           });
+            await Task.Run(() =>
+            {
+                while (!cts.IsCancellationRequested && _fbProfile == null)
+                {
+                    //waiting for profile or cancell
+                }
+            });
+
             return _fbProfile;
         }
+
         #endregion
     }
 }
